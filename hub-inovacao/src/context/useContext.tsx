@@ -1,3 +1,4 @@
+"use client"; 
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { LoginRequestDTO, LoginResponseDTO } from "@/interfaces/LoginDTO";
 import { login } from "@/services/authService";
