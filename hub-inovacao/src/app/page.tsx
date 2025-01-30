@@ -1,9 +1,9 @@
-import LoginPage from "@/features/signin/LoginPage";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
   return (
     <div>
-      <LoginPage/>
+      <Navbar/>
           </div>
   );
 }
