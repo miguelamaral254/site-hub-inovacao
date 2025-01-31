@@ -1,7 +1,7 @@
-"use client"; 
+"use client";
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { LoginRequestDTO, LoginResponseDTO } from "@/interfaces/LoginDTO";
 import { login } from "@/services/authService";
+import { LoginRequestDTO, LoginResponseDTO } from "@/interfaces/loginInterface";
 
 interface AuthContextData {
   user: LoginResponseDTO | null;
@@ -21,9 +21,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const loginUser = async (credentials: LoginRequestDTO) => {
     try {
       const response = await login(credentials);
-      setUser(response);
-      // Opcional: Salvar o token no localStorage para persistência
+      setUser(response);  // Atualiza o estado do usuário
       localStorage.setItem("token", response.token);
+      localStorage.setItem("email", response.email);
+      localStorage.setItem("role", response.role);
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -33,9 +34,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logoutUser = () => {
-    setUser(null);
-    // Opcional: Remover o token do localStorage
+    setUser(null);  // Limpa o estado do usuário
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("role");
   };
 
   return (

@@ -1,22 +1,27 @@
-"use client";
-import { login } from "@/services/authService";
+"use client";  
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/useContext";
 
 export default function LoginPage() {
+  const { loginUser } = useAuth();  // Usando o login do contexto
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
     setSuccessMessage("");
-  
+
     try {
-      const response = await login({ email, password });
-      setSuccessMessage(response.message);
-      alert(`Login bem-sucedido!\nToken: ${response.token}\nEmail: ${response.email}\nRole: ${response.role}`);
+      await loginUser({ email, password });  // Usando o login do contexto
+
+      setSuccessMessage("Login bem-sucedido!");
+
+      router.push("/auth/dashboard");  // Redireciona para a dashboard ou página inicial
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
@@ -24,7 +29,7 @@ export default function LoginPage() {
         setErrorMessage("Ocorreu um erro inesperado. Tente novamente.");
       }
     }
-  };  
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -57,17 +62,21 @@ export default function LoginPage() {
               required
             />
           </div>
-          {errorMessage && <p className="text-red-500 text-sm mb-4">{errorMessage}</p>}
-          {successMessage && <p className="text-green-500 text-sm mb-4">{successMessage}</p>}
+          {errorMessage && (
+            <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
+          )}
+          {successMessage && (
+            <div className="text-green-500 text-sm mb-4">{successMessage}</div>
+          )}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+            className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
           >
             Entrar
           </button>
         </form>
         <p className="text-center mt-4">
-          Não possui uma conta? <a href="/cadastro" className="text-blue-600 font-bold">Faça Cadastro</a>
+          Não possui uma conta? <a href="/signup" className="text-blue-600 font-bold">Faça Cadastro</a>
         </p>
         <button
           onClick={() => (window.location.href = "/")}
