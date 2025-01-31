@@ -7,9 +7,9 @@ const Navbar = () => {
       
       <div className="flex space-x-6">
         <Link href="/inicio" className="text-gray-700 hover:text-blue-600">Início</Link>
-        <Link href="/incubadora" className="text-gray-700 hover:text-blue-600">Incubadora</Link>
-        <Link href="/projetos" className="text-gray-700 hover:text-blue-600">Projetos</Link>
-        <Link href="/banco" className="text-gray-700 hover:text-blue-600">Banco</Link>
+        <Link href="/incubadora" className="text-gray-700 hover:text-blue-600">Incubadora i.de.i.a.S</Link>
+        <Link href="/projetos" className="text-gray-700 hover:text-blue-600">Projetos Acadêmicos</Link>
+        <Link href="/banco" className="text-gray-700 hover:text-blue-600">Banco de B.Os</Link>
         <Link href="/editais" className="text-gray-700 hover:text-blue-600">Editais</Link>
       </div>
       
