@@ -6,7 +6,7 @@ export default function Inicio() {
   return (
     <div>
       <Navbar/>
-      <h1> porraaaaaa</h1>
+      <h1> teste</h1>
     </div>
   );
 }

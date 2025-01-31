@@ -12,21 +12,25 @@ export default function LoginPage() {
     e.preventDefault();
     setErrorMessage("");
     setSuccessMessage("");
-
+  
     try {
       const response = await login({ email, password });
       setSuccessMessage(response.message);
       alert(`Login bem-sucedido!\nToken: ${response.token}\nEmail: ${response.email}\nRole: ${response.role}`);
     } catch (error) {
-      setErrorMessage(error.message);
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("Ocorreu um erro inesperado. Tente novamente.");
+      }
     }
-  };
+  };  
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="p-8 bg-white rounded shadow-md w-96">
-        <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
-        <form onSubmit={handleLogin}>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
+        <form onSubmit={handleLogin} className="space-y-4">
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
               Email
@@ -57,11 +61,20 @@ export default function LoginPage() {
           {successMessage && <p className="text-green-500 text-sm mb-4">{successMessage}</p>}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
           >
             Entrar
           </button>
         </form>
+        <p className="text-center mt-4">
+          Não possui uma conta? <a href="/cadastro" className="text-blue-600 font-bold">Faça Cadastro</a>
+        </p>
+        <button
+          onClick={() => (window.location.href = "/")}
+          className="mt-4 w-full bg-gray-300 py-2 rounded-lg hover:bg-gray-400"
+        >
+          Voltar para o site
+        </button>
       </div>
     </div>
   );
