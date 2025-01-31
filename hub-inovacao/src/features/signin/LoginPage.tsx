@@ -1,13 +1,14 @@
 "use client";
 import { login } from "@/services/authService";
-import { useState } from "react";
+import { useState} from "react";
+
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
+  
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
@@ -63,6 +64,7 @@ export default function LoginPage() {
           </button>
         </form>
       </div>
+      
     </div>
   );
 }
