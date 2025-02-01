@@ -8,6 +8,17 @@ export interface CreateUserRequestDTO {
     registration: string;
     phones: { number: string }[];
   }
+  export interface UserCreateCnpjDTO {
+    name: string;
+    email: string;
+    password: string;
+    registration: string;
+    role: Role;
+    institutionOrganization: string;
+    userStatus: boolean;
+    cnpj: string;
+    phones: PhoneResponseDTO[];
+  }
   
   export interface CreateUserResponseDTO {
     id: string;
