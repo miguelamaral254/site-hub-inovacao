@@ -1,4 +1,4 @@
-import ProjectList from "@/features/projects/components/ProjectList";
+import ProjectList from "@/features/authusers/components/ProjectList";
 
 interface PageContentProps {
   selectedPage: string | null;
@@ -18,6 +18,7 @@ export default function PageContent({ selectedPage }: PageContentProps) {
         <div>
           <h3 className="text-xl font-semibold mb-4">Projetos Pendentes e Reprovados</h3>
           <ProjectList statusFilter="PENDENTE" />
+          <ProjectList statusFilter="REPROVADA" />
         </div>
       )}
 

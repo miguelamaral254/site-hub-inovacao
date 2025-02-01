@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 import { 
   AcademicProjectResponseProfessorDTO,
   AcademicProjectResponseStudentDTO
- } from "../interfaces/projectInterfaces";
+} from "../interfaces/projectInterfaces";
 
 interface ProjectCardProps {
   project: AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO;
@@ -20,11 +21,24 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     ) : null;
   };
 
+  const getStatusClass = (status: string) => {
+    switch (status) {
+      case 'APROVADA':
+        return 'text-green-500'; 
+      case 'PENDENTE':
+        return ' text-orange-500'; 
+      case 'REPROVADA':
+        return 'text-red-600'; 
+      default:
+        return 'bg-gray-100 text-gray-800'; 
+    }
+  };
+
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-bold">{project.title}</h3>
-        <p className="text-gray-600 text-sm">{project.status}</p>
+        <p className={`text-sm ${getStatusClass(project.status)}`}>{project.status}</p>
       </div>
 
       <div className="mb-4">

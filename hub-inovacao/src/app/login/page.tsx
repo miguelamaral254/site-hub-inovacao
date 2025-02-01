@@ -17,11 +17,11 @@ export default function LoginPage() {
     setSuccessMessage("");
 
     try {
-      await loginUser({ email, password });  // Usando o login do contexto
+      await loginUser({ email, password }); 
 
       setSuccessMessage("Login bem-sucedido!");
 
-      router.push("/auth/dashboard");  // Redireciona para a dashboard ou página inicial
+      router.push("/auth/area-usuario");
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
@@ -76,7 +76,7 @@ export default function LoginPage() {
           </button>
         </form>
         <p className="text-center mt-4">
-          Não possui uma conta? <a href="/signup" className="text-blue-600 font-bold">Faça Cadastro</a>
+          Não possui uma conta? <a href="/cadastro" className="text-blue-600 font-bold">Faça Cadastro</a>
         </p>
         <button
           onClick={() => (window.location.href = "/")}

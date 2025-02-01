@@ -50,10 +50,14 @@ export default function RegisterForm() {
     try {
       const response = await createUserWithCpf(formData);
       console.log("Usuário criado com sucesso:", response);
-    } catch (error) {
-      console.error("Erro ao criar usuário:", error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Erro ao criar usuário:", error.message);
+      } else {
+        console.error("Erro desconhecido:", error);
+      }
     }
-  };
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -150,7 +154,7 @@ export default function RegisterForm() {
         </form>
         <p className="text-center mt-4">
           Já possui uma conta?{" "}
-          <a href="/signin" className="text-blue-600 font-bold">
+          <a href="/login" className="text-blue-600 font-bold">
             Faça login
           </a>
         </p>

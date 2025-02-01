@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/useContext";
@@ -14,8 +14,13 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logoutUser();
+    setDropdownOpen(false);
     router.push("/");
   };
+
+  useEffect(() => {
+    setDropdownOpen(false);
+  }, [user]);
 
   return (
     <nav className="flex items-center justify-between p-4 bg-white shadow-md">
@@ -42,7 +47,7 @@ const Navbar = () => {
             <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
               <ul>
                 <li>
-                  <Link href="/perfil" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  <Link href="/auth/area-usuario" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                     Perfil
                   </Link>
                 </li>
@@ -64,7 +69,7 @@ const Navbar = () => {
           )}
         </div>
       ) : (
-        <Link href="/signin" passHref>
+        <Link href="/login" passHref>
           <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
             Entrar
           </button>

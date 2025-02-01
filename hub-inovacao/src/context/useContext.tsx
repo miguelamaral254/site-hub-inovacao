@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { login } from "@/services/authService";
 import { LoginRequestDTO, LoginResponseDTO } from "@/interfaces/loginInterface";
 
@@ -18,10 +18,26 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<LoginResponseDTO | null>(null);
 
+  useEffect(() => {
+    const storedUserEmail = localStorage.getItem("email");
+    const storedRole = localStorage.getItem("role");
+    const storedToken = localStorage.getItem("token");
+
+    if (storedUserEmail && storedRole && storedToken) {
+      // Se os dados estiverem no localStorage, restaurar o estado, incluindo a propriedade `message`
+      setUser({
+        email: storedUserEmail,
+        role: storedRole,
+        token: storedToken,
+        message: "Usuário restaurado com sucesso", 
+      });
+    }
+  }, []);
+
   const loginUser = async (credentials: LoginRequestDTO) => {
     try {
       const response = await login(credentials);
-      setUser(response);  // Atualiza o estado do usuário
+      setUser(response);  
       localStorage.setItem("token", response.token);
       localStorage.setItem("email", response.email);
       localStorage.setItem("role", response.role);
@@ -34,7 +50,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logoutUser = () => {
-    setUser(null);  // Limpa o estado do usuário
+    setUser(null); 
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     localStorage.removeItem("role");
