@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import MaskedInput from "react-text-mask";
+
 interface Phone {
   number: string;
 }
@@ -16,9 +18,10 @@ interface PartnerCompanyFormProps {
   handlePhoneChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
   handleAddPhone: () => void;
   handleSubmit: (e: React.FormEvent) => void;
-  errors: any;  
+  errors: any;
 }
 
+// Seu componente PartnerCompanyForm atualizado
 export default function PartnerCompanyForm({
   formData,
   handleChange,
@@ -65,9 +68,10 @@ export default function PartnerCompanyForm({
         {errors.password && <p className="text-red-500 text-sm">Campo obrigatório</p>}
       </div>
 
+      {/* Máscara para CNPJ */}
       <div>
-        <input
-          type="text"
+        <MaskedInput
+          mask={[/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
           name="cnpj"
           placeholder="CNPJ"
           value={formData.cnpj}
@@ -89,11 +93,12 @@ export default function PartnerCompanyForm({
         {errors.institutionOrganization && <p className="text-red-500 text-sm">Campo obrigatório</p>}
       </div>
 
+      {/* Máscara para Telefone */}
       <div className="space-y-2">
         {formData.phones.map((phone, index) => (
           <div key={index} className="flex items-center space-x-2">
-            <input
-              type="text"
+            <MaskedInput
+              mask={['(', /\d/, /\d/, ')', ' ',/\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
               name={`phone-${index}`}
               value={phone.number}
               onChange={(e) => handlePhoneChange(index, e)}

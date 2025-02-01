@@ -1,15 +1,21 @@
 "use client";  
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/useContext";
 
 export default function LoginPage() {
-  const { loginUser } = useAuth();  // Usando o login do contexto
+  const { loginUser, user } = useAuth();  // Usando o login do contexto
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/"); 
+    }
+  }, [user, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +27,7 @@ export default function LoginPage() {
 
       setSuccessMessage("Login bem-sucedido!");
 
-      router.push("/auth/area-usuario");
+      router.push("/area-usuario");
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(error.message);

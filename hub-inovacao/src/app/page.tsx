@@ -1,4 +1,4 @@
-import Inicio from "./inicio/page";
+import Inicio from "./(public)/inicio/page";
 
 export default function Home() {
   return (

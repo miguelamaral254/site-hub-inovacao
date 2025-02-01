@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Role } from "@/interfaces/userInterface";
+import MaskedInput from "react-text-mask";
+
 interface Phone {
   number: string;
 }
+
 interface UserFormProps {
   formData: {
     name: string;
@@ -17,7 +20,7 @@ interface UserFormProps {
   handlePhoneChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
   handleAddPhone: () => void;
   handleSubmit: (e: React.FormEvent) => void;
-  errors: any;  
+  errors: any;
 }
 
 export default function UserForm({
@@ -28,6 +31,25 @@ export default function UserForm({
   handleSubmit,
   errors,
 }: UserFormProps) {
+  // Função para validar o e-mail com domínio específico
+  const validateEmail = (email: string): boolean => {
+    const regex = /^[a-zA-Z0-9._%+-]+@edu\.pe\.senac\.br$/;
+    return regex.test(email);
+  };
+
+  // Função para alterar e validar o e-mail
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    handleChange(e); // Chama o handleChange principal
+
+    // Verificar se o e-mail está no formato correto
+    if (name === "email" && !validateEmail(value)) {
+      errors.email = "Email deve ser do domínio @edu.pe.senac.br";
+    } else {
+      delete errors.email; // Remove o erro se o e-mail for válido
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
@@ -48,10 +70,10 @@ export default function UserForm({
           name="email"
           placeholder="E-mail"
           value={formData.email}
-          onChange={handleChange}
+          onChange={handleEmailChange}  // Usar handleEmailChange para validar o e-mail
           className={`w-full px-4 py-2 border rounded-lg ${errors.email ? 'border-red-500' : ''}`}
         />
-        {errors.email && <p className="text-red-500 text-sm">Campo obrigatório</p>}
+        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}  {/* Exibe o erro se o e-mail não for válido */}
       </div>
 
       <div>
@@ -66,9 +88,10 @@ export default function UserForm({
         {errors.password && <p className="text-red-500 text-sm">Campo obrigatório</p>}
       </div>
 
+      {/* Máscara CPF */}
       <div>
-        <input
-          type="text"
+        <MaskedInput
+          mask={[/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
           name="cpf"
           placeholder="CPF"
           value={formData.cpf}
@@ -102,11 +125,12 @@ export default function UserForm({
         </select>
       </div>
 
+      {/* Máscara para Telefone */}
       <div className="space-y-2">
         {formData.phones.map((phone, index) => (
           <div key={index} className="flex items-center space-x-2">
-            <input
-              type="text"
+            <MaskedInput
+              mask={['(', /\d/, /\d/, ')', ' ',/\d/,' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
               name={`phone-${index}`}
               value={phone.number}
               onChange={(e) => handlePhoneChange(index, e)}

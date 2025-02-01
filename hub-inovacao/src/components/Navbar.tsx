@@ -47,7 +47,7 @@ const Navbar = () => {
             <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
               <ul>
                 <li>
-                  <Link href="/auth/area-usuario" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  <Link href="/area-usuario" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                     Perfil
                   </Link>
                 </li>
