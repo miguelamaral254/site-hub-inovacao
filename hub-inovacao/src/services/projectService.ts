@@ -5,6 +5,7 @@ import {
 import axios from "./api";
 import { AxiosError } from "axios";
 import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
+import { UpdateProjectDetails } from "@/features/authusers/components/UpdateProjectDetails";
 
 // Função para criar projeto para professor
 /*
@@ -120,6 +121,19 @@ export const getAllProjects = async (): Promise<AcademicProjectResponseDTO[]> =>
     throw new Error("Erro de conexão com o servidor");
   }
 };
+  export const updateProjectDetails = async (
+    projectId: number,
+    updateData: UpdateProjectDetails
+  ): Promise<void> => {
+    try {
+      await axios.put(`/projects/${projectId}/details`, updateData);
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        throw new Error(error.response.data.message || "Erro ao atualizar detalhes do projeto");
+      }
+      throw new Error("Erro de conexão com o servidor");
+    }
+  };
 // Função para atualizar status do projeto
 /*
         export const updateProjectStatus = async (
@@ -137,17 +151,5 @@ export const getAllProjects = async (): Promise<AcademicProjectResponseDTO[]> =>
                   };
                   
 // Função para atualizar detalhes do projeto
-export const updateProjectDetails = async (
-  projectId: number,
-  updateData: UpdateAcademicProjectDetailsDTO
-): Promise<void> => {
-  try {
-    await axios.put(`/projects/${projectId}/details`, updateData);
-  } catch (error) {
-    if (error instanceof AxiosError && error.response) {
-      throw new Error(error.response.data.message || "Erro ao atualizar detalhes do projeto");
-    }
-    throw new Error("Erro de conexão com o servidor");
-  }
-};
+
 */

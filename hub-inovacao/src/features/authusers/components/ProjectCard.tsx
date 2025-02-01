@@ -1,17 +1,33 @@
-/* eslint-disable @next/next/no-img-element */
-import { 
-  AcademicProjectResponseProfessorDTO,
-  AcademicProjectResponseStudentDTO
-} from "../interfaces/projectInterfaces";
+import { useState } from "react";
+import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "../interfaces/projectInterfaces";
+import UpdateProjectDetails from "./UpdateProjectDetails";
+import { updateProjectDetails } from "@/services/projectService";
 
 interface ProjectCardProps {
   project: AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO;
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const openEditModal = () => setIsEditModalOpen(true);
+  const closeEditModal = () => setIsEditModalOpen(false);
+  const saveUpdatedProject = async (updatedProject: { title: string, description: string, urlPhoto: string, pdfLink: string, siteLink: string }) => {
+    try {
+      const projectId = Number(project.id); 
+      if (isNaN(projectId)) {
+        throw new Error('ID do projeto inválido');
+      }
+  
+      await updateProjectDetails(projectId, updatedProject); 
+    } catch (error) {
+      console.error("Erro ao atualizar o projeto:", error);
+    }
+  };
+
   const isProfessorProject = (
-    project: AcademicProjectResponseProfessorDTO | 
-    AcademicProjectResponseStudentDTO):project is AcademicProjectResponseProfessorDTO => {
+    project: AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO
+  ): project is AcademicProjectResponseProfessorDTO => {
     return (project as AcademicProjectResponseProfessorDTO).professorName !== undefined;
   };
 
@@ -26,7 +42,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       case 'APROVADA':
         return 'text-green-500'; 
       case 'PENDENTE':
-        return ' text-orange-500'; 
+        return 'text-orange-500'; 
       case 'REPROVADA':
         return 'text-red-600'; 
       default:
@@ -39,6 +55,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-bold">{project.title}</h3>
         <p className={`text-sm ${getStatusClass(project.status)}`}>{project.status}</p>
+        <button 
+          onClick={openEditModal} 
+          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        >
+          Editar
+        </button>
       </div>
 
       <div className="mb-4">
@@ -49,7 +71,6 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
       <div className="text-sm text-gray-500 mb-4">
         <p><strong>Tipo de Projeto:</strong> {project.typeAP}</p>
-
         <p><strong>Autor:</strong> {isProfessorProject(project) ? project.professorName : project.studentName}</p>
         
         {renderIfExists(project.currentUserEmail, 'Email do Autor')}
@@ -62,30 +83,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         {renderIfExists(project.justification, 'Justificação')}
       </div>
 
-      {project.coauthors && project.coauthors.length > 0 && (
-        <div className="mt-4 text-sm text-gray-500">
-          <strong>Coautores:</strong>
-          <ul>
-            {project.coauthors.map((coauthor, index) => (
-              <li key={index}>
-                {coauthor.name} ({coauthor.email})
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      <div className="mt-4">
-        {project.pdfLink && (
-          <a href={project.pdfLink} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Baixar PDF</a>
-        )}
-      </div>
-
-      <div className="mt-4">
-        {project.siteLink && (
-          <a href={project.siteLink} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Visitar Site do Projeto</a>
-        )}
-      </div>
+      <UpdateProjectDetails
+        project={project}
+        isOpen={isEditModalOpen}
+        onClose={closeEditModal}
+        onSave={saveUpdatedProject}
+      />
     </div>
   );
 }
