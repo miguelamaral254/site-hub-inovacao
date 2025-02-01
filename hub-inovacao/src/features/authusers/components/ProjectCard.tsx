@@ -2,16 +2,20 @@ import { useState } from "react";
 import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "../interfaces/projectInterfaces";
 import UpdateProjectDetails from "./UpdateProjectDetails";
 import { updateProjectDetails } from "@/services/projectService";
+import useSwal from "@/hooks/useSwal";  // Importando o hook
 
 interface ProjectCardProps {
   project: AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO;
+  fetchProjects: () => void; // Função para recarregar os projetos
 }
 
-export default function ProjectCard({ project }: ProjectCardProps) {
+export default function ProjectCard({ project, fetchProjects }: ProjectCardProps) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const { showSuccess, showError } = useSwal(); 
 
   const openEditModal = () => setIsEditModalOpen(true);
   const closeEditModal = () => setIsEditModalOpen(false);
+
   const saveUpdatedProject = async (updatedProject: { title: string, description: string, urlPhoto: string, pdfLink: string, siteLink: string }) => {
     try {
       const projectId = Number(project.id); 
@@ -20,8 +24,18 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       }
   
       await updateProjectDetails(projectId, updatedProject); 
-    } catch (error) {
-      console.error("Erro ao atualizar o projeto:", error);
+      showSuccess("Projeto atualizado com sucesso!");
+  
+      // Recarregar a lista de projetos após a atualização
+      fetchProjects();  // Chama a função passada via props para atualizar a lista de projetos
+  
+      closeEditModal();  // Fecha o modal após o sucesso da atualização
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        showError("Erro ao atualizar o projeto", error.message || "Tente novamente.");
+      } else {
+        showError("Erro desconhecido", "Tente novamente.");
+      }
     }
   };
 

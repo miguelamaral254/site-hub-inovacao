@@ -4,47 +4,48 @@ import {
 } from "@/features/authusers/interfaces/projectInterfaces";
 import axios from "./api";
 import { AxiosError } from "axios";
-import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
-import { UpdateProjectDetails } from "@/features/authusers/components/UpdateProjectDetails";
+import { AcademicProjectCreateDTO, AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
+import { UpdateProjectDetails } from "@/features/authusers/interfaces/UpdateProjectDetails";
 
 // Função para criar projeto para professor
-/*
-export const createProjectForProfessor = async (
-    projectData: AcademicProjectCreateProfessorDTO
-): Promise<AcademicProjectResponseProfessorDTO> => {
-    try {
-        const response = await axios.post<AcademicProjectResponseProfessorDTO>(
-            "/projects/professor/create",
-            projectData
-        );
-        return response.data;
-    } catch (error) {
-        if (error instanceof AxiosError && error.response) {
-            throw new Error(error.response.data.message || "Erro ao criar projeto para professor");
-        }
-        throw new Error("Erro de conexão com o servidor");
+export const createProject = async (
+  projectData: AcademicProjectCreateDTO
+): Promise<AcademicProjectResponseDTO> => {
+  try {
+    const userRole = localStorage.getItem("role");
+    if (!userRole) {
+      throw new Error("Papel do usuário não encontrado.");
     }
-};
 
-// Função para criar projeto para aluno
-export const createProjectForStudent = async (
-    projectData: AcademicProjectCreateStudentDTO
-): Promise<AcademicProjectResponseStudentDTO> => {
-    try {
-        const response = await axios.post<AcademicProjectResponseStudentDTO>(
-            "/projects/student/create",
-            projectData
-        );
-        return response.data;
-    } catch (error) {
-        if (error instanceof AxiosError && error.response) {
-            throw new Error(error.response.data.message || "Erro ao criar projeto para aluno");
-        }
-        throw new Error("Erro de conexão com o servidor");
+    console.log("Role do usuário:", userRole);
+
+    // Verificando se o ID do aluno ou professor foi fornecido
+    if (userRole === "professor" && !projectData.professorId) {
+      throw new Error("Id do professor é necessário.");
     }
-};
-*/
 
+    if (userRole === "student" && !projectData.studentId) {
+      throw new Error("Id do aluno é necessário.");
+    }
+
+    // Verificando a URL antes de realizar a requisição
+    const url = `/projects/${userRole.toLocaleLowerCase()}/create`;
+    console.log("URL da requisição:", url);
+
+    const response = await axios.post<AcademicProjectResponseDTO>(url, projectData);
+    console.log("Resposta do servidor:", response);
+
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      console.log("Erro no Axios:", error.response);
+      throw new Error(error.response.data.message || "Erro ao criar projeto");
+    }
+
+    console.error("Erro de conexão:", error);
+    throw new Error("Erro de conexão com o servidor");
+  }
+};
 // Função para obter projetos por email
 export const getProjectsByUserEmail = async (
   email: string

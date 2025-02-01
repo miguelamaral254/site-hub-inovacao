@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -5,7 +6,6 @@ import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterf
 import { getUserByEmail } from "@/services/userService";
 import Sidebar from "@/features/users/userscpf/dashboard/Sidebar";
 import PageContent from "@/features/users/userscpf/dashboard/PageContent";
-
 
 export default function DashboardPage() {
   const [userData, setUserData] = useState<UserResponseCnpjDTO | UserResponseCpfDTO | null>(null);
@@ -20,7 +20,12 @@ export default function DashboardPage() {
         try {
           const data = await getUserByEmail(email);
           setUserData(data);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+          // Armazenando userData completo no localStorage para ser acessado em outras páginas
+          localStorage.setItem("userData", JSON.stringify(data));
+
+          // Console log para verificar o que foi armazenado no localStorage
+          console.log("Dados armazenados no localStorage:", localStorage.getItem("userData"));
         } catch (error) {
           setErrorMessage("Erro ao buscar os dados.");
         }
@@ -37,7 +42,7 @@ export default function DashboardPage() {
       <Sidebar setSelectedPage={setSelectedPage} userData={userData} errorMessage={errorMessage} />
       
       <div className="flex-grow p-6">
-        <PageContent selectedPage={selectedPage} />
+        <PageContent selectedPage={selectedPage} userData={userData} />
       </div>
     </div>
   );

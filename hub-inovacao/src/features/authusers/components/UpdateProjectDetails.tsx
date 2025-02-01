@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "../interfaces/projectInterfaces";
+import useSwal from "@/hooks/useSwal";  // Importando o hook
 
 interface UpdateProjectDetailsProps {
   project: AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO;
@@ -17,6 +18,8 @@ const UpdateProjectDetails = ({ project, isOpen, onClose, onSave }: UpdateProjec
     siteLink: project.siteLink,
   });
 
+  const { showSuccess, showError } = useSwal();  // Usando o hook
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prevData => ({
@@ -26,7 +29,16 @@ const UpdateProjectDetails = ({ project, isOpen, onClose, onSave }: UpdateProjec
   };
 
   const handleSubmit = () => {
-    onSave(formData);
+    try {
+      onSave(formData);
+      showSuccess("Projeto atualizado com sucesso!");
+    } catch (error: unknown) { 
+      if (error instanceof Error) {
+        showError("Erro ao salvar as alterações", error.message || "Tente novamente.");
+      } else {
+        showError("Erro desconhecido", "Tente novamente.");
+      }
+    }
     onClose();
   };
 
