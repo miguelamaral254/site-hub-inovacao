@@ -2,11 +2,11 @@ import { useState } from "react";
 import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "../interfaces/projectInterfaces";
 import UpdateProjectDetails from "./UpdateProjectDetails";
 import { updateProjectDetails } from "@/services/projectService";
-import useSwal from "@/hooks/useSwal";  // Importando o hook
+import useSwal from "@/hooks/useSwal"; 
 
 interface ProjectCardProps {
   project: AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO;
-  fetchProjects: () => void; // Função para recarregar os projetos
+  fetchProjects: () => void; 
 }
 
 export default function ProjectCard({ project, fetchProjects }: ProjectCardProps) {
@@ -26,10 +26,8 @@ export default function ProjectCard({ project, fetchProjects }: ProjectCardProps
       await updateProjectDetails(projectId, updatedProject); 
       showSuccess("Projeto atualizado com sucesso!");
   
-      // Recarregar a lista de projetos após a atualização
-      fetchProjects();  // Chama a função passada via props para atualizar a lista de projetos
-  
-      closeEditModal();  // Fecha o modal após o sucesso da atualização
+      fetchProjects();  
+      closeEditModal();  
     } catch (error: unknown) {
       if (error instanceof Error) {
         showError("Erro ao atualizar o projeto", error.message || "Tente novamente.");
@@ -64,6 +62,25 @@ export default function ProjectCard({ project, fetchProjects }: ProjectCardProps
     }
   };
 
+  const renderCoauthors = () => {
+    if (project.coauthors && project.coauthors.length > 0) {
+      return project.coauthors.map((coauthor, index) => (
+        <div
+          key={index}
+          className="bg-gray-100 p-4 rounded-md mb-4 shadow-md"
+        >
+          <p><strong>Nome:</strong> {coauthor.name}</p>
+          <p><strong>Email:</strong> {coauthor.email}</p>
+          {project.status !== 'APROVADA' && (
+            <>
+              <p><strong>Telefone:</strong> {coauthor.phone}</p>
+            </>
+          )}
+        </div>
+      ));
+    }
+  };
+
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
@@ -95,6 +112,16 @@ export default function ProjectCard({ project, fetchProjects }: ProjectCardProps
       <div className="text-sm text-gray-500">
         {renderIfExists(project.feedback, 'Feedback')}
         {renderIfExists(project.justification, 'Justificação')}
+      </div>
+
+      {/* Renderizando coautores, caso existam */}
+      <div className="mt-4">
+        {project.coauthors && project.coauthors.length > 0 && (
+          <>
+            <h4 className="font-semibold mb-2">Coautores:</h4>
+            {renderCoauthors()}
+          </>
+        )}
       </div>
 
       <UpdateProjectDetails
