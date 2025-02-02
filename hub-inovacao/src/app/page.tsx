@@ -1,9 +1,9 @@
-import LoginPage from "@/features/signin/LoginPage";
+import Inicio from "./(public)/inicio/page";
 
 export default function Home() {
   return (
     <div>
-      <LoginPage/>
-          </div>
+      <Inicio/>
+    </div>
   );
 }

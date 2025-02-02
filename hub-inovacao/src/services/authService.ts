@@ -1,4 +1,4 @@
-import { LoginRequestDTO, LoginResponseDTO } from "@/interfaces/LoginDTO";
+import { LoginRequestDTO, LoginResponseDTO } from "@/interfaces/loginInterface";
 import api from "./api";
 import { AxiosError } from "axios";
 
