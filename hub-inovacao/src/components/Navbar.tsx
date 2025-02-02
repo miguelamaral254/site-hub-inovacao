@@ -22,6 +22,21 @@ const Navbar = () => {
     setDropdownOpen(false);
   };
 
+  const handleProfileRedirect = () => {
+    if (user) {
+      if (user.role === "PARTNER_COMPANY") {
+        router.push("/area-empresa");
+      } else if (user.role === "ADMIN") {
+        router.push("/area-admin");
+      } else if (user.role === "MANAGER") {
+        router.push("/area-manager");
+      } else {
+        router.push("/area-usuario");
+      }
+      setDropdownOpen(false); // Fecha o dropdown ao redirecionar
+    }
+  };
+
   useEffect(() => {
     setDropdownOpen(false);
   }, [user]);
@@ -34,7 +49,7 @@ const Navbar = () => {
         <Link href="/inicio" className="text-gray-700 hover:text-blue-600">Início</Link>
         <Link href="/incubadora" className="text-gray-700 hover:text-blue-600">Incubadora i.de.i.a.S</Link>
         <Link href="/projetos" className="text-gray-700 hover:text-blue-600">Projetos Acadêmicos</Link>
-        <Link href="/banco" className="text-gray-700 hover:text-blue-600">Banco de B.Os</Link>
+        <Link href="/oportunidades" className="text-gray-700 hover:text-blue-600">Banco de B.Os</Link>
         <Link href="/editais" className="text-gray-700 hover:text-blue-600">Editais</Link>
       </div>
 
@@ -51,9 +66,12 @@ const Navbar = () => {
             <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
               <ul>
                 <li>
-                  <Link href="/area-usuario" onClick={handleCloseDropdown} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  <button
+                    onClick={handleProfileRedirect}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
                     Perfil
-                  </Link>
+                  </button>
                 </li>
                 <li>
                   <Link href="/configuracoes" onClick={handleCloseDropdown} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">

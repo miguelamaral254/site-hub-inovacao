@@ -27,6 +27,12 @@ export default function DashboardPage() {
         const data = await getUserByEmail(email);
         setUserData(data);
 
+        // Verifica se o 'role' é diferente de 'STUDENT' ou 'PROFESSOR'
+        if (data.role !== "STUDENT" && data.role !== "PROFESSOR") {
+          router.push("/"); // Redireciona para a página inicial
+          return;
+        }
+
         localStorage.setItem("userData", JSON.stringify(data));
 
         console.log("Dados armazenados no localStorage:", localStorage.getItem("userData"));
@@ -38,7 +44,7 @@ export default function DashboardPage() {
     };
 
     fetchUserData();
-  }, [router]); 
+  }, [router]);
 
   if (loading) {
     return <div>Loading...</div>; 

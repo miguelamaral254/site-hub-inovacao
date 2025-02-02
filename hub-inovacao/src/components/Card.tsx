@@ -61,7 +61,7 @@ const CardServico = () => {
 
 const CardEditais = () => {
     return (
-        <div className="flex bg-white rounded-lg flex-col lg:flex-row w-full max-w-[716px] h-auto py-3 px-3 ml-4 items-center" /*padding podendo alterar*/> 
+        <div className="flex bg-white rounded-lg flex-col lg:flex-row w-full max-w-[716px] h-auto py-3 px-3 ml-4 items-center" > 
             <div className="w-full lg:w-[366px] h-auto">
                 <Image src={teste}
                 alt="Imagem edital"/>

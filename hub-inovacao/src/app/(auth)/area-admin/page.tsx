@@ -1,19 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Usando o router para redirecionar
 import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
 import { getUserByEmail } from "@/services/userService";
-import SidebarCompany from "@/features/users/userscpj/DashboardCompany/SidebarCompany";
-import PageContentCompany from "@/features/users/userscpj/DashboardCompany/PageContentCompany";
+import Sidebar from "@/features/users/userscpf/dashboard/Sidebar";
+import PageContent from "@/features/users/userscpf/dashboard/PageContent";
 
-
-export default function DashboardCompanyPage() {
+export default function DashboardPage() {
   const [userData, setUserData] = useState<UserResponseCnpjDTO | UserResponseCpfDTO | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
-
-  const router = useRouter();
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -24,8 +21,11 @@ export default function DashboardCompanyPage() {
           const data = await getUserByEmail(email);
           setUserData(data);
 
+          // Armazenando userData completo no localStorage para ser acessado em outras páginas
           localStorage.setItem("userData", JSON.stringify(data));
 
+          // Console log para verificar o que foi armazenado no localStorage
+          console.log("Dados armazenados no localStorage:", localStorage.getItem("userData"));
         } catch (error) {
           setErrorMessage("Erro ao buscar os dados.");
         }
@@ -37,19 +37,12 @@ export default function DashboardCompanyPage() {
     }
   }, []);
 
-  // Verifica se o role é PARTNER_COMPANY, se não redireciona
-  useEffect(() => {
-    if (userData && userData.role !== "PARTNER_COMPANY") {
-      router.push("/"); // Redireciona para a página inicial se não for uma empresa
-    }
-  }, [userData, router]);
-
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <SidebarCompany setSelectedPage={setSelectedPage} userData={userData} errorMessage={errorMessage} />
+      <Sidebar setSelectedPage={setSelectedPage} userData={userData} errorMessage={errorMessage} />
       
       <div className="flex-grow p-6">
-        <PageContentCompany selectedPage={selectedPage} userData={userData} />
+        <PageContent selectedPage={selectedPage} userData={userData} />
       </div>
     </div>
   );
