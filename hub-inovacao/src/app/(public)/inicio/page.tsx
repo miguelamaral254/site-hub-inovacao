@@ -1,14 +1,13 @@
 "use client"
 
-import { Card, CardServico } from "@/components/Card";
-import Footer from "@/components/Footer";
+import { Card, CardEditais, CardServico } from "@/components/Card";
 
 export default function Inicio() {
   return (
-    <div>
+    <div className="flex">
       <Card/>
       <CardServico/>
-      <Footer/>
+      <CardEditais/>
     </div>
   );
 }

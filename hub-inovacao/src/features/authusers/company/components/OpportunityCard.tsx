@@ -1,22 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React, { useState } from "react";
 import { FaFilePdf, FaExternalLinkAlt, FaTimes } from "react-icons/fa";
-import { OpportunityResponseDTO } from "@/interfaces/OpportunityInterfaces";
+import { OpportunityResponseDTO, StatusSolicitation } from "@/interfaces/OpportunityInterfaces";
 import UpdateOpportunityDetails from "./UpdateOpportunityDetails";
-//import { updateOpportunityDetails } from "@/services/opportunityService";
-//import useSwal from "@/hooks/useSwal";
 
 interface OpportunityCardProps {
   opportunity: OpportunityResponseDTO;
   fetchOpportunities: () => void;
 }
 
-const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, fetchOpportunities }) => {
+const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
- // const { showSuccess, showError } = useSwal();
 
   const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -25,49 +21,21 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, fetchOpp
   const handleEditModalToggle = () => {
     setIsEditModalOpen(!isEditModalOpen);
   };
-  {/*
-  const renderIfExists = (value: string | null | undefined, label: string) => {
-    return value ? (
-      <p><strong>{label}:</strong> {value}</p>
-    ) : null;
-  };
-  */}
-  const getStatusClass = (status: string) => {
-    switch (status) {
-      case 'APROVADA':
-        return 'text-green-500'; 
-      case 'PENDENTE':
-        return 'text-orange-500'; 
-      case 'REPROVADA':
-        return 'text-red-600'; 
-      default:
-        return 'bg-gray-100 text-gray-800'; 
-    }
-  };
-{/*
-  const saveUpdatedOpportunity = async (updatedOpportunity: { title: string; description: string; urlPhoto: string; pdfLink: string; siteLink: string }) => {
-    try {
-      const opportunityId = Number(opportunity.id);
-      if (isNaN(opportunityId)) {
-        throw new Error('ID da oportunidade inválido');
-      }
 
-      await updateOpportunityDetails(opportunityId, updatedOpportunity);
-      showSuccess("Oportunidade atualizada com sucesso!");
-      fetchOpportunities();
-      setIsEditModalOpen(false);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        showError("Erro ao atualizar a oportunidade", error.message || "Tente novamente.");
-      } else {
-        showError("Erro desconhecido", "Tente novamente.");
-      }
+  const getStatusClass = (status: StatusSolicitation) => {
+    // Ensure that the status is converted to a string if necessary
+    const statusString = StatusSolicitation[status];
+    switch (statusString) {
+      case 'APROVADA':
+        return 'text-green-500';
+      case 'PENDENTE':
+        return 'text-orange-500';
+      case 'REPROVADA':
+        return 'text-red-600';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
-*/}
-  function saveUpdatedOpportunity(updatedOpportunity: { title: string; description: string; urlPhoto: string; pdfLink: string; siteLink: string; }): void {
-    throw new Error("Function not implemented.");
-  }
 
   return (
     <div className="flex flex-col w-full max-w-[350px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg px-3 py-4 ml-[32px] transition-shadow duration-300 relative">
@@ -83,12 +51,13 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, fetchOpp
 
       <div className="py-2 mt-3 mb-10">
         <h5 className="text-2xl font-bold text-gray-950">{opportunity.title}</h5>
-        <p className="text-gray-800 mt-4">{opportunity.description}</p>
+        <p className="text-gray-800 mt-4 text-ellipsis overflow-hidden h-16 line-clamp-3">{opportunity.description}</p>  {/* Adjusted description overflow */}
       </div>
+
       <div className="py-2 mt-3 mb-10">
         <h5 className="text-2xl font-bold text-gray-950">{opportunity.typeBO}</h5>
-        
       </div>
+
       <div className="absolute bottom-4 right-4 flex flex-col gap-2">
         <button
           onClick={handleEditModalToggle}
@@ -151,19 +120,14 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, fetchOpp
         </div>
       )}
 
-      
-
-     
-      
       {isEditModalOpen && (
         <UpdateOpportunityDetails
           opportunity={opportunity}
           isOpen={isEditModalOpen}
           onClose={handleEditModalToggle}
-          onSave={saveUpdatedOpportunity}
+          onSave={() => {}}
         />
       )}
-    
     </div>
   );
 };

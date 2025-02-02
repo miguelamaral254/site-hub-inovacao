@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { getAllOpportunities } from '@/services/opportunityService';
 import { OpportunityResponseDTO } from '@/interfaces/OpportunityInterfaces';
-import CardOpportunity from './CardOpportunity';
+import AllOpportunitiesCard from './AllOpportunitiesCard';
 
 const AllOpportunitiesList: React.FC = () => {
   const [opportunities, setOpportunities] = useState<OpportunityResponseDTO[]>([]);
@@ -44,7 +44,7 @@ const AllOpportunitiesList: React.FC = () => {
           <p className="text-gray-500">Nenhuma oportunidade encontrada.</p>
         ) : (
           opportunities.map((opportunity) => (
-            <CardOpportunity
+            <AllOpportunitiesCard
               key={opportunity.id}
               id={opportunity.id.toString()}
               title={opportunity.title}
@@ -55,7 +55,7 @@ const AllOpportunitiesList: React.FC = () => {
               typeBO={opportunity.typeBO}
               currentUserEmail={opportunity.authorEmail}
               creationDate={opportunity.creationDate}
-              
+              institutionOrganization={opportunity.institutionOrganization}
             />
           ))
         )}
