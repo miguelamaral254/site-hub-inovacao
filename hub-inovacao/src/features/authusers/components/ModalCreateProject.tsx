@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from 'react';
+import { FaUser, FaTrashAlt, FaPlusCircle } from 'react-icons/fa';
 import { createProject } from '@/services/projectService'; 
 import { AcademicProjectCreateDTO } from '@/interfaces/AcademicProjectInterface';
-import useSwal from '@/hooks/useSwal'; // Importando o hook do Swal
+import useSwal from '@/hooks/useSwal'; 
 
 interface CreateProjectFormProps {
   isForProfessor: boolean;
@@ -15,21 +17,11 @@ const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ isForProfessor, i
   const [pdfLink, setPdfLink] = useState('');
   const [siteLink, setSiteLink] = useState('');
   const [typeAP, setTypeAP] = useState("PI");
-  const [coauthors, setCoauthors] = useState([{ name: '', email: '', phone: '' }]);
+  const [coauthors, setCoauthors] = useState<{ name: string; email: string; phone: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [userEmail, setUserEmail] = useState('');
-  
-  const { showSuccess, showError } = useSwal(); // Usando os métodos do Swal
-
-  useEffect(() => {
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      const parsedUserData = JSON.parse(userData);
-      setUserEmail(parsedUserData.email);  // Pega o email do usuário
-    }
-  }, []);
+  const { showSuccess, showError } = useSwal(); 
 
   const handleSubmit = async () => {
     if (!title || !description) {
@@ -53,7 +45,7 @@ const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ isForProfessor, i
       pdfLink,
       siteLink,
       typeAP,
-      userEmail, 
+      userEmail: parsedUserData.email, 
       status,
       coauthors: coauthors.map(coauthor => ({
         name: coauthor.name,
@@ -68,10 +60,7 @@ const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ isForProfessor, i
 
     try {
       setIsLoading(true);
-      const createdProject = await createProject(projectData);  
-      console.log('Projeto criado com sucesso:', createdProject);
-
-      // Exibir o sucesso usando o Swal
+      await createProject(projectData);  
       showSuccess('Projeto Criado com Sucesso!');
       
       // Limpar os campos após o sucesso
@@ -81,13 +70,10 @@ const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ isForProfessor, i
       setPdfLink('');
       setSiteLink('');
       setTypeAP("PI");
-      setCoauthors([{ name: '', email: '', phone: '' }]);
+      setCoauthors([]);
 
     } catch (error) {
       setErrorMessage('Erro ao criar projeto. Tente novamente.');
-      console.error('Erro ao criar projeto:', error);
-      
-      // Exibir o erro usando o Swal
       showError('Erro ao criar projeto!');
     } finally {
       setIsLoading(false);
@@ -189,57 +175,60 @@ const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ isForProfessor, i
         </div>
 
         <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">Coautores</h3>
-          {coauthors.map((coauthor, index) => (
-            <div key={index} className="mb-4">
-              <input
-                type="text"
-                value={coauthor.name}
-                onChange={(e) => {
-                  const updatedCoauthors = [...coauthors];
-                  updatedCoauthors[index].name = e.target.value;
-                  setCoauthors(updatedCoauthors);
-                }}
-                className="w-full p-3 border border-gray-300 rounded-md mb-2"
-                placeholder="Nome do coautor"
-              />
-              <input
-                type="email"
-                value={coauthor.email}
-                onChange={(e) => {
-                  const updatedCoauthors = [...coauthors];
-                  updatedCoauthors[index].email = e.target.value;
-                  setCoauthors(updatedCoauthors);
-                }}
-                className="w-full p-3 border border-gray-300 rounded-md mb-2"
-                placeholder="Email do coautor"
-              />
-              <input
-                type="text"
-                value={coauthor.phone}
-                onChange={(e) => {
-                  const updatedCoauthors = [...coauthors];
-                  updatedCoauthors[index].phone = e.target.value;
-                  setCoauthors(updatedCoauthors);
-                }}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                placeholder="Telefone do coautor"
-              />
-              <button
-                onClick={() => handleRemoveCoauthor(index)}
-                className="text-red-600 mt-2"
-              >
-                Remover Coautor
-              </button>
-            </div>
-          ))}
-          <button
-            onClick={handleAddCoauthor}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
-          >
-            Adicionar Coautor
-          </button>
-        </div>
+  <h3 className="text-lg font-semibold mb-2 flex items-center">
+    <FaUser className="mr-2" /> Coautores
+  </h3>
+  {coauthors.map((coauthor, index) => (
+    <div key={index} className="mb-4 flex items-center space-x-4">
+      <input
+        type="text"
+        value={coauthor.name}
+        onChange={(e) => {
+          const updatedCoauthors = [...coauthors];
+          updatedCoauthors[index].name = e.target.value;
+          setCoauthors(updatedCoauthors);
+        }}
+        className="w-full md:w-1/3 p-3 border border-gray-300 rounded-md mb-2"
+        placeholder="Nome do coautor"
+      />
+      <input
+        type="email"
+        value={coauthor.email}
+        onChange={(e) => {
+          const updatedCoauthors = [...coauthors];
+          updatedCoauthors[index].email = e.target.value;
+          setCoauthors(updatedCoauthors);
+        }}
+        className="w-full md:w-1/3 p-3 border border-gray-300 rounded-md mb-2"
+        placeholder="Email do coautor"
+      />
+      <input
+        type="text"
+        value={coauthor.phone}
+        onChange={(e) => {
+          const updatedCoauthors = [...coauthors];
+          updatedCoauthors[index].phone = e.target.value;
+          setCoauthors(updatedCoauthors);
+        }}
+        className="w-full md:w-1/3 p-3 border border-gray-300 rounded-md"
+        placeholder="Telefone do coautor"
+      />
+      <button
+        onClick={() => handleRemoveCoauthor(index)}
+        className="text-red-600 mt-2"
+      >
+        <FaTrashAlt />
+      </button>
+    </div>
+  ))}
+  <button
+    onClick={handleAddCoauthor}
+    className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md mt-2"
+  >
+    <FaPlusCircle className="mr-2" />
+    Adicionar Coautor
+  </button>
+</div>
 
         <div className="flex justify-between mt-4">
           <button

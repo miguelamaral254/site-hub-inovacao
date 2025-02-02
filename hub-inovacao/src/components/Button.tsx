@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useState } from "react";
@@ -19,6 +20,7 @@ interface CardServicoProps {
 }
 
 const CardAcademicProjs: React.FC<CardServicoProps> = ({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   id,
   title,
   description,
