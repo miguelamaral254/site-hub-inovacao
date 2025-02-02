@@ -1,11 +1,13 @@
 "use client"
 
+import { Card, CardServico } from "@/components/Card";
 import Footer from "@/components/Footer";
 
 export default function Inicio() {
   return (
     <div>
-      <h1> teste</h1>
+      <Card/>
+      <CardServico/>
       <Footer/>
     </div>
   );
