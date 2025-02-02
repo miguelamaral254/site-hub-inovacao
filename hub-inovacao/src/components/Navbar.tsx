@@ -18,6 +18,10 @@ const Navbar = () => {
     router.push("/");
   };
 
+  const handleCloseDropdown = () => {
+    setDropdownOpen(false);
+  };
+
   useEffect(() => {
     setDropdownOpen(false);
   }, [user]);
@@ -44,21 +48,21 @@ const Navbar = () => {
           </button>
 
           {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
+            <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
               <ul>
                 <li>
-                  <Link href="/area-usuario" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  <Link href="/area-usuario" onClick={handleCloseDropdown} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                     Perfil
                   </Link>
                 </li>
                 <li>
-                  <Link href="/configuracoes" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  <Link href="/configuracoes" onClick={handleCloseDropdown} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                     Configurações
                   </Link>
                 </li>
                 <li>
                   <button
-                    onClick={handleLogout}
+                    onClick={() => { handleLogout(); handleCloseDropdown(); }}
                     className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
                   >
                     Sair

@@ -37,8 +37,7 @@ const Card = () => {
 const CardServico = () => {
     return(
 
-        <div className="flex flex-col w-full max-w-[350px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg
-        flex-col px-3 py-4 ml-[32px] transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)]">
+        <div className="flex flex-col w-full max-w-[350px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg px-3 py-4 ml-[32px] transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)]">
         <div className="flex justify-center w-full">
             <Image className="md:w-[318px] h-auto"
             src={teste}

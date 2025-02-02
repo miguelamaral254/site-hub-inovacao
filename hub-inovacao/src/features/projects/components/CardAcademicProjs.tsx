@@ -40,6 +40,19 @@ const CardAcademicProjs: React.FC<CardServicoProps> = ({
     setIsModalOpen(!isModalOpen);
   };
 
+  const getTypeText = (type: string) => {
+    switch (type) {
+      case 'PI':
+        return 'Projeto de Integração';
+      case 'INOVACAO':
+        return 'Projeto de Inovação';
+      case 'EXTENSAO':
+        return 'Projeto de Extensão';
+      default:
+        return 'Tipo de Projeto Desconhecido';
+    }
+  };
+
   return (
     <div className="flex flex-col w-full max-w-[350px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg px-3 py-4 ml-[32px] transition-shadow duration-300 relative">
       <div className="flex justify-center w-full">
@@ -51,12 +64,13 @@ const CardAcademicProjs: React.FC<CardServicoProps> = ({
       <div className="py-2 mt-3 mb-10">
         <h5 className="text-2xl font-bold text-gray-950">{title}</h5>
         <p className="text-gray-800 mt-4">{description}</p>
+        <p className="text-gray-600 mt-4"><strong>Tipo de Projeto:</strong> {getTypeText(typeAP)}</p> {/* Exibindo o tipo de projeto */}
       </div>
 
       <div className="absolute bottom-4 right-4 flex flex-col gap-2">
         <button
           onClick={handleModalToggle}
-          className="text-sm text-center  py-1.5 px-3 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition duration-200"
+          className="text-sm text-center py-1.5 px-3 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition duration-200"
         >
           Conheça mais o projeto
         </button>
@@ -80,7 +94,7 @@ const CardAcademicProjs: React.FC<CardServicoProps> = ({
             <p className="mb-4">{description}</p>
 
             <p className="text-gray-600">Data de Criação: {creationDate}</p>
-            <p className="text-gray-600">Tipo: {typeAP}</p>
+            <p className="text-gray-600">Tipo: {getTypeText(typeAP)}</p> {/* Exibindo o tipo de projeto novamente no modal */}
 
             <div className="flex items-center mt-4">
               <FaUser className="mr-2" />
@@ -131,7 +145,6 @@ const CardAcademicProjs: React.FC<CardServicoProps> = ({
               </a>
             )}
 
-           
           </div>
         </div>
       )}
