@@ -22,6 +22,21 @@ const Navbar = () => {
     setDropdownOpen(false);
   };
 
+  const handleProfileRedirect = () => {
+    if (user) {
+      if (user.role === "PARTNER_COMPANY") {
+        router.push("/area-empresa");
+      } else if (user.role === "ADMIN") {
+        router.push("/area-admin");
+      } else if (user.role === "MANAGER") {
+        router.push("/area-manager");
+      } else {
+        router.push("/area-usuario");
+      }
+      setDropdownOpen(false); // Fecha o dropdown ao redirecionar
+    }
+  };
+
   useEffect(() => {
     setDropdownOpen(false);
   }, [user]);
@@ -51,9 +66,12 @@ const Navbar = () => {
             <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
               <ul>
                 <li>
-                  <Link href="/area-usuario" onClick={handleCloseDropdown} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  <button
+                    onClick={handleProfileRedirect}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
                     Perfil
-                  </Link>
+                  </button>
                 </li>
                 <li>
                   <Link href="/configuracoes" onClick={handleCloseDropdown} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
