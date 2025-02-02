@@ -13,7 +13,16 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (user) {
-      router.push("/"); 
+      // Verificar o role do usuário e redirecionar
+      if (user.role === "PARTNER_COMPANY") {
+        router.push("/area-empresa");
+      } else if (user.role === "ADMIN") {
+        router.push("/area-admin");
+      } else if (user.role === "MANAGER") {
+        router.push("/area-manager");
+      } else {
+        router.push("/area-usuario");
+      }
     }
   }, [user, router]);
 
@@ -24,10 +33,20 @@ export default function LoginPage() {
 
     try {
       await loginUser({ email, password }); 
-
       setSuccessMessage("Login bem-sucedido!");
 
-      router.push("/area-usuario");
+      // Verifique se o 'user' é válido e faça o redirecionamento com base no role
+      if (user) {
+        if (user.role === "PARTNER_COMPANY") {
+          router.push("/area-empresa");
+        } else if (user.role === "ADMIN") {
+          router.push("/area-admin");
+        } else if (user.role === "MANAGER") {
+          router.push("/area-manager");
+        } else {
+          router.push("/area-usuario");
+        }
+      }
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(error.message);

@@ -24,8 +24,11 @@ export default function DashboardCompanyPage() {
           const data = await getUserByEmail(email);
           setUserData(data);
 
+          // Armazenando userData completo no localStorage para ser acessado em outras páginas
           localStorage.setItem("userData", JSON.stringify(data));
 
+          // Console log para verificar o que foi armazenado no localStorage
+          console.log("Dados armazenados no localStorage:", localStorage.getItem("userData"));
         } catch (error) {
           setErrorMessage("Erro ao buscar os dados.");
         }

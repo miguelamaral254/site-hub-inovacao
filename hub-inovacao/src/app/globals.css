@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
- 
+
 }
+
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -12,7 +14,9 @@
   }
 }
 
+
 body {
+  content: var(--current-breakpoint);
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;

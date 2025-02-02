@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 import React, { useEffect, useState } from 'react';
-import AllProjectsCard from './AllProjectsCard';
 import { getAllProjects } from '@/services/projectService';
 import { AcademicProjectResponseDTO } from '@/interfaces/AcademicProjectInterface';
+import CardAcademicProjs from './CardAcademicProjs';
 
 const AllProjectsList: React.FC = () => {
   const [projetos, setProjetos] = useState<(AcademicProjectResponseDTO)[]>([]);
@@ -14,6 +14,8 @@ const AllProjectsList: React.FC = () => {
     const fetchProjects = async () => {
       try {
         const response = await getAllProjects();
+        console.log('Projetos carregados:', response);  
+
         setProjetos(response);
       } catch (err) {
         setError('Erro ao carregar os projetos');
@@ -41,45 +43,26 @@ const AllProjectsList: React.FC = () => {
           <p className="text-gray-500">Nenhum projeto encontrado.</p>
         ) : (
           projetos.map((projeto) => {
-            if (projeto.professorId) {
-              const professorName = projeto.professorName || 'Professor não encontrado';
-              return (
-                <AllProjectsCard
-                  key={projeto.id}
-                  id={projeto.id}
-                  title={projeto.title}
-                  description={projeto.description}
-                  urlPhoto={projeto.urlPhoto}
-                  pdfLink={projeto.pdfLink}
-                  siteLink={projeto.siteLink}
-                  typeAP={projeto.typeAP}
-                  currentUserEmail={projeto.currentUserEmail}
-                  creationDate={projeto.creationDate}
-                  professorName={professorName}
-                  coauthors={projeto.coauthors}
-                  studentName={undefined}
-                />
-              );
-            } else if (projeto.studentId) {
-              const studentName = projeto.studentName || 'Aluno não encontrado';
-              return (
-                <AllProjectsCard
-                  key={projeto.id}
-                  id={projeto.id}
-                  title={projeto.title}
-                  description={projeto.description}
-                  urlPhoto={projeto.urlPhoto}
-                  pdfLink={projeto.pdfLink}
-                  siteLink={projeto.siteLink}
-                  typeAP={projeto.typeAP}
-                  currentUserEmail={projeto.currentUserEmail}
-                  creationDate={projeto.creationDate}
-                  studentName={studentName}
-                  professorName={undefined}
-                  coauthors={projeto.coauthors}
-                />
-              );
-            }
+            const studentName = projeto.studentName || 'Aluno não encontrado';
+            const professorName = projeto.professorName || 'Professor não encontrado';
+
+            return (
+              <CardAcademicProjs
+                key={projeto.id}
+                id={projeto.id}
+                title={projeto.title}
+                description={projeto.description}
+                urlPhoto={projeto.urlPhoto || '/default-image.jpg'}  
+                pdfLink={projeto.pdfLink}
+                siteLink={projeto.siteLink}
+                typeAP={projeto.typeAP}
+                currentUserEmail={projeto.currentUserEmail}
+                creationDate={projeto.creationDate}
+                studentName={projeto.studentId ? studentName : undefined}
+                professorName={projeto.professorId ? professorName : undefined}
+                coauthors={projeto.coauthors}
+              />
+            );
           })
         )}
       </div>

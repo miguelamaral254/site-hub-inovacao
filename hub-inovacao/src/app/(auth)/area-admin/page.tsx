@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
 import { getUserByEmail } from "@/services/userService";
 import Sidebar from "@/features/users/userscpf/dashboard/Sidebar";
@@ -11,48 +11,31 @@ export default function DashboardPage() {
   const [userData, setUserData] = useState<UserResponseCnpjDTO | UserResponseCpfDTO | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true); 
-  const router = useRouter(); 
 
   useEffect(() => {
     const email = localStorage.getItem("email");
 
-    if (!email) {
-      router.push("/login");
-      return;
-    }
+    if (email) {
+      const fetchUserData = async () => {
+        try {
+          const data = await getUserByEmail(email);
+          setUserData(data);
 
-    const fetchUserData = async () => {
-      try {
-        const data = await getUserByEmail(email);
-        setUserData(data);
+          // Armazenando userData completo no localStorage para ser acessado em outras páginas
+          localStorage.setItem("userData", JSON.stringify(data));
 
-        // Verifica se o 'role' é diferente de 'STUDENT' ou 'PROFESSOR'
-        if (data.role !== "STUDENT" && data.role !== "PROFESSOR") {
-          router.push("/"); // Redireciona para a página inicial
-          return;
+          // Console log para verificar o que foi armazenado no localStorage
+          console.log("Dados armazenados no localStorage:", localStorage.getItem("userData"));
+        } catch (error) {
+          setErrorMessage("Erro ao buscar os dados.");
         }
+      };
 
-        localStorage.setItem("userData", JSON.stringify(data));
-
-        console.log("Dados armazenados no localStorage:", localStorage.getItem("userData"));
-      } catch (error) {
-        setErrorMessage("Erro ao buscar os dados.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [router]);
-
-  if (loading) {
-    return <div>Loading...</div>; 
-  }
-
-  if (errorMessage) {
-    return <div>{errorMessage}</div>; 
-  }
+      fetchUserData();
+    } else {
+      setErrorMessage("Email não encontrado.");
+    }
+  }, []);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
