@@ -59,4 +59,4 @@ const Projetos = () => {
   );
 };
 
-export { Projetos };
+export default Projetos
