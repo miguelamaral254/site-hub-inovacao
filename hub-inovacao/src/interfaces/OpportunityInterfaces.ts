@@ -67,3 +67,11 @@ export enum TypeBO {
     justification: string;
     idManager: number;
   }
+
+  export interface UpdateOpportunityDetailsDTO {
+     title: string;
+     description:string;
+     urlPhoto: string;
+     pdfLink: string;
+     siteLink:string;
+  }
