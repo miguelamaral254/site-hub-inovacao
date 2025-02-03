@@ -6,6 +6,7 @@ import { getAllOpportunities } from '@/services/opportunityService';
 import { OpportunityResponseDTO } from '@/interfaces/OpportunityInterfaces';
 import AllOpportunitiesCard from './AllOpportunitiesCard';
 import NameFilter from '@/components/NameFilter';
+import PublishCardSkeleton from '@/features/authusers/manager/PublishCardSkeleton';
 
 interface AllOpportunitiesListProps {
   visibleOpportunities: number;
@@ -39,7 +40,16 @@ const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({ visibleOppo
     fetchOpportunities();
   }, []);
 
-  if (loading) return <div>Carregando oportunidades...</div>;
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+        {Array.from({ length: visibleOpportunities }).map((_, index) => (
+          <PublishCardSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
+
   if (error) return <div>{error}</div>;
 
   const filteredByType = filterType && filterType !== "Todos" && typeMap[filterType]
