@@ -1,24 +1,26 @@
+"use client";
+
 import React from "react";
 
-const OpportunityCardSkeleton: React.FC = () => {
+const PublishCardSkeleton: React.FC = () => {
   return (
-    <div className="flex flex-col w-full max-w-[350px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg px-3 py-4 ml-[32px] transition-shadow duration-300 relative">
-      <div className="flex justify-center w-full">
-        <div className="mb-4 mt-5">
-          <div className="w-full h-48 bg-gray-300 animate-pulse rounded-md"></div> {/* Skeleton da imagem */}
+    <div className="flex flex-col sm:flex-row bg-gray-200 shadow-md rounded-lg overflow-hidden border border-gray-300 animate-pulse">
+      <div className="w-full sm:w-36 h-36 bg-gray-300"></div>
+
+      <div className="flex flex-col justify-between p-4 w-full">
+        <div>
+          <div className="w-2/3 h-6 bg-gray-400 rounded-md"></div>
+          <div className="w-full h-4 bg-gray-400 mt-2 rounded-md"></div>
+          <div className="w-3/4 h-4 bg-gray-400 mt-2 rounded-md"></div>
         </div>
-      </div>
 
-      <div className="py-2 mt-3 mb-10">
-        <div className="w-2/3 h-6 bg-gray-300 animate-pulse mb-2"></div> {/* Skeleton do título */}
-        <div className="w-full h-4 bg-gray-300 animate-pulse"></div> {/* Skeleton da descrição */}
-      </div>
-
-      <div className="absolute bottom-4 right-4 flex flex-col gap-2">
-        <div className="w-20 h-8 bg-blue-500 animate-pulse rounded-md"></div> {/* Skeleton do botão Editar */}
+        <div className="flex justify-between items-center mt-4">
+          <div className="w-1/3 h-4 bg-gray-400 rounded-md"></div>
+          <div className="w-20 h-8 bg-blue-400 rounded-md"></div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default OpportunityCardSkeleton;
+export default PublishCardSkeleton;

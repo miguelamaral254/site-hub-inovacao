@@ -13,7 +13,6 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (user) {
-      // Verificar o role do usuário e redirecionar
       if (user.role === "PARTNER_COMPANY") {
         router.push("/area-empresa");
       } else if (user.role === "ADMIN") {
@@ -35,7 +34,6 @@ export default function LoginPage() {
       await loginUser({ email, password }); 
       setSuccessMessage("Login bem-sucedido!");
 
-      // Verifique se o 'user' é válido e faça o redirecionamento com base no role
       if (user) {
         if (user.role === "PARTNER_COMPANY") {
           router.push("/area-empresa");

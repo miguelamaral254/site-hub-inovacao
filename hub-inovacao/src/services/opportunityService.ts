@@ -1,4 +1,4 @@
-import { OpportunityCreateDTO, OpportunityResponseDTO, OpportunityUpdateStatusDTO, OpportunityUpdateStatusResponseDTO } from "@/interfaces/OpportunityInterfaces";
+import { OpportunityCreateDTO, OpportunityResponseDTO, OpportunityUpdateStatusDTO, OpportunityUpdateStatusResponseDTO, UpdateOpportunityDetailsDTO } from "@/interfaces/OpportunityInterfaces";
 import axios from "./api";
 import { AxiosError } from "axios";
 
@@ -77,6 +77,20 @@ export const updateOpportunityStatus = async (
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       throw new Error(error.response.data.message || "Erro ao atualizar o status da oportunidade");
+    }
+    throw new Error("Erro de conexão com o servidor");
+  }
+};
+
+export const updateOpportunityDetails = async (
+  opportunityId: number,
+  updateDTO: UpdateOpportunityDetailsDTO 
+): Promise<void> => {
+  try {
+    await axios.put(`/opportunities/${opportunityId}/details`, updateDTO);
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw new Error(error.response.data.message || "Erro ao atualizar detalhes da oportunidade");
     }
     throw new Error("Erro de conexão com o servidor");
   }

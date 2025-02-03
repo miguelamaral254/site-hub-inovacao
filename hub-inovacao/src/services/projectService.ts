@@ -1,11 +1,11 @@
 import {
   AcademicProjectResponseProfessorDTO,
   AcademicProjectResponseStudentDTO,
-} from "@/features/authusers/interfaces/projectInterfaces";
+} from "@/features/authusers/project/interfaces/projectInterfaces";
 import axios from "./api";
 import { AxiosError } from "axios";
 import { AcademicProjectCreateDTO, AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
-import { UpdateProjectDetails } from "@/features/authusers/interfaces/UpdateProjectDetails";
+import { UpdateProjectDetails } from "@/features/authusers/project/interfaces/UpdateProjectDetails";
 
 // Função para criar projeto para professor
 export const createProject = async (

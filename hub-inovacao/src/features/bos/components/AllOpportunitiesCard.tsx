@@ -1,6 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
-import { FaFilePdf, FaExternalLinkAlt, FaUser, FaTimes, FaBuilding, FaPhoneAlt } from 'react-icons/fa';
+"use client";
+
+import React, { JSX, useState } from "react";
+import OpportunityModal from "./OpportunityModal";
+import { FaLightbulb, FaExclamationTriangle, FaBriefcase } from "react-icons/fa";
 
 interface AllOpportunitiesCardProps {
   id: string;
@@ -9,13 +13,20 @@ interface AllOpportunitiesCardProps {
   urlPhoto: string;
   pdfLink: string;
   siteLink: string;
-  typeBO: string;
+  typeBO: "IDEIA" | "PROBLEMA" | "OPORTUNIDADE";
   currentUserEmail: string;
   creationDate: string;
-  institutionOrganization: string;  
+  institutionOrganization: string;
 }
 
+const typeMap: Record<AllOpportunitiesCardProps["typeBO"], { bgColor: string; icon: JSX.Element }> = {
+  IDEIA: { bgColor: "bg-blue-200", icon: <FaLightbulb className="text-blue-600" /> },
+  PROBLEMA: { bgColor: "bg-red-200", icon: <FaExclamationTriangle className="text-red-600" /> },
+  OPORTUNIDADE: { bgColor: "bg-green-200", icon: <FaBriefcase className="text-green-600" /> },
+};
+
 const AllOpportunitiesCard: React.FC<AllOpportunitiesCardProps> = ({
+  id,
   title,
   description,
   urlPhoto,
@@ -24,97 +35,56 @@ const AllOpportunitiesCard: React.FC<AllOpportunitiesCardProps> = ({
   typeBO,
   currentUserEmail,
   creationDate,
-  institutionOrganization,  
+  institutionOrganization,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleModalToggle = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const { bgColor, icon } = typeMap[typeBO];
 
   return (
-    <div className="p-4 border border-gray-200 rounded-md shadow-lg hover:shadow-xl transition-shadow duration-300 relative max-w-xs">
-      <div className="mb-4">
-      <img src={urlPhoto || '/default-image.jpg'} alt={title} className="w-full h-48 object-cover rounded-md" />      </div>
-      <h3 className="text-xl font-bold">{title}</h3>
-      <p className="text-gray-600 text-ellipsis overflow-hidden line-clamp-3">{description}</p>
-            <p className="text-sm text-gray-500 mt-2">Tipo: {typeBO}</p>
-      <p className="text-sm text-gray-500 mb-16 mt-2">Instituição: {institutionOrganization}</p>
+    <div className="flex flex-col w-full max-w-[350px] h-auto bg-white shadow-lg rounded-lg px-3 py-4 transition-shadow duration-300 relative">
+      
+      <div className={`absolute top-0 left-0 w-full ${bgColor} text-center py-2 rounded-t-lg flex items-center justify-center gap-2`}>
+        {icon} <span className="text-gray-700 text-sm font-medium">{typeBO}</span>
+      </div>
 
-      {/* Botão "Mais Informações" no canto inferior direito */}
+      <div className="flex justify-center w-full mt-8">
+        <img src={urlPhoto || "/default-image.jpg"} alt={title} className="w-full h-48 object-cover rounded-md" />
+      </div>
+
+      <div className="py-2 mt-3">
+        <h5 className="text-2xl font-bold text-gray-950 truncate">{title}</h5>
+        <p className="text-gray-800 mt-2 break-words max-h-24 overflow-auto">{description}</p>
+      </div>
+
+      <div className="mt-2">
+        <p className="text-gray-600 text-sm font-medium">Instituição: {institutionOrganization}</p>
+      </div>
+
+      {/* Criando um espaço extra para evitar sobreposição do botão */}
+      <div className="mt-12"></div>
+
       <div className="absolute bottom-4 right-4">
         <button
-          onClick={handleModalToggle}
+          onClick={() => setIsModalOpen(true)}
           className="text-sm text-center py-2 px-4 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition duration-200"
         >
           Mais Informações
         </button>
       </div>
 
-      {/* Modal com mais informações */}
-      {isModalOpen && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg w-[80%] max-w-[600px] relative">
-            <button
-              onClick={handleModalToggle}
-              className="absolute top-2 right-2 text-2xl text-blue-500 hover:text-blue-700"
-            >
-              <FaTimes />
-            </button>
-
-            <div className="flex justify-center mb-4">
-              <img src={urlPhoto} alt={title} className="w-full h-48 object-cover rounded-md" />
-            </div>
-
-            <h3 className="text-xl font-bold mb-4">{title}</h3>
-            <p className="mb-4">{description}</p>
-
-            <p className="text-gray-600">Data de Criação: {creationDate}</p>
-            <div className="flex items-center mt-4">
-                <FaBuilding className="mr-2" />
-                <div>
-                    <p className="text-gray-600">Instituição: {institutionOrganization}</p> 
-                    <p className="text-gray-600">Tipo: {typeBO}</p>
-                </div>
-            </div>
-
-            <div className="flex items-center mt-4">
-              <FaPhoneAlt className="mr-2" />
-              <div>
-                <div>
-                <p className="text-gray-600">Contatos: {}</p>
-
-                </div>
-                <p className="text-gray-600">email: {currentUserEmail}</p>
-              </div>
-            </div>
-
-            {pdfLink && (
-              <a
-                href={pdfLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-start gap-2 text-sm text-gray-700 py-1.5 px-3 rounded-lg mt-2"
-              >
-                <FaFilePdf />
-                <span>PDF</span>
-              </a>
-            )}
-
-            {siteLink && (
-              <a
-                href={siteLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-start gap-2 text-sm text-gray-700 py-1.5 px-3 rounded-lg mt-2"
-              >
-                <FaExternalLinkAlt />
-                <span>Visitar Site</span>
-              </a>
-            )}
-          </div>
-        </div>
-      )}
+      <OpportunityModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={title}
+        description={description}
+        urlPhoto={urlPhoto}
+        pdfLink={pdfLink}
+        siteLink={siteLink}
+        typeBO={typeBO}
+        currentUserEmail={currentUserEmail}
+        creationDate={creationDate}
+        institutionOrganization={institutionOrganization}
+      />
     </div>
   );
 };
