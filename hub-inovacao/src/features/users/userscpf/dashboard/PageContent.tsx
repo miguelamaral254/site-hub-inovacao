@@ -1,6 +1,7 @@
+import CreateProjectForm from "@/features/authusers/project/components/ModalCreateProject";
+import ProjectList from "@/features/authusers/project/components/ProjectList";
 import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
-import ProjectList from "@/features/authusers/components/ProjectList";
-import CreateProjectForm from "@/features/authusers/components/ModalCreateProject";
+
 
 interface PageContentProps {
   selectedPage: string | null;

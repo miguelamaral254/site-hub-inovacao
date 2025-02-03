@@ -1,4 +1,4 @@
-import { CoauthorDTO } from "@/features/authusers/interfaces/projectInterfaces";
+import { CoauthorDTO } from "@/features/authusers/project/interfaces/projectInterfaces";
 
 export interface AcademicProjectResponseDTO {
   id: string;
