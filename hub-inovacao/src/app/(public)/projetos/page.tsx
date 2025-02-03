@@ -65,7 +65,6 @@ const Projetos = () => {
           <ButtonOutline text="Carregar Mais" onClick={handleLoadMore} />
         </div>
       </div>
-
     </div>
   );
 };

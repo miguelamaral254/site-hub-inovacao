@@ -79,7 +79,6 @@ export default function Oportunidades() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }
