@@ -6,7 +6,18 @@ import { getAllOpportunities } from '@/services/opportunityService';
 import { OpportunityResponseDTO } from '@/interfaces/OpportunityInterfaces';
 import AllOpportunitiesCard from './AllOpportunitiesCard';
 
-const AllOpportunitiesList: React.FC = () => {
+interface AllOpportunitiesListProps {
+  visibleOpportunities: number;
+  filterType: string | null;
+}
+
+const typeMap: Record<string, string> = {
+  "Oportunidades": "OPORTUNIDADE",
+  "Problemas": "PROBLEMA",
+  "Ideias": "IDEIA",
+};
+
+const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({ visibleOpportunities, filterType }) => {
   const [opportunities, setOpportunities] = useState<OpportunityResponseDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
@@ -15,8 +26,6 @@ const AllOpportunitiesList: React.FC = () => {
     const fetchOpportunities = async () => {
       try {
         const response = await getAllOpportunities();
-        console.log('Oportunidades carregadas:', response);
-
         setOpportunities(response);
       } catch (err) {
         setError('Erro ao carregar as oportunidades');
@@ -28,38 +37,30 @@ const AllOpportunitiesList: React.FC = () => {
     fetchOpportunities();
   }, []);
 
-  if (loading) {
-    return <div>Carregando oportunidades...</div>;
-  }
+  if (loading) return <div>Carregando oportunidades...</div>;
+  if (error) return <div>{error}</div>;
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+  const filteredOpportunities = filterType && filterType !== "Todos" && typeMap[filterType]
+    ? opportunities.filter((opportunity) => opportunity.typeBO === typeMap[filterType as keyof typeof typeMap])
+    : opportunities;
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Oportunidades</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {opportunities.length === 0 ? (
-          <p className="text-gray-500">Nenhuma oportunidade encontrada.</p>
-        ) : (
-          opportunities.map((opportunity) => (
-            <AllOpportunitiesCard
-              key={opportunity.id}
-              id={opportunity.id.toString()}
-              title={opportunity.title}
-              description={opportunity.description}
-              urlPhoto={opportunity.urlPhoto || '/default-image.jpg'}
-              pdfLink={opportunity.pdfLink}
-              siteLink={opportunity.siteLink}
-              typeBO={opportunity.typeBO}
-              currentUserEmail={opportunity.authorEmail}
-              creationDate={opportunity.creationDate}
-              institutionOrganization={opportunity.institutionOrganization}
-            />
-          ))
-        )}
-      </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+      {filteredOpportunities.slice(0, visibleOpportunities).map((opportunity) => (
+        <AllOpportunitiesCard
+          key={opportunity.id}
+          id={opportunity.id.toString()}
+          title={opportunity.title}
+          description={opportunity.description}
+          urlPhoto={opportunity.urlPhoto || '/default-image.jpg'}
+          pdfLink={opportunity.pdfLink}
+          siteLink={opportunity.siteLink}
+          typeBO={opportunity.typeBO}
+          currentUserEmail={opportunity.authorEmail}
+          creationDate={opportunity.creationDate}
+          institutionOrganization={opportunity.institutionOrganization}
+        />
+      ))}
     </div>
   );
 };

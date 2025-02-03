@@ -1,24 +1,36 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-"use client"
-import React, { useEffect, useState } from 'react';
-import { getAllProjects } from '@/services/projectService';
-import { AcademicProjectResponseDTO } from '@/interfaces/AcademicProjectInterface';
-import CardAcademicProjs from './CardAcademicProjs';
+"use client";
 
-const AllProjectsList: React.FC = () => {
-  const [projetos, setProjetos] = useState<(AcademicProjectResponseDTO)[]>([]);
+import React, { useEffect, useState } from "react";
+import { getAllProjects } from "@/services/projectService";
+import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
+import CardAcademicProjs from "./CardAcademicProjs";
+
+interface AllProjectsListProps {
+  visibleProjects: number;
+  filterType: string | null;
+}
+
+const typeMap = {
+  "Projeto de Inovação": "INOVACAO",
+  "Projeto de Integração": "PI",
+  "Projeto de Extensão": "EXTENSAO",
+} as const; // 👈 Aqui garante que o objeto tem tipos fixos
+
+type TypeAP = typeof typeMap[keyof typeof typeMap]; // 👈 Define um tipo seguro para os valores
+
+const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filterType }) => {
+  const [projetos, setProjetos] = useState<AcademicProjectResponseDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const response = await getAllProjects();
-        console.log('Projetos carregados:', response);  
-
         setProjetos(response);
       } catch (err) {
-        setError('Erro ao carregar os projetos');
+        setError("Erro ao carregar os projetos");
       } finally {
         setLoading(false);
       }
@@ -27,45 +39,33 @@ const AllProjectsList: React.FC = () => {
     fetchProjects();
   }, []);
 
-  if (loading) {
-    return <div>Carregando projetos...</div>;
-  }
+  if (loading) return <div>Carregando projetos...</div>;
+  if (error) return <div>{error}</div>;
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+  const filteredProjects =
+    filterType && filterType !== "Todos" && typeMap[filterType as keyof typeof typeMap]
+      ? projetos.filter((projeto) => projeto.typeAP === typeMap[filterType as keyof typeof typeMap])
+      : projetos;
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Projetos Acadêmicos</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projetos.length === 0 ? (
-          <p className="text-gray-500">Nenhum projeto encontrado.</p>
-        ) : (
-          projetos.map((projeto) => {
-            const studentName = projeto.studentName || 'Aluno não encontrado';
-            const professorName = projeto.professorName || 'Professor não encontrado';
-
-            return (
-              <CardAcademicProjs
-                key={projeto.id}
-                id={projeto.id}
-                title={projeto.title}
-                description={projeto.description}
-                urlPhoto={projeto.urlPhoto || '/default-image.jpg'}  
-                pdfLink={projeto.pdfLink}
-                siteLink={projeto.siteLink}
-                typeAP={projeto.typeAP}
-                currentUserEmail={projeto.currentUserEmail}
-                creationDate={projeto.creationDate}
-                studentName={projeto.studentId ? studentName : undefined}
-                professorName={projeto.professorId ? professorName : undefined}
-                coauthors={projeto.coauthors}
-              />
-            );
-          })
-        )}
-      </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+      {filteredProjects.slice(0, visibleProjects).map((projeto) => (
+        <CardAcademicProjs
+          key={projeto.id}
+          id={projeto.id}
+          title={projeto.title}
+          description={projeto.description}
+          urlPhoto={projeto.urlPhoto || "/default-image.jpg"}
+          pdfLink={projeto.pdfLink}
+          siteLink={projeto.siteLink}
+          typeAP={projeto.typeAP as TypeAP} 
+          currentUserEmail={projeto.currentUserEmail}
+          creationDate={projeto.creationDate}
+          studentName={projeto.studentId ? projeto.studentName : undefined}
+          professorName={projeto.professorId ? projeto.professorName : undefined}
+          coauthors={projeto.coauthors}
+        />
+      ))}
     </div>
   );
 };

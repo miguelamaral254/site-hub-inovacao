@@ -1,11 +1,11 @@
 "use client"
 
-import { Card, CardEditais, CardServico } from "@/components/Card";
+import { CardEditais, CardServico, CardSimples } from "@/components/Card";
 
 export default function Inicio() {
   return (
     <div className="flex">
-      <Card/>
+      <CardSimples/>
       <CardServico/>
       <CardEditais/>
     </div>
