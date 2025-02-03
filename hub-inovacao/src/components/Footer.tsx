@@ -3,7 +3,7 @@ import Link from 'next/link';
 const Footer = () => {
   return (
     <>
-      <footer className="bg-blue-900 text-white p-7 fixed bottom-6 left-0 w-full">
+      <footer className="bg-blue-900 text-white p-7 mt-6">
         <div className="container mx-auto flex justify-between items-center px-4">
           <div className="text-xl font-bold text-gray-300">Logo</div>
 
@@ -14,8 +14,8 @@ const Footer = () => {
         </div>
       </footer>
 
-      <div className="bg-blue-700 text-center p-1 fixed bottom-0 left-0 w-full">
-        <p className="text-gray-800 text-sm font-semibold">
+      <div className="bg-blue-700 text-center p-1">
+        <p className="text-gray-300 text-sm font-semibold">
           © Faculdade Senac Pernambuco 2025
         </p>
       </div>

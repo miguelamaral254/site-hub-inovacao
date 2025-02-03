@@ -16,11 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="min-h-screen flex flex-col">
         <AuthProvider>
-          <Navbar/>
-          {children}
-          <Footer/>  
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer /> 
         </AuthProvider>
       </body>
     </html>
