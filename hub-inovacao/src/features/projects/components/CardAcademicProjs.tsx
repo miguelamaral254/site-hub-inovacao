@@ -2,8 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import React, { useState } from "react";
+import React, { JSX, useState } from "react";
 import ProjectModal from "./ModalAcademicProjs";
+import { FaFlask, FaProjectDiagram, FaUniversity } from "react-icons/fa";
 
 interface CardServicoProps {
   id: string;
@@ -12,7 +13,7 @@ interface CardServicoProps {
   urlPhoto: string;
   pdfLink: string;
   siteLink: string;
-  typeAP: string;
+  typeAP: "PI" | "INOVACAO" | "EXTENSAO";
   currentUserEmail: string;
   creationDate: string;
   studentName?: string;
@@ -20,17 +21,10 @@ interface CardServicoProps {
   coauthors: Array<{ name: string; email: string; phone: string }> | undefined;
 }
 
-const getTypeText = (type: string) => {
-  switch (type) {
-    case 'PI':
-      return 'Projeto de Integração';
-    case 'INOVACAO':
-      return 'Projeto de Inovação';
-    case 'EXTENSAO':
-      return 'Projeto de Extensão';
-    default:
-      return 'Tipo de Projeto Desconhecido';
-  }
+const typeMap: Record<CardServicoProps["typeAP"], { bgColor: string; icon: JSX.Element; label: string }> = {
+  PI: { bgColor: "bg-purple-200", icon: <FaProjectDiagram className="text-purple-600" />, label: "Projeto de Integração" },
+  INOVACAO: { bgColor: "bg-blue-200", icon: <FaFlask className="text-blue-600" />, label: "Projeto de Inovação" },
+  EXTENSAO: { bgColor: "bg-green-200", icon: <FaUniversity className="text-green-600" />, label: "Projeto de Extensão" },
 };
 
 const CardAcademicProjs: React.FC<CardServicoProps> = ({
@@ -49,11 +43,13 @@ const CardAcademicProjs: React.FC<CardServicoProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const author = studentName || professorName || "Autor desconhecido";
+  const { bgColor, icon, label } = typeMap[typeAP];
 
   return (
-    <div className="flex flex-col w-full max-w-[350px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg px-3 py-4 transition-shadow duration-300 relative">
-      <div className="absolute top-0 left-0 w-full bg-gray-200 text-center py-1 rounded-t-lg">
-        <span className="text-gray-700 text-sm font-medium">{getTypeText(typeAP)}</span>
+    <div className="flex flex-col w-full max-w-[350px] h-auto bg-white shadow-lg rounded-lg px-3 py-4 transition-shadow duration-300 relative">
+      
+      <div className={`absolute top-0 left-0 w-full ${bgColor} text-center py-2 rounded-t-lg flex items-center justify-center gap-2`}>
+        {icon} <span className="text-gray-700 text-sm font-medium">{label}</span>
       </div>
 
       <div className="flex justify-center w-full mt-6">
@@ -61,10 +57,8 @@ const CardAcademicProjs: React.FC<CardServicoProps> = ({
       </div>
 
       <div className="py-2 mt-3 mb-10">
-        <h5 className="text-2xl font-bold text-gray-950">{title}</h5>
-        <p className="text-gray-800 mt-4">{description}</p>
-        <p className="text-gray-600 mt-4">
-        </p>
+        <h5 className="text-2xl font-bold text-gray-950 truncate">{title}</h5>
+        <p className="text-gray-800 mt-4 break-words max-h-24 overflow-auto">{description}</p>
       </div>
 
       <div className="absolute bottom-4 right-4 flex flex-col gap-2">

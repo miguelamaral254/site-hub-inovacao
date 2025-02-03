@@ -1,26 +1,28 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { getAllProjects } from '@/services/projectService';
-import { AcademicProjectResponseDTO } from '@/interfaces/AcademicProjectInterface';
-import CardAcademicProjs from './CardAcademicProjs';
+import React, { useEffect, useState } from "react";
+import { getAllProjects } from "@/services/projectService";
+import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
+import CardAcademicProjs from "./CardAcademicProjs";
 
 interface AllProjectsListProps {
   visibleProjects: number;
   filterType: string | null;
 }
 
-const typeMap: Record<string, string> = {
+const typeMap = {
   "Projeto de Inovação": "INOVACAO",
-  "Projeto de Integração": "INTEGRACAO",
+  "Projeto de Integração": "PI",
   "Projeto de Extensão": "EXTENSAO",
-};
+} as const; // 👈 Aqui garante que o objeto tem tipos fixos
+
+type TypeAP = typeof typeMap[keyof typeof typeMap]; // 👈 Define um tipo seguro para os valores
 
 const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filterType }) => {
   const [projetos, setProjetos] = useState<AcademicProjectResponseDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -28,7 +30,7 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
         const response = await getAllProjects();
         setProjetos(response);
       } catch (err) {
-        setError('Erro ao carregar os projetos');
+        setError("Erro ao carregar os projetos");
       } finally {
         setLoading(false);
       }
@@ -40,9 +42,10 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
   if (loading) return <div>Carregando projetos...</div>;
   if (error) return <div>{error}</div>;
 
-  const filteredProjects = filterType && filterType !== "Todos" && typeMap[filterType]
-    ? projetos.filter((projeto) => projeto.typeAP === typeMap[filterType as keyof typeof typeMap])
-    : projetos;
+  const filteredProjects =
+    filterType && filterType !== "Todos" && typeMap[filterType as keyof typeof typeMap]
+      ? projetos.filter((projeto) => projeto.typeAP === typeMap[filterType as keyof typeof typeMap])
+      : projetos;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
@@ -52,10 +55,10 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
           id={projeto.id}
           title={projeto.title}
           description={projeto.description}
-          urlPhoto={projeto.urlPhoto || '/default-image.jpg'}
+          urlPhoto={projeto.urlPhoto || "/default-image.jpg"}
           pdfLink={projeto.pdfLink}
           siteLink={projeto.siteLink}
-          typeAP={projeto.typeAP}
+          typeAP={projeto.typeAP as TypeAP} 
           currentUserEmail={projeto.currentUserEmail}
           creationDate={projeto.creationDate}
           studentName={projeto.studentId ? projeto.studentName : undefined}

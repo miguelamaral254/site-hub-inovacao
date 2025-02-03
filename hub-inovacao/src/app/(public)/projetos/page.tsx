@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Footer from "@/components/Footer";
 import Image from "next/image";
 import Teste from "@/assets/testelogo.png";
 import { Dropdown } from "@/components/Dropdown";
@@ -67,7 +66,6 @@ const Projetos = () => {
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 };
