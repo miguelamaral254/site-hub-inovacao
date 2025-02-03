@@ -7,7 +7,7 @@ import { FaFilePdf, FaExternalLinkAlt, FaUser, FaTimes } from "react-icons/fa";
 interface CardServicoProps {
   id: string;
   title: string;
-  description: string;
+  description: string;np
   urlPhoto: string;
   pdfLink: string;
   siteLink: string;
