@@ -9,7 +9,7 @@ import { FaFlask, FaProjectDiagram, FaUniversity } from "react-icons/fa";
 interface CardServicoProps {
   id: string;
   title: string;
-  description: string;
+  description: string;np
   urlPhoto: string;
   pdfLink: string;
   siteLink: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Usando o router para redirecionar
+import { useRouter } from "next/navigation";
 import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
 import { getUserByEmail } from "@/services/userService";
 import Sidebar from "@/features/users/userscpf/dashboard/Sidebar";
