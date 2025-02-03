@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { FaFilePdf, FaExternalLinkAlt, FaUser, FaTimes, FaBuilding, FaPhoneAlt } from 'react-icons/fa';
@@ -37,8 +38,7 @@ const AllOpportunitiesCard: React.FC<AllOpportunitiesCardProps> = ({
       <div className="mb-4">
       <img src={urlPhoto || '/default-image.jpg'} alt={title} className="w-full h-48 object-cover rounded-md" />      </div>
       <h3 className="text-xl font-bold">{title}</h3>
-      <p className="text-gray-600 text-ellipsis overflow-hidden line-clamp-3">{description}</p>
-            <p className="text-sm text-gray-500 mt-2">Tipo: {typeBO}</p>
+      <p className="text-gray-800 mt-4 break-words max-h-24 overflow-auto">{description}</p>            <p className="text-sm text-gray-500 mt-2">Tipo: {typeBO}</p>
       <p className="text-sm text-gray-500 mb-16 mt-2">Instituição: {institutionOrganization}</p>
 
       {/* Botão "Mais Informações" no canto inferior direito */}
