@@ -14,7 +14,6 @@ const Footer = () => {
         </div>
       </footer>
 
-      {/* Copyright separado visualmente */}
       <div className="bg-blue-700 text-center p-1 fixed bottom-0 left-0 w-full">
         <p className="text-gray-800 text-sm font-semibold">
           © Faculdade Senac Pernambuco 2025
