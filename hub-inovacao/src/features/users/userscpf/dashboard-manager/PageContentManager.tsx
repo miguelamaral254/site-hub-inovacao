@@ -3,6 +3,7 @@
 
 import CreatePublishForm from "@/features/authusers/manager/CreatePublishForm";
 import PublishList from "@/features/authusers/manager/PublishList";
+import TicketList from "@/features/authusers/manager/TicketList";
 import { UserResponseCpfDTO } from "@/interfaces/userInterface";
 
 interface PageContentManagerProps {
@@ -29,7 +30,7 @@ export default function PageContentManager({ selectedPage, userData }: PageConte
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Tickets em aberto</h3>
             <p className="text-lg text-gray-600 mb-4">Veja os tickets em espera e tome as devidas providências.</p>
             <div className="space-y-4">
-      
+            <TicketList statusFilter={"PENDENTE"} />
             </div>
           </div>
         )}

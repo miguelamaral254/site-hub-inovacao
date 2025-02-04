@@ -8,6 +8,7 @@ import { ButtonOutline } from "@/components/Button";
 import ImageProjeto from "@/assets/ImagemBOS.svg"
 import { ButtonGrandeSeg } from "@/components/Button";
 
+
 export default function Incubadora() {
   return (
     <div>
@@ -38,6 +39,7 @@ export default function Incubadora() {
         </div>
         <div className="flex justify-end mr-2 md:mr-5"/* dropdown aqui */>
             <Dropdown />
+
         </div>
         <div className="flex flex-col md:flex-row justify-center items-center mt-6"/* Components cards */>
           <CardStartup />

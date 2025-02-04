@@ -37,6 +37,8 @@ export default function DashboardPage() {
 
         console.log("Dados armazenados no localStorage:", localStorage.getItem("userData"));
       } catch (error) {
+        console.log(error)
+
         setErrorMessage("Erro ao buscar os dados.");
       } finally {
         setLoading(false);

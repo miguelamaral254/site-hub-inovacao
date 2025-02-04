@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 
 export enum TypeBO {
     PROBLEMA = "PROBLEMA",
@@ -26,6 +27,8 @@ export enum TypeBO {
   }
   
   export interface OpportunityResponseDTO {
+    type: ReactNode;
+    organizerName: ReactNode;
     id: number;
     title: string;
     description: string;
@@ -39,14 +42,17 @@ export enum TypeBO {
     flagActive: boolean;
     partnerCompanyId: number;
     institutionOrganization: string;
+    feedback?: string;
+    justification?: string;
   }
   
   export interface OpportunityUpdateStatusDTO {
-    status: StatusSolicitation;
+    id: number;
+    status: string;
     validationDate: string; // LocalDate in Java
     feedback: string;
     justification: string;
-    idManager: number;
+    idManager: string;
   }
   
   export interface OpportunityUpdateStatusResponseDTO {

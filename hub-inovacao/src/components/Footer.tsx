@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import Image from "next/image";
+import logo from "@/assets/Logo -- FOOTER.png"
 
 const Footer = () => {
   return (
@@ -6,7 +8,7 @@ const Footer = () => {
     <>
       <footer className="bg-blue-900 text-white p-7 mt-6">
         <div className="container mx-auto flex justify-between items-center px-4">
-          <div className="text-xl font-bold text-gray-300">Logo</div>
+        <Image src={logo} alt={"Logo HUBr"} /> 
 
           <div className="flex space-x-6">
             <Link href="/" className="hover:text-gray-300">Contato</Link>

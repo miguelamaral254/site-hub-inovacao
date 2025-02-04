@@ -7,6 +7,7 @@ import { useAuth } from "@/context/useContext";
 import { ButtonGrande } from "./Button";
 import  logo  from "@/assets/Logo.svg"
 
+
 const Navbar = () => {
   const { user, logoutUser } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
@@ -53,6 +54,7 @@ const Navbar = () => {
         <Link href="/projetos" className="text-blue-900 text-medium text-lg hover:text-blue-600">Projetos Acadêmicos</Link>
         <Link href="/oportunidades" className="text-blue-900 text-medium text-lg hover:text-blue-600">Banco de B.Os</Link>
         <Link href="/editais" className="text-blue-900 text-medium text-lg hover:text-blue-600">Editais</Link>
+
       </div>
 
       {user ? (

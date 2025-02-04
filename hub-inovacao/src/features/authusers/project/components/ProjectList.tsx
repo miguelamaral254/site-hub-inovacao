@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
 import ProjectCardSkeleton from "./ProjectCardSkeleton"; // Importando o Skeleton
@@ -38,6 +39,7 @@ export default function ProjectList({ statusFilter }: ProjectListProps) {
 
       setProjects(filteredProjects);
     } catch (error) {
+      console.log(error)
       setError("Erro ao carregar projetos.");
     } finally {
       setLoading(false);

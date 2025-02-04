@@ -1,15 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Usando o router para redirecionar
+import { useRouter } from "next/navigation";
 import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
 import { getUserByEmail } from "@/services/userService";
 import SidebarCompany from "@/features/users/userscpj/DashboardCompany/SidebarCompany";
 import PageContentCompany from "@/features/users/userscpj/DashboardCompany/PageContentCompany";
 
-
 export default function DashboardCompanyPage() {
-  const [userData, setUserData] = useState<UserResponseCnpjDTO | UserResponseCpfDTO | null>(null);
+  const [userData, setUserData] = useState<UserResponseCnpjDTO | UserResponseCpfDTO | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
 
@@ -23,10 +22,9 @@ export default function DashboardCompanyPage() {
         try {
           const data = await getUserByEmail(email);
           setUserData(data);
-
           localStorage.setItem("userData", JSON.stringify(data));
-
         } catch (error) {
+          console.log(error)
           setErrorMessage("Erro ao buscar os dados.");
         }
       };
@@ -37,19 +35,18 @@ export default function DashboardCompanyPage() {
     }
   }, []);
 
-  // Verifica se o role é PARTNER_COMPANY, se não redireciona
   useEffect(() => {
-    if (userData && userData.role !== "PARTNER_COMPANY") {
-      router.push("/"); // Redireciona para a página inicial se não for uma empresa
+    if (userData && "cnpj" in userData && userData.role !== "PARTNER_COMPANY") {
+      router.push("/");
     }
   }, [userData, router]);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <SidebarCompany setSelectedPage={setSelectedPage} userData={userData} errorMessage={errorMessage} />
+      <SidebarCompany setSelectedPage={setSelectedPage} userData={userData as UserResponseCnpjDTO} errorMessage={errorMessage} />
       
       <div className="flex-grow p-6">
-        <PageContentCompany selectedPage={selectedPage} userData={userData} />
+        <PageContentCompany selectedPage={selectedPage} userData={userData as UserResponseCnpjDTO} />
       </div>
     </div>
   );
