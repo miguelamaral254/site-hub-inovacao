@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 
 export enum TypeBO {
     PROBLEMA = "PROBLEMA",
@@ -26,6 +27,8 @@ export enum TypeBO {
   }
   
   export interface OpportunityResponseDTO {
+    type: ReactNode;
+    organizerName: ReactNode;
     id: number;
     title: string;
     description: string;

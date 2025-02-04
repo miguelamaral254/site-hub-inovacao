@@ -1,10 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { getAllProjectsForManager } from "@/services/projectService";
+import { getAllOpportunities } from "@/services/opportunityService";  // Adicione a importação
 import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
 import TicketCard from "./TicketCard";
 import NameFilter from "@/components/NameFilter";
 import { Dropdown } from "@/components/Dropdown";
+import { OpportunityResponseDTO } from "@/interfaces/OpportunityInterfaces";
 
 interface TicketListProps {
   statusFilter: string;
@@ -12,29 +15,27 @@ interface TicketListProps {
 
 export default function TicketList({ statusFilter }: TicketListProps) {
   const [projects, setProjects] = useState<AcademicProjectResponseDTO[]>([]);
+  const [opportunities, setOpportunities] = useState<OpportunityResponseDTO[]>([]);  // Adiciona estado para oportunidades
   const [filteredProjects, setFilteredProjects] = useState<AcademicProjectResponseDTO[]>([]);
+  const [filteredOpportunities, setFilteredOpportunities] = useState<OpportunityResponseDTO[]>([]); // Filtro de oportunidades
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
+  // Função para buscar projetos
   const fetchProjects = async () => {
     setLoading(true);
     try {
       const fetchedProjects = await getAllProjectsForManager();
-
       const validStatus = ["APROVADA", "PENDENTE", "REPROVADA"];
       if (statusFilter && !validStatus.includes(statusFilter)) {
         setError("Status inválido.");
         setLoading(false);
         return;
       }
-
-      const filteredByStatus = fetchedProjects.filter((project) => {
-        const status = project.status?.toUpperCase();
-        return status && status === statusFilter.toUpperCase();
-      });
-
+      const filteredByStatus = fetchedProjects.filter((project) => project.status?.toUpperCase() === statusFilter.toUpperCase());
       setProjects(filteredByStatus);
       setFilteredProjects(filteredByStatus);
     } catch (error) {
@@ -45,12 +46,30 @@ export default function TicketList({ statusFilter }: TicketListProps) {
     }
   };
 
+  // Função para buscar oportunidades
+  const fetchOpportunities = async () => {
+    setLoading(true);
+    try {
+      const fetchedOpportunities = await getAllOpportunities();
+      setOpportunities(fetchedOpportunities);
+      setFilteredOpportunities(fetchedOpportunities);
+    } catch (error) {
+      console.log(error);
+      setError("Erro ao carregar oportunidades.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+    fetchOpportunities(); // Chama a função para oportunidades também
+  }, [statusFilter]);
+
   const handleNameFilter = (name: string | null) => {
     if (name && name.trim() !== "") {
       setFilteredProjects(
-        projects.filter((project) =>
-          project.title.toLowerCase().includes(name.trim().toLowerCase())
-        )
+        projects.filter((project) => project.title.toLowerCase().includes(name.trim().toLowerCase()))
       );
       setCurrentPage(1);
     } else {
@@ -60,6 +79,7 @@ export default function TicketList({ statusFilter }: TicketListProps) {
 
   const handleSortOrder = (order: "asc" | "desc" | null) => {
     if (order) {
+      setSortOrder(order);
       const sortedProjects = [...filteredProjects].sort((a, b) => {
         const dateA = new Date(a.creationDate || "").getTime();
         const dateB = new Date(b.creationDate || "").getTime();
@@ -69,13 +89,10 @@ export default function TicketList({ statusFilter }: TicketListProps) {
     }
   };
 
-  useEffect(() => {
-    fetchProjects();
-  }, [statusFilter, fetchProjects]);
-
   const lastIndex = currentPage * itemsPerPage;
   const firstIndex = lastIndex - itemsPerPage;
   const currentProjects = filteredProjects.slice(firstIndex, lastIndex);
+  const currentOpportunities = filteredOpportunities.slice(firstIndex, lastIndex);
 
   const handleItemsPerPageChange = (value: number) => {
     setItemsPerPage(value);
@@ -86,10 +103,7 @@ export default function TicketList({ statusFilter }: TicketListProps) {
     return (
       <div className="p-6">
         {[...Array(3)].map((_, index) => (
-          <div
-            key={index}
-            className="bg-gray-200 h-16 rounded-md mb-1 animate-pulse"
-          ></div>
+          <div key={index} className="bg-gray-200 h-16 rounded-md mb-1 animate-pulse"></div>
         ))}
       </div>
     );
@@ -102,14 +116,11 @@ export default function TicketList({ statusFilter }: TicketListProps) {
   return (
     <div className="p-6">
       <NameFilter onSelect={handleNameFilter} />
-
       <div className="mt-4 mb-4">
         <Dropdown
           options={["Mais novo", "Mais velho"]}
           defaultText="Ordenar por"
-          onSelect={(option) =>
-            handleSortOrder(option === "Mais novo" ? "desc" : "asc")
-          }
+          onSelect={(option) => handleSortOrder(option === "Mais novo" ? "desc" : "asc")}
         />
       </div>
 
@@ -119,7 +130,17 @@ export default function TicketList({ statusFilter }: TicketListProps) {
             <TicketCard project={project} fetchProjects={fetchProjects} />
           </li>
         ))}
+        {/* Renderiza as oportunidades */}
+        {currentOpportunities.map((opportunity) => (
+          <li key={opportunity.id}>
+            <TicketCard opportunity={opportunity} fetchProjects={fetchProjects} />
+          </li>
+        ))}
       </ul>
+
+      <p className="text-gray-600 text-sm mt-2">
+        Página {currentPage} de {Math.ceil(filteredProjects.length / itemsPerPage)}
+      </p>
 
       <div className="flex items-center justify-between mt-4">
         <button
