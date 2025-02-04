@@ -21,16 +21,32 @@ const TicketCard: React.FC<TicketCardProps> = ({ project, fetchProjects }) => {
   return (
     <>
       <div
-        className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 cursor-pointer"
+        className="p-4 border-b bg-white border-gray-200 hover:bg-gray-50 cursor-pointer"
         onClick={handleOpenModal}
       >
         <div className="flex justify-between items-center">
-          <h4 className="text-xl font-semibold">{project.title}</h4>
-          <span className={`text-${project.status === "APROVADA" ? "green" : project.status === "REPROVADA" ? "red" : "yellow"}-500 font-semibold`}>
-            {project.status}
-          </span>
+          <h4 className="text-lg font-medium text-gray-900 truncate">
+            {project.title}
+          </h4>
+          
+          <div className="flex flex-col justify-center align-middle items-center gap-3">
+              <span
+                className={`text-sm font-semibold ${
+                  project.status === "APROVADA"
+                    ? "text-green-500"
+                    : project.status === "REPROVADA"
+                    ? "text-red-500"
+                    : "text-yellow-500"
+                }`}
+              >
+                {project.status}
+              </span>
+              <span>{project.typeAP}</span>
+          </div>
         </div>
-        <p className="text-gray-600 my-2">{project.description}</p>
+        <p className="text-xs text-gray-600 truncate mt-1">
+          {project.description} 
+        </p>
       </div>
 
       {isModalOpen && (
