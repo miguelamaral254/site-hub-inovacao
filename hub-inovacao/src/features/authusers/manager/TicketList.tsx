@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { getAllProjectsForManager } from "@/services/projectService";
 import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
@@ -16,7 +17,6 @@ export default function TicketList({ statusFilter }: TicketListProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc"); // Default: most recent first
 
   const fetchProjects = async () => {
     setLoading(true);
@@ -60,7 +60,6 @@ export default function TicketList({ statusFilter }: TicketListProps) {
 
   const handleSortOrder = (order: "asc" | "desc" | null) => {
     if (order) {
-      setSortOrder(order);
       const sortedProjects = [...filteredProjects].sort((a, b) => {
         const dateA = new Date(a.creationDate || "").getTime();
         const dateB = new Date(b.creationDate || "").getTime();
@@ -72,7 +71,7 @@ export default function TicketList({ statusFilter }: TicketListProps) {
 
   useEffect(() => {
     fetchProjects();
-  }, [statusFilter]);
+  }, [statusFilter, fetchProjects]);
 
   const lastIndex = currentPage * itemsPerPage;
   const firstIndex = lastIndex - itemsPerPage;
@@ -122,33 +121,30 @@ export default function TicketList({ statusFilter }: TicketListProps) {
         ))}
       </ul>
 
-      <p className="text-gray-600 text-sm mt-2">
-        Página {currentPage} de {Math.ceil(filteredProjects.length / itemsPerPage)}
-      </p>
-
       <div className="flex items-center justify-between mt-4">
-  <button
-    disabled={currentPage === 1}
-    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md disabled:opacity-50"
-  >
-    Voltar
-  </button>
-  <p className="text-gray-600 text-sm">
-    Página {currentPage} de {Math.ceil(filteredProjects.length / itemsPerPage)}
-  </p>
-  <button
-    disabled={lastIndex >= filteredProjects.length}
-    onClick={() =>
-      setCurrentPage((prev) =>
-        Math.min(prev + 1, Math.ceil(filteredProjects.length / itemsPerPage))
-      )
-    }
-    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md disabled:opacity-50"
-  >
-    Avançar
-  </button>
-</div>
+        <button
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md disabled:opacity-50"
+        >
+          Voltar
+        </button>
+        <p className="text-gray-600 text-sm">
+          Página {currentPage} de {Math.ceil(filteredProjects.length / itemsPerPage)}
+        </p>
+        <button
+          disabled={lastIndex >= filteredProjects.length}
+          onClick={() =>
+            setCurrentPage((prev) =>
+              Math.min(prev + 1, Math.ceil(filteredProjects.length / itemsPerPage))
+            )
+          }
+          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md disabled:opacity-50"
+        >
+          Avançar
+        </button>
+      </div>
+
       <div className="mt-4">
         <label className="mr-2">Itens por página:</label>
         <select
