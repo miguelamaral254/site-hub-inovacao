@@ -9,11 +9,12 @@ interface CardProps {
     titulo?: string;
     dataPublicado?: string;
     texto?: string;
+    textoLongo?:string;
     autor?: string;
     segmento?: string;
 }
 
-const CardStartup = ({ image, alt, titulo, texto, dataPublicado, autor, segmento }: CardProps) => {
+const CardStartup = ({ image, alt, titulo, texto, dataPublicado, autor, segmento, textoLongo }: CardProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -58,7 +59,7 @@ const CardStartup = ({ image, alt, titulo, texto, dataPublicado, autor, segmento
                         <p className="text-gray-800 mt-2"><strong>Incubada desde:</strong> {dataPublicado}</p>
                         <p className="text-gray-800 mt-1"><strong>Autor:</strong> {autor}</p>
                         <p className="text-gray-800 mt-1"><strong>Segmento:</strong> {segmento}</p>
-                        <p className="text-gray-800 mt-3">{texto}</p>
+                        <p className="text-gray-800 mt-3">{textoLongo}</p>
                         <div className="mt-2">
                             <a href="#" className="text-blue-600 text-xs">Link página Web</a>
                         </div>

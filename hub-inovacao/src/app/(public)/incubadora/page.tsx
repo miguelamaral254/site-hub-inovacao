@@ -61,36 +61,40 @@ export default function Incubadora() {
             alt="Logo Passou Encontrou" 
             titulo="Passou Encontrou"
             texto="A Passou Encontrou é uma plataforma digital que conecta vendedores ambulantes a clientes por meio de um mapa interativo em tempo real..."
+            textoLongo="A Passou Encontrou é uma plataforma digital que conecta vendedores ambulantes a clientes por meio de um mapa interativo em tempo real. Com isso, facilita o acesso a produtos locais, fortalece o comércio de rua e promove a inclusão social e a sustentabilidade. A solução usa tecnologia para dar visibilidade a pequenos empreendedores, tornando a experiência de compra mais prática e acessível."
             dataPublicado="Janeiro 2025"
-            autor="João Silva"
-            segmento="Tecnologia e Comércio" 
+            autor="Danilo Santos"
+            segmento="Retailtech (tecnologia para o varejo)" 
           />
           <CardStartup 
             image={DecodeByte}
             alt="Logo DecodeByte"
             titulo="DecodeByte"
             texto="A Decodebyte é uma startup de tecnologia focada na inovação e otimização de serviços digitais..."
+            textoLongo="A Decodebyte é uma startup de tecnologia focada na inovação e otimização de serviços digitais. Nosso principal produto, o Tarefas Perto, conecta profissionais autônomos a clientes que precisam de serviços variados, desde reformas até cuidados pessoais. Utilizamos inteligência artificial para aprimorar a experiência dos usuários, melhorando a apresentação dos serviços e garantindo transações seguras por meio de integrações financeiras eficientes."
             dataPublicado="Fevereiro 2025"
-            autor="Maria Oliveira"
-            segmento="Tecnologia" 
+            autor="James William"
+            segmento="Service Tech" 
           />
           <CardStartup 
             image={Elementum}
             alt="Logo Elementum"
-            titulo="Elementum"
+            titulo="Elementum Fitocosméticos "
             texto="A Elementum Fitocosméticos é uma marca especializada em cosméticos naturais artesanais, comprometida em unir eficácia, sustentabilidade e inovação..."
+            textoLongo="A Elementum Fitocosméticos é uma marca especializada em cosméticos naturais artesanais, comprometida em unir eficácia, sustentabilidade e inovação. Incubada no I.de.i.a.S., estamos desenvolvendo projetos inovadores que integram ativos botânicos e tecnologia de ponta para criar soluções únicas em cuidados com os cabelos. Cada produto é formulado com rigor científico e produzido à mão, preservando a essência natural dos ingredientes. Nossa missão é oferecer produtos de alta performance, respeitando a natureza e promovendo bem-estar. Escolha Elementum e experimente a beleza transformadora da inovação consciente."
             dataPublicado="Março 2025"
-            autor="Carlos Mendes"
-            segmento="Cosméticos Naturais"
+            autor="Gabriela Viana e Thais Souza"
+            segmento="Saúde/Beleza"
           />
           <CardStartup 
             image={NOOK}
             alt="Logo Nook"
             titulo="NOOK"
             texto="A NOOK nasceu no MEDIOTEC SENAC, originada de um projeto integrador com o propósito de ir além da criação de produtos..."
+            textoLongo=" A NOOK nasceu no MEDIOTEC SENAC, originada de um projeto integrador com o propósito de ir além da criação de produtos. A startup tem como missão gerar conhecimento e oportunidades para jovens e pessoas em situação de vulnerabilidade, promovendo inclusão e impacto social por meio da tecnologia. Com soluções inovadoras, a NOOK busca democratizar o acesso ao aprendizado e ao empreendedorismo, capacitando indivíduos e fortalecendo comunidades para um futuro mais sustentável e acessível."
             dataPublicado="Abril 2025"
-            autor="Fernanda Souza"
-            segmento="Tecnologia e Educação"
+            autor="Erick Carrasco"
+            segmento="Service Tech"
           />
         </div>
         <div className="flex justify-center mt-4 py-4">
