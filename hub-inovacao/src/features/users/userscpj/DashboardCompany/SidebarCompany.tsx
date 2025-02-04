@@ -2,13 +2,12 @@
 
 import {
   UserResponseCnpjDTO,
-  UserResponseCpfDTO,
 } from "@/interfaces/userInterface";
 import DashboardHeader from "./DashboardHeader";
 
 interface SidebarCompanyProps {
   setSelectedPage: (page: string) => void;
-  userData: UserResponseCnpjDTO | UserResponseCpfDTO | null;
+  userData: UserResponseCnpjDTO;
   errorMessage: string;
 }
 
