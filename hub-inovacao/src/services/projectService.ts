@@ -1,6 +1,7 @@
 import {
   AcademicProjectResponseProfessorDTO,
   AcademicProjectResponseStudentDTO,
+  UpdateAcademicProjectStatusDTO,
 } from "@/features/authusers/project/interfaces/projectInterfaces";
 import axios from "./api";
 import { AxiosError } from "axios";
@@ -122,6 +123,19 @@ export const getAllProjects = async (): Promise<AcademicProjectResponseDTO[]> =>
     throw new Error("Erro de conexão com o servidor");
   }
 };
+export const getAllProjectsForManager = async (): Promise<AcademicProjectResponseDTO[]> => {
+  try {
+    const response = await axios.get<AcademicProjectResponseDTO[]>("/projects/manager/all");
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw new Error(
+        error.response.data.message || "Erro ao listar todos os projetos"
+      );
+    }
+    throw new Error("Erro de conexão com o servidor");
+  }
+};
   export const updateProjectDetails = async (
     projectId: number,
     updateData: UpdateProjectDetails
@@ -136,7 +150,7 @@ export const getAllProjects = async (): Promise<AcademicProjectResponseDTO[]> =>
     }
   };
 // Função para atualizar status do projeto
-/*
+
         export const updateProjectStatus = async (
           projectId: number,
           statusData: UpdateAcademicProjectStatusDTO
@@ -150,7 +164,4 @@ export const getAllProjects = async (): Promise<AcademicProjectResponseDTO[]> =>
                   throw new Error("Erro de conexão com o servidor");
                   }
                   };
-                  
-// Função para atualizar detalhes do projeto
 
-*/

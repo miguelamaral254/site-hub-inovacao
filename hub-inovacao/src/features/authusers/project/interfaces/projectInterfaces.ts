@@ -1,10 +1,10 @@
 // interfaces/projectInterfaces.ts
 export interface CoauthorDTO {
-    name: string;
-    email: string;
-    phone: string;
-  }
-  
+  name: string;
+  email: string;
+  phone: string;
+}
+
   export interface AcademicProjectResponseProfessorDTO {
     id: string;
     title: string;
@@ -41,4 +41,12 @@ export interface CoauthorDTO {
     justification: string;
     idManager: string;
     coauthors: CoauthorDTO[];
+  }
+
+  export interface UpdateAcademicProjectStatusDTO {
+    id: number; 
+    status: string;
+    feedback: string;
+    justification: string;
+    idManager: string;
   }
