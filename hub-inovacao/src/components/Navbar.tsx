@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/useContext";
+import logo from "@/assets/Logo -- Navbar.svg"
+import Image from "next/image";
 
 const Navbar = () => {
   const { user, logoutUser } = useAuth();
@@ -43,7 +45,7 @@ const Navbar = () => {
 
   return (
     <nav className="flex items-center justify-between p-4 bg-white shadow-md">
-      <div className="text-xl font-bold text-gray-800">Logo</div>
+      <Image src={logo} alt={"Logo HUBr"} /> 
 
       <div className="flex space-x-6">
         <Link href="/inicio" className="text-gray-700 hover:text-blue-600">Início</Link>
