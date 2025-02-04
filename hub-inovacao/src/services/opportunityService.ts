@@ -64,6 +64,8 @@ export const getOpportunitiesByCompanyName = async (
   }
 };
 // Função para atualizar o status da oportunidade
+
+
 export const updateOpportunityStatus = async (
   opportunityId: number,
   statusData: OpportunityUpdateStatusDTO

@@ -24,12 +24,11 @@ export default function TicketList({ statusFilter }: TicketListProps) {
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-  // Função para buscar projetos
+  const validStatus = ["ABERTA", "FECHADA", "PENDENTE"]; 
   const fetchProjects = async () => {
     setLoading(true);
     try {
       const fetchedProjects = await getAllProjectsForManager();
-      const validStatus = ["APROVADA", "PENDENTE", "REPROVADA"];
       if (statusFilter && !validStatus.includes(statusFilter)) {
         setError("Status inválido.");
         setLoading(false);
@@ -51,8 +50,16 @@ export default function TicketList({ statusFilter }: TicketListProps) {
     setLoading(true);
     try {
       const fetchedOpportunities = await getAllOpportunities();
-      setOpportunities(fetchedOpportunities);
-      setFilteredOpportunities(fetchedOpportunities);
+      if (statusFilter && !validStatus.includes(statusFilter)) {
+        setError("Status inválido.");
+        setLoading(false);
+        return;
+      }
+      const filteredByStatus = fetchedOpportunities.filter(
+        (opportunity) => opportunity.status && opportunity.status.toString().toUpperCase() === statusFilter.toUpperCase()
+      );
+      setOpportunities(filteredByStatus);
+      setFilteredOpportunities(filteredByStatus);
     } catch (error) {
       console.log(error);
       setError("Erro ao carregar oportunidades.");

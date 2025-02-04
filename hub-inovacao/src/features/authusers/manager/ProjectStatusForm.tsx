@@ -1,23 +1,27 @@
 import React, { useState } from "react";
 import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
+import { OpportunityResponseDTO } from "@/interfaces/OpportunityInterfaces"; 
 import { updateProjectStatus } from "@/services/projectService";
+import { updateOpportunityStatus } from "@/services/opportunityService";
 import useSwal from "@/hooks/useSwal";
 
-interface ProjectFormProps {
-  project: AcademicProjectResponseDTO;
+interface ProjectStatusFormProps {
+  project?: AcademicProjectResponseDTO;
+  opportunity?: OpportunityResponseDTO;
   fetchProjects: () => void;
   handleClose: () => void;
   statusToSet: "APROVADA" | "REPROVADA";
 }
 
-const ProjectStatusForm: React.FC<ProjectFormProps> = ({
+const ProjectStatusForm: React.FC<ProjectStatusFormProps> = ({
   project,
+  opportunity,
   fetchProjects,
   handleClose,
   statusToSet,
 }) => {
-  const [feedback, setFeedback] = useState(project.feedback || "");
-  const [justification, setJustification] = useState(project.justification || "");
+  const [feedback, setFeedback] = useState(project?.feedback || opportunity?.feedback || "");
+  const [justification, setJustification] = useState(project?.justification || opportunity?.justification || "");
   const { showSuccess, showError } = useSwal();
 
   const handleSaveClick = async () => {
@@ -29,65 +33,87 @@ const ProjectStatusForm: React.FC<ProjectFormProps> = ({
         idManager = userData.id;
       }
 
-      const statusData = {
-        id: Number(project.id),
-        status: statusToSet,
-        feedback,
-        justification,
-        idManager,
-      };
+      const validationDate = new Date().toISOString().split("T")[0];
 
-      console.log("Dados enviados para atualização:", statusData);
-      await updateProjectStatus(Number(project.id), statusData);
+      if (project) {
+        await updateProjectStatus(Number(project.id), {
+          id: Number(project.id),
+          status: statusToSet,
+          feedback,
+          justification,
+          idManager,
+        });
+      } else if (opportunity) {
+        await updateOpportunityStatus(Number(opportunity.id), {
+          id: Number(opportunity.id),
+          status: statusToSet,
+          validationDate,
+          feedback,
+          justification,
+          idManager,
+        });
+      }
+
       showSuccess("Status atualizado com sucesso!");
       fetchProjects();
       handleClose();
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        showError(error.message || "Erro ao atualizar status do projeto.");
-      } else {
-        showError("Erro desconhecido ao atualizar status do projeto.");
-      }
+      showError(error instanceof Error ? error.message : "Erro ao atualizar status.");
     }
   };
 
   return (
-    <div>
-      <div className="mt-4">
-        <label className="block text-gray-700 mb-2">Feedback</label>
-        <textarea
-          value={feedback}
-          onChange={(e) => setFeedback(e.target.value)}
-          className="w-full p-2 border rounded-md"
-          rows={4}
-        />
-      </div>
-
-      <div className="mt-4">
-        <label className="block text-gray-700 mb-2">Justificativa</label>
-        <textarea
-          value={justification}
-          onChange={(e) => setJustification(e.target.value)}
-          className="w-full p-2 border rounded-md"
-          rows={3}
-        />
-      </div>
-
-      <div className="mt-4 flex justify-between">
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
+        {/* Botão de Fechar */}
         <button
-          className="bg-gray-300 text-black p-2 rounded-md"
+          className="absolute top-2 right-2 text-gray-600 text-2xl"
           onClick={handleClose}
         >
-          Fechar
+          &times;
         </button>
-        <button
-          className={`p-2 rounded-md ${
-            statusToSet === "APROVADA" ? "bg-green-500" : "bg-red-500"
-          } text-white`}
-          onClick={handleSaveClick}
-        >
-          {statusToSet === "APROVADA" ? "Aprovar" : "Reprovar"}
-        </button>
+
+        <h2 className="text-2xl font-semibold mb-4">
+          {statusToSet === "APROVADA" ? "Aprovar" : "Reprovar"} {project ? "Projeto" : "Oportunidade"}
+        </h2>
+
+        <div className="mt-4">
+          <label className="block text-gray-700 mb-2">Feedback</label>
+          <textarea
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
+            className="w-full p-2 border rounded-md"
+            rows={4}
+          />
+        </div>
+
+        <div className="mt-4">
+          <label className="block text-gray-700 mb-2">Justificativa</label>
+          <textarea
+            value={justification}
+            onChange={(e) => setJustification(e.target.value)}
+            className="w-full p-2 border rounded-md"
+            rows={3}
+          />
+        </div>
+
+        <div className="mt-4 flex justify-end gap-2">
+         
+          <button
+            className={`p-2 rounded-md ${
+              statusToSet === "APROVADA" ? "bg-green-500" : "bg-red-500"
+            } text-white hover:${statusToSet === "APROVADA" ? "bg-green-600" : "bg-red-600"}`}
+            onClick={handleSaveClick}
+          >
+            {statusToSet === "APROVADA" ? "Aprovar" : "Reprovar"}
+          </button>
+          <button
+            className="bg-gray-300 text-black p-2 rounded-md hover:bg-gray-400"
+            onClick={handleClose}
+          >
+            Fechar
+          </button>
+        </div>
       </div>
     </div>
   );
