@@ -4,6 +4,9 @@ import { useState } from "react";
 import { FaUser, FaBuilding } from "react-icons/fa";
 import { Role } from "@/interfaces/userInterface";  
 import PartnerCompanyForm from "./PartnerCompanyForm";
+import Image from "next/image";
+import logo from "@/assets/Logo.svg";
+import cadastro from "@/assets/Cadastro.svg"
 import UserForm from "./UserForm";
 import { createUserWithCnpj, createUserWithCpf } from "@/services/userService";
 import useSwal from "@/hooks/useSwal";
@@ -109,9 +112,15 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row items-center justify-end min-h-screen bg-gray-100 px-[140px]">
       <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-4">Criar Conta</h2>
+        <div className="flex justify-center items-center mb-4">
+          <Image src={logo} alt="Logo HUBI" className="h-auto w-auto"/>
+        </div>
+        <h2 className="text-2xl font-medium text-blue-600 text-center mb-4">Cadastre-se</h2>
+        <p className="text-base font-medium text-blue-800 text-center mb-4">
+          Compartilhe seus projetos, ideias e muito mais!
+        </p>
 
         <div className="flex justify-around mb-4">
           <div 
@@ -157,6 +166,8 @@ export default function RegisterForm() {
           />
         )}
       </div>
+      <div className="w-auto flex justify-end items-end">
+        <Image  src={cadastro} alt="imagem Login" className="h-auto w-[300px] md:w-[600px] "/></div>
     </div>
   );
 }

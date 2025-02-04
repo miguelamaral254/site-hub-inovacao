@@ -1461,6 +1461,7 @@ hasown@^2.0.0, hasown@^2.0.2:
     axios "^1.7.9"
     dotenv "^16.4.7"
     hub-inovacao "file:"
+    lucide-react "^0.474.0"
     next "15.1.6"
     react "^19.0.0"
     react-dom "^19.0.0"

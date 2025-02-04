@@ -1,7 +1,11 @@
 "use client";  
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image"
 import { useAuth } from "@/context/useContext";
+import login from "@/assets/Login.svg"
+import { ButtonOutline } from "@/components/Button";
+import logo from "@/assets/Logo.svg"
 
 export default function LoginPage() {
   const { loginUser, user } = useAuth();  // Usando o login do contexto
@@ -55,12 +59,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
+    <div className="flex flex-col md:flex-row items-center justify-start min-h-screen bg-gray-100 px-40">
+      <div className="w-auto flex justify-start items-center "><Image  src={login} alt="imagem Login" className="w-[300px] h-auto md:w-[600px] block"/></div>
+      <div className="bg-white flex-col px-6 py-6 rounded-2xl shadow-lg w-full w-[500px]">
+        <div className="flex justify-center items-center mb-4">
+          <Image src={logo} alt="Logo HUBI" className="h-auto w-auto"/>
+        </div>
+        <h2 className="text-2xl font-medium text-blue-600 text-center mb-4">Login</h2>
+        <p className="text-base font-medium text-blue-800 text-center mb-4">
+          Compartilhe seus projetos, ideias e muito mais!
+        </p>
         <form onSubmit={handleLogin} className="space-y-4">
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          <div>
+            <label htmlFor="email" className="block text-base font-medium text-blue-500 mb-2">
               Email
             </label>
             <input
@@ -72,8 +83,8 @@ export default function LoginPage() {
               required
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+          <div>
+            <label htmlFor="password" className="block text-base font-medium text-blue-500 mb-2">
               Senha
             </label>
             <input
@@ -91,22 +102,24 @@ export default function LoginPage() {
           {successMessage && (
             <div className="text-green-500 text-sm mb-4">{successMessage}</div>
           )}
+          <p className="text-blue-600 text-sm font-normal">
+            Esqueceu a senha?
+          </p>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            className="w-full bg-blue-300 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
           >
             Entrar
           </button>
         </form>
-        <p className="text-center mt-4">
-          Não possui uma conta? <a href="/cadastro" className="text-blue-600 font-bold">Faça Cadastro</a>
+        <p className="text-center text-base font-medium mt-4">
+          Não possui uma conta? <a href="/cadastro" className="text-blue-600 font-medium">Cadastre-se</a>
         </p>
-        <button
+        <div className=" mt-6 w-full justify-center" >
+          <ButtonOutline
           onClick={() => (window.location.href = "/")}
-          className="mt-4 w-full bg-gray-300 py-2 rounded-lg hover:bg-gray-400"
-        >
-          Voltar para o site
-        </button>
+          text="Voltar para o site" />
+        </div>
       </div>
     </div>
   );
