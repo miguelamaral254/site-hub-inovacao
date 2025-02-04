@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { FaTrash } from "react-icons/fa";
 import MaskedInput from "react-text-mask";
 
 interface Phone {
@@ -17,6 +18,8 @@ interface PartnerCompanyFormProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handlePhoneChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
   handleAddPhone: () => void;
+  handleRemovePhone: (index: number) => void; 
+
   handleSubmit: (e: React.FormEvent) => void;
   errors: any;
 }
@@ -27,6 +30,7 @@ export default function PartnerCompanyForm({
   handleChange,
   handlePhoneChange,
   handleAddPhone,
+  handleRemovePhone,  
   handleSubmit,
   errors,
 }: PartnerCompanyFormProps) {
@@ -93,12 +97,12 @@ export default function PartnerCompanyForm({
         {errors.institutionOrganization && <p className="text-red-500 text-sm">Campo obrigatório</p>}
       </div>
 
-      {/* Máscara para Telefone */}
-      <div className="space-y-2">
+     
+<div className="space-y-2">
         {formData.phones.map((phone, index) => (
           <div key={index} className="flex items-center space-x-2">
             <MaskedInput
-              mask={['(', /\d/, /\d/, ')', ' ',/\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+              mask={['(', /\d/, /\d/, ')', ' ',/\d/,' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
               name={`phone-${index}`}
               value={phone.number}
               onChange={(e) => handlePhoneChange(index, e)}
@@ -106,8 +110,19 @@ export default function PartnerCompanyForm({
               className={`w-full px-4 py-2 border rounded-lg ${errors[`phone-${index}`] ? 'border-red-500' : ''}`}
             />
             {errors[`phone-${index}`] && <p className="text-red-500 text-sm">Campo obrigatório</p>}
+
+            {/* Ícone de lixeira para remover o telefone */}
+            <button
+              type="button"
+              onClick={() => handleRemovePhone(index)}  // Passa o index para a função handleRemovePhone
+              className="text-red-500 hover:text-red-700"
+            >
+              <FaTrash />
+            </button>
           </div>
         ))}
+
+        {/* Botão para adicionar novo telefone */}
         <button
           type="button"
           onClick={handleAddPhone}
@@ -116,7 +131,6 @@ export default function PartnerCompanyForm({
           Adicionar outro telefone
         </button>
       </div>
-
       <button
         type="submit"
         className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"

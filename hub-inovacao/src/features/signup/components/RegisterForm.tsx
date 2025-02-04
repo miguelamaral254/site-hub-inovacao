@@ -48,6 +48,14 @@ export default function RegisterForm() {
   const handleAddPhone = () => {
     setFormData({ ...formData, phones: [...formData.phones, { number: "" }] });
   };
+  const handleRemovePhone = (index: number) => {
+    const updatedPhones = formData.phones.filter((_, i) => i !== index);
+    setFormData((prevData) => ({
+      ...prevData,
+      phones: updatedPhones,
+    }));
+  };
+  
 
   const validateForm = () => {
     const newErrors: any = {};
@@ -152,6 +160,7 @@ export default function RegisterForm() {
             handleChange={handleChange}
             handlePhoneChange={handlePhoneChange}
             handleAddPhone={handleAddPhone}
+            handleRemovePhone={handleRemovePhone}  
             handleSubmit={handleSubmit}
             errors={errors}
           />
@@ -161,6 +170,7 @@ export default function RegisterForm() {
             handleChange={handleChange}
             handlePhoneChange={handlePhoneChange}
             handleAddPhone={handleAddPhone}
+            handleRemovePhone={handleRemovePhone}  
             handleSubmit={handleSubmit}
             errors={errors}
           />

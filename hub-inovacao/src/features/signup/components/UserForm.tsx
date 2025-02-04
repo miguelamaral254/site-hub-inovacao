@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Role } from "@/interfaces/userInterface";
 import MaskedInput from "react-text-mask";
 import { ButtonGrande, ButtonOutline } from "@/components/Button";
+import { FaTrash } from "react-icons/fa";
 interface Phone {
   number: string;
 }
@@ -19,18 +21,19 @@ interface UserFormProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handlePhoneChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
   handleAddPhone: () => void;
+  handleRemovePhone: (index: number) => void; 
   handleSubmit: (e: React.FormEvent) => void;
   errors: any;
 }
-
 export default function UserForm({
   formData,
   handleChange,
   handlePhoneChange,
   handleAddPhone,
+  handleRemovePhone,  
   handleSubmit,
   errors,
-}: UserFormProps) {
+}: UserFormProps)  {
   // Função para validar o e-mail com domínio específico
   const validateEmail = (email: string): boolean => {
     const regex = /^[a-zA-Z0-9._%+-]+@edu\.pe\.senac\.br$/;
@@ -49,6 +52,8 @@ export default function UserForm({
       delete errors.email; // Remove o erro se o e-mail for válido
     }
   };
+
+  
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -125,8 +130,9 @@ export default function UserForm({
         </select>
       </div>
 
-      {/* Máscara para Telefone */}
-      <div className="space-y-2">
+
+
+<div className="space-y-2">
         {formData.phones.map((phone, index) => (
           <div key={index} className="flex items-center space-x-2">
             <MaskedInput
@@ -138,8 +144,19 @@ export default function UserForm({
               className={`w-full px-4 py-2 border rounded-lg ${errors[`phone-${index}`] ? 'border-red-500' : ''}`}
             />
             {errors[`phone-${index}`] && <p className="text-red-500 text-sm">Campo obrigatório</p>}
+
+            {/* Ícone de lixeira para remover o telefone */}
+            <button
+              type="button"
+              onClick={() => handleRemovePhone(index)}  // Passa o index para a função handleRemovePhone
+              className="text-red-500 hover:text-red-700"
+            >
+              <FaTrash />
+            </button>
           </div>
         ))}
+
+        {/* Botão para adicionar novo telefone */}
         <button
           type="button"
           onClick={handleAddPhone}
@@ -148,11 +165,11 @@ export default function UserForm({
           Adicionar outro telefone
         </button>
       </div>
+
       <div className="flex flex-row justify-center items-center gap-4">
         <ButtonOutline text="Voltar"/>
         <ButtonGrande type="submit" text="Cadastrar"/>
       </div>
-      
     </form>
   );
 }
