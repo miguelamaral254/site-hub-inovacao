@@ -120,7 +120,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-end min-h-screen pt-24 bg-gray-100 px-[140px]">
+    <div className="flex flex-col md:flex-row items-center justify-end min-h-screen pt-5 bg-gray-100 px-[140px]">
       <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md">
         <div className="flex justify-center items-center mb-4">
           <Image src={logo} alt="Logo HUBI" className="h-auto w-auto"/>

@@ -11,6 +11,7 @@ import ProjectCardSkeleton from "@/features/authusers/project/components/Project
 interface AllProjectsListProps {
   visibleProjects: number;
   filterType: string | null;
+  setTotalProjects: (total: number) => void;
 }
 
 const typeMap = {
@@ -21,7 +22,7 @@ const typeMap = {
 
 type TypeAP = typeof typeMap[keyof typeof typeMap];
 
-const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filterType }) => {
+const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filterType, setTotalProjects }) => {
   const [projetos, setProjetos] = useState<AcademicProjectResponseDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
@@ -42,11 +43,13 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
     fetchProjects();
   }, []);
 
+  // Filtro de tipo
   const filteredProjects =
     filterType && filterType !== "Todos" && typeMap[filterType as keyof typeof typeMap]
       ? projetos.filter((projeto) => projeto.typeAP === typeMap[filterType as keyof typeof typeMap])
       : projetos;
 
+  // Filtro por nome
   const filteredByName = nameFilter
     ? filteredProjects.filter(
         (projeto) =>
@@ -56,10 +59,17 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
       )
     : filteredProjects;
 
+  // Atualiza o total de projetos disponíveis para controle do botão "Carregar Mais"
+  useEffect(() => {
+    setTotalProjects(filteredByName.length);
+  }, [filteredByName, setTotalProjects]);
+
   if (loading)
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-        {[...Array(visibleProjects)].map((_, idx) => <ProjectCardSkeleton key={idx} />)}
+        {[...Array(visibleProjects)].map((_, idx) => (
+          <ProjectCardSkeleton key={idx} />
+        ))}
       </div>
     );
 
@@ -73,7 +83,7 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
 
       {filteredByName.length === 0 ? (
         <div className="text-center text-gray-600">
-          <h2>Ainda não temos nenhum disponível</h2>
+          <h2>Ainda não temos nenhum projeto disponível</h2>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">

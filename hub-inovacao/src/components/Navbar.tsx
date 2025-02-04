@@ -46,7 +46,7 @@ const Navbar = () => {
   }, [user]);
 
   return (
-    <nav className="flex flex-col md:flex-row items-center fixed justify-between px-20 py-4 bg-white shadow-md w-full">
+    <nav className="flex flex-col md:flex-row items-center  justify-between px-20 py-4 bg-white shadow-md w-full">
       <div className="flex items-center justify-start w-auto min-w-[100px] md:min-w-[136px]"><Image src={logo} alt="Logo HUBI" className="w-full h-auto"/></div>
       <div className="flex flex-col md:flex-row items-center justify-end px-[32px] space-x-6 gap-[32px] w-full">
         <Link href="/inicio" className="text-blue-900 text-medium text-lg hover:text-blue-600">Início</Link>

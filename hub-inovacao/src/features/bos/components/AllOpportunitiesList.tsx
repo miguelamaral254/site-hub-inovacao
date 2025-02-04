@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { getAllOpportunities } from '@/services/opportunityService';
-import { OpportunityResponseDTO } from '@/interfaces/OpportunityInterfaces';
-import AllOpportunitiesCard from './AllOpportunitiesCard';
-import NameFilter from '@/components/NameFilter';
-import PublishCardSkeleton from '@/features/authusers/manager/PublishCardSkeleton';
+import React, { useEffect, useState } from "react";
+import { getAllOpportunities } from "@/services/opportunityService";
+import { OpportunityResponseDTO } from "@/interfaces/OpportunityInterfaces";
+import AllOpportunitiesCard from "./AllOpportunitiesCard";
+import NameFilter from "@/components/NameFilter";
+import PublishCardSkeleton from "@/features/authusers/manager/PublishCardSkeleton";
 
 interface AllOpportunitiesListProps {
   visibleOpportunities: number;
   filterType: string | null;
+  setTotalOpportunities: (total: number) => void;
 }
 
 const typeMap: Record<string, string> = {
@@ -19,10 +20,14 @@ const typeMap: Record<string, string> = {
   "Ideias": "IDEIA",
 };
 
-const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({ visibleOpportunities, filterType }) => {
+const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({
+  visibleOpportunities,
+  filterType,
+  setTotalOpportunities,
+}) => {
   const [opportunities, setOpportunities] = useState<OpportunityResponseDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
   const [nameFilter, setNameFilter] = useState<string | null>(null);
 
   useEffect(() => {
@@ -31,7 +36,7 @@ const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({ visibleOppo
         const response = await getAllOpportunities();
         setOpportunities(response);
       } catch (err) {
-        setError('Erro ao carregar as oportunidades');
+        setError("Erro ao carregar as oportunidades");
       } finally {
         setLoading(false);
       }
@@ -39,6 +44,21 @@ const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({ visibleOppo
 
     fetchOpportunities();
   }, []);
+
+  const filteredByType =
+    filterType && filterType !== "Todos" && typeMap[filterType]
+      ? opportunities.filter((opportunity) => opportunity.typeBO === typeMap[filterType])
+      : opportunities;
+
+  const filteredByName = nameFilter
+    ? filteredByType.filter((opportunity) =>
+        opportunity.title.toLowerCase().includes(nameFilter.toLowerCase())
+      )
+    : filteredByType;
+
+  useEffect(() => {
+    setTotalOpportunities(filteredByName.length);
+  }, [filteredByName, setTotalOpportunities]);
 
   if (loading) {
     return (
@@ -51,17 +71,6 @@ const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({ visibleOppo
   }
 
   if (error) return <div>{error}</div>;
-
-  const filteredByType = filterType && filterType !== "Todos" && typeMap[filterType]
-    ? opportunities.filter((opportunity) => opportunity.typeBO === typeMap[filterType as keyof typeof typeMap])
-    : opportunities;
-
-  const filteredByName = nameFilter
-    ? filteredByType.filter(
-        (opportunity) =>
-          opportunity.title.toLowerCase().includes(nameFilter.toLowerCase())
-      )
-    : filteredByType;
 
   return (
     <div className="space-y-6">
@@ -76,7 +85,7 @@ const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({ visibleOppo
             id={opportunity.id.toString()}
             title={opportunity.title}
             description={opportunity.description}
-            urlPhoto={opportunity.urlPhoto || '/default-image.jpg'}
+            urlPhoto={opportunity.urlPhoto || "/default-image.jpg"}
             pdfLink={opportunity.pdfLink}
             siteLink={opportunity.siteLink}
             typeBO={opportunity.typeBO}
