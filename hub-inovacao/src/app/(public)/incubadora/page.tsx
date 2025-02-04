@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import Teste from "@/assets/testelogo.png"
+import { Dropdown } from "@/components/Dropdown";
+import { CardStartup, CardServico, CardEditais } from "@/components/Card";
 import { ButtonOutline } from "@/components/Button";
-import ImageProjeto from "@/assets/ImageProjeto.svg"
+import ImageProjeto from "@/assets/ImagemBOS.svg"
 import { ButtonGrandeSeg } from "@/components/Button";
-import { CardEditais, CardServico, CardStartup } from "@/components/Card";
+
 
 export default function Incubadora() {
   return (
@@ -36,7 +38,8 @@ export default function Incubadora() {
           </p>      
         </div>
         <div className="flex justify-end mr-2 md:mr-5"/* dropdown aqui */>
-            
+            <Dropdown />
+
         </div>
         <div className="flex flex-col md:flex-row justify-center items-center mt-6"/* Components cards */>
           <CardStartup />

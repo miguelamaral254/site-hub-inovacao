@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Role } from "@/interfaces/userInterface";
 import MaskedInput from "react-text-mask";
-
+import { ButtonGrande, ButtonOutline } from "@/components/Button";
 interface Phone {
   number: string;
 }
@@ -148,13 +148,11 @@ export default function UserForm({
           Adicionar outro telefone
         </button>
       </div>
-
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
-      >
-        Cadastrar
-      </button>
+      <div className="flex flex-row justify-center items-center gap-4">
+        <ButtonOutline text="Voltar"/>
+        <ButtonGrande type="submit" text="Cadastrar"/>
+      </div>
+      
     </form>
   );
 }
