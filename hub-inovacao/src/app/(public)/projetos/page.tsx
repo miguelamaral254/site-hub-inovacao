@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Teste from "@/assets/testelogo.png";
 import { Dropdown } from "@/components/Dropdown";
-import AllProjectsList from "@/features/projects/components/AllProjectsList";
-import { ButtonOutline } from "@/components/Button";
-
+import bannerprojetos from "@/assets/BannerProjetos.svg"
+import construcao from "@/assets/ProjetoConstrução.svg"
+import senac from "@/assets/ImagensProjetos/SENAC.png"
 const projectTypes = ["Projeto de Inovação", "Projeto de Integração", "Projeto de Extensão"];
 
 const Projetos = () => {
@@ -20,7 +20,7 @@ const Projetos = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex w-full h-[300px] md:h-[500px] bg-gray-500 items-center justify-center">
-        <h1 className="text-white text-3xl md:text-5xl font-semibold">Projetos Acadêmicos</h1>
+        <Image src={bannerprojetos} alt="Banner Projetos"/>
       </div>
 
       <div className="flex flex-col md:flex-row items-center justify-between w-full px-6 md:px-24 py-10">
@@ -29,14 +29,20 @@ const Projetos = () => {
             Projetos Acadêmicos
           </h2>
           <p className="mt-6 text-gray-800 text-lg">
-            Conheça os projetos desenvolvidos por alunos e professores, com foco em inovação e impacto acadêmico.
+            Os Projetos Acadêmicos são iniciativas desenvolvidas por alunos e professores do SENAC PE, promovendo a aplicação prática do conhecimento em desafios reais. Esses projetos podem ser de extensão, que conectam a instituição com a sociedade, ou projetos integradores, nos quais os estudantes desenvolvem soluções inovadoras para problemas do mercado.
+
+            Nos projetos de extensão, as equipes acadêmicas trabalham em conjunto com comunidades, empresas e instituições, criando soluções que impactam positivamente a sociedade. Já nos projetos integradores, os alunos dos cursos do SENAC PE aplicam seus aprendizados na prática, desenvolvendo produtos, serviços e metodologias inovadoras dentro do ambiente acadêmico.
+
+            Essas iniciativas estimulam a criatividade, a pesquisa aplicada e o empreendedorismo, preparando os alunos para os desafios do mercado. Além disso, possibilitam parcerias estratégicas com empresas e startups, aproximando a academia do setor produtivo e fortalecendo o ecossistema de inovação.
+
+            Seja resolvendo problemas reais, desenvolvendo novas tecnologias ou criando impacto social, os Projetos Acadêmicos do SENAC PE representam uma ponte entre a teoria e a prática, formando profissionais mais preparados e inovadores.
           </p>
         </div>
-        <div className="flex justify-center mt-6 md:mt-0">
+        <div className="flex justify-center mt-6 md:mt-6">
           <Image
-            src={Teste}
-            alt="Imagem Teste"
-            className="w-full max-w-[300px] md:max-w-[450px] object-cover rounded-lg shadow-lg"
+            src={senac}
+            alt="Entrada Senac"
+            className="w-full max-w-[300px] md:max-w-[790px] object-cover rounded-lg"
           />
         </div>
       </div>
@@ -47,22 +53,19 @@ const Projetos = () => {
             Conheça os projetos desenvolvidos por alunos e professores
           </h3>
           <p className="mt-4 text-lg text-gray-700">
-            Explore os projetos acadêmicos mais inovadores e impactantes dentro da nossa comunidade acadêmica.
+            Alunos e professores transformam conhecimento em inovação, criando soluções para desafios reais da sociedade e do mercado. Descubra iniciativas de impacto, pesquisa aplicada e empreendedorismo que conectam a academia ao mundo real.
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center md:justify-end gap-4 mt-6">
+        <div className="flex flex-wrap justify-center md:justify-end gap-4 mt-6 mb-6">
           <Dropdown
             options={projectTypes}
             onSelect={setSelectedType}
             defaultText="Filtrar por Tipo"
           />
         </div>
-
-        <AllProjectsList visibleProjects={visibleProjects} filterType={selectedType} />
-
-        <div className="flex justify-center mt-10">
-          <ButtonOutline text="Carregar Mais" onClick={handleLoadMore} />
+        <div className="flex justify-center items-center mt-6">
+          <Image src={construcao} alt="Projetos em Construção"/>
         </div>
       </div>
     </div>
