@@ -1,10 +1,10 @@
 import Image from "next/image"
 
 import { ButtonGrandeSeg } from "./Button"
-import { text } from "stream/consumers";
+import { StaticImageData } from "next/image";
 
 interface CardProps {
-    image: string;
+    image: string | StaticImageData;
     alt: string;
     titulo?: string;
     dataPublicado?: string;
@@ -13,7 +13,7 @@ interface CardProps {
 
 const CardStartup = ({image, alt, titulo, texto}: CardProps) => {
     return(
-        <div className="flex w-full max-w-[390px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg flex-col px-3 py-6 ml-[32px]
+        <div className="flex w-full max-w-[390px] min-h-[200px] md:min-h-[390px] bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg flex-col px-3 py-6 ml-[32px]
             transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)]">
             <div className="flex justify-center items-center w-full">
                 <Image className="w-[318px] h-auto md:max-h-[380px]" src={image} alt={alt}
@@ -40,7 +40,7 @@ const CardStartup = ({image, alt, titulo, texto}: CardProps) => {
 const CardSimples = ({image, alt, titulo, texto}: CardProps) => {
     return(
         <div className="flex w-full max-w-[390px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg flex-col px-3 py-6 ml-[32px]
-            transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)]">
+            transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] flex-grow">
             <div className="flex justify-center items-center w-full">
                 <Image className="w-[318px] h-auto" src={image} alt={alt}
                 />
@@ -63,7 +63,8 @@ const CardSimples = ({image, alt, titulo, texto}: CardProps) => {
 const CardServico = ({image, alt, titulo, texto}: CardProps) => {
     return(
 
-        <div className="flex flex-col w-full max-w-[350px]  min-h-[130px] md:h-[390px] bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg px-3 py-4 ml-[32px] transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)]">
+        <div className="flex flex-col w-full max-w-[350px] min-h-[200px] md:min-h-[390px] bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] 
+        rounded-lg px-3 py-4 ml-[32px] transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] flex-grow">
         <div className="flex justify-center w-full">
             <Image className="md:w-[318px] h-auto" src={image} alt={alt}
             />
@@ -84,7 +85,7 @@ const CardServico = ({image, alt, titulo, texto}: CardProps) => {
 const CardEditais = ({titulo, texto, dataPublicado}: CardProps) => {
     return (
         <div className="flex bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] mt-3
-            transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] rounded-lg flex-col lg:flex-row w-full w-2xs md:max-w-[716px] h-auto py-3 px-3 ml-4 items-center" /*padding podendo alterar*/> 
+            transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] rounded-lg flex-col lg:flex-row w-full w-2xs md:max-w-[516px] h-auto py-3 px-3 ml-4 items-center" /*padding podendo alterar*/> 
             <div className="ml-3 w-full w-2xs md:w-md h-auto"> 
                 <h2 className="text-2xl font-medium">
                     {titulo}

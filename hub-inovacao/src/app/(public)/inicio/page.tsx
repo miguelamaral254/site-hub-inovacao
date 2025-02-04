@@ -7,7 +7,7 @@ import HUBI from "@/assets/Logo.svg"
 import SenacEventos from "@/assets/SENAC Eventos.png"
 import alagamentos from "@/assets/Alagamento.png"
 import teatro from "@/assets/Teatro.png"
-
+import Banner from "@/assets/BannerInicio.svg"
 import PassouEncontrou from "@/assets/Startups/PassouEncontrou.png"
 import DecodeByte from "@/assets/Startups/DecodeByte.png"
 import Elementum from "@/assets/Startups/Elementum.png"
@@ -17,8 +17,8 @@ import ARETIZZE from "@/assets/Startups/ARETIZZE.png"
 export default function Inicio() {
   return (
     <div>
-      <div className="flex w-full h-[560px] bg-gray-500">
-        <h1>Imagens delimitadas</h1>
+      <div className="flex w-full h-auto bg-gray-500">
+        <Image src={Banner} alt="Banner Inicial"/>
       </div>
       <div className="flex flex-row items-center min-h-[529px] justify-between w-full px-[166px]" /* Container HUB */>
         <div className="flex flex-col w-full max-w-[642px] h-auto mt-4 px-4 md:ml-4" >
@@ -68,7 +68,7 @@ export default function Inicio() {
       </div>
       <div className="flex flex-col w-full h-auto min-h-[200px] mt-20 px-[166px]" /* Carrocel */ >
         <div className="flex flex-row justify-center items-start mt-6 w-full"/* Projetos Academicos */>
-          <div className="flex flex-row w-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             <CardServico titulo="Alagamentos Constantes na Cidade do Recife" texto="Recife enfrenta problemas frequentes de alagamento durante períodos de chuva intensa, 
             afetando a mobilidade urbana, danificando infraestruturas e colocando em risco a segurança pública." image={alagamentos} alt="Imagem de alagamento"/>
             <CardServico titulo="Sistema de Gestão Integrada para Teatros" texto="Os teatros carecem de um sistema de gestão integrada que inclua funcionalidades como bilheteria eletrônica, gestão e locação de espaços e eventos, 
