@@ -22,8 +22,12 @@ export default function Oportunidades() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="flex w-full h-[300px] md:h-[500px] bg-gray-500 items-center justify-center">
-        <Image src={banneroportunidades} alt="Banner de Oportunidades" />
+      <div className="flex w-full h-auto bg-gray-500">
+        <Image 
+        src={banneroportunidades} 
+        alt="Banner de Oportunidades" 
+        className="w-full h-auto object-cover"
+        />
       </div>
 
       <div className="flex flex-col md:flex-row items-center justify-between w-full px-6 md:px-24 py-10">

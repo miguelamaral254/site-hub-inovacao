@@ -26,8 +26,12 @@ export default function Incubadora() {
 
   return (
     <div>
-      <div className="flex w-full h-[560px] bg-gray-500">
-        <Image src={bannerincubadora} alt="Banner Inicial" />
+      <div className="flex w-full h-auto bg-gray-500">
+        <Image 
+        src={bannerincubadora} 
+        alt="Banner Inicial"
+        className="w-full h-auto object-cover"
+        />
       </div>
       <div className="flex flex-row items-center min-h-[529px] justify-between w-full px-[166px]" /* Container do Ideias*/>
         <div className="flex flex-col w-full max-w-[642px] h-auto mt-4 px-4" >
