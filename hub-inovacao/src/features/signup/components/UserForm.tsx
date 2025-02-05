@@ -166,6 +166,10 @@ export default function UserForm({
         </button>
       </div>
 
+      <p className="text-center text-base font-medium mt-4">
+          Já possui uma conta? <a href="/login" className="text-blue-600 font-medium">Faça Login</a>
+      </p>
+
       <div className="flex flex-row justify-center items-center gap-4">
         <ButtonOutline text="Voltar"/>
         <ButtonGrande type="submit" text="Cadastrar"/>
