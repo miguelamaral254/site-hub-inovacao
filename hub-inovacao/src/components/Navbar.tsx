@@ -55,7 +55,7 @@ const Navbar = () => {
           { href: "/inicio", label: "Início" },
           { href: "/incubadora", label: "Incubadora i.de.i.a.S" },
           { href: "/projetos", label: "Projetos Acadêmicos" },
-          { href: "/oportunidades", label: "Banco de B.Os" },
+          { href: "/oportunidades", label: "Banco de Oportunidades" },
           { href: "/editais", label: "Editais" },
         ].map((link) => (
           <Link
