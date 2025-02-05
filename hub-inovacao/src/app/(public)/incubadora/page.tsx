@@ -65,6 +65,7 @@ export default function Incubadora() {
             dataPublicado="Janeiro 2025"
             autor="Danilo Santos"
             segmento="Retailtech (tecnologia para o varejo)" 
+            link="https://passouencontrou.netlify.app"
           />
           <CardStartup 
             image={DecodeByte}
@@ -75,6 +76,7 @@ export default function Incubadora() {
             dataPublicado="Fevereiro 2025"
             autor="James William"
             segmento="Service Tech" 
+            link="https://www.instagram.com/decodebyte/"
           />
           <CardStartup 
             image={Elementum}
@@ -85,6 +87,7 @@ export default function Incubadora() {
             dataPublicado="Março 2025"
             autor="Gabriela Viana e Thais Souza"
             segmento="Saúde/Beleza"
+            link="https://www.instagram.com/souelementum/"
           />
           <CardStartup 
             image={NOOK}
@@ -95,6 +98,7 @@ export default function Incubadora() {
             dataPublicado="Abril 2025"
             autor="Erick Carrasco"
             segmento="Service Tech"
+            link="https://www.instagram.com/nook.corp/"
           />
         </div>
         <div className="flex justify-center mt-4 py-4">

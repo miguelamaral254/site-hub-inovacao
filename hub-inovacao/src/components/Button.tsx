@@ -15,14 +15,17 @@ const ButtonGrande = ({ text, onClick, type = "button" }: ButtonProps) => {
 }
 
 const ButtonGrandeSeg = ({ text, onClick }: ButtonProps) => {
-  return(
-      <div className="flex items-center justify-center">
-              <button onClick={onClick} className="w-auto w-[100px] md:w-[160px] h-auto text-white text-white font-medium text-base md:text-lg flex justify-center items-center bg-orange-500 hover:bg-orange-600 rounded-lg py-2 px-4 transition-all duration-300 active:rounded-3xl">
-                  {text}
-              </button>
-          </div>
-  )
-}
+  return (
+    <div className="flex items-center justify-center">
+      <button 
+        onClick={onClick} 
+        className="h-auto text-white font-medium text-base md:text-lg flex justify-center items-center bg-orange-500 hover:bg-orange-600 rounded-lg py-2 px-4 transition-all duration-300 active:rounded-3xl whitespace-nowrap"
+      >
+        {text}
+      </button>
+    </div>
+  );
+};
 
 const ButtonPequeno = ({ text, onClick }: ButtonProps) => {
   return (
