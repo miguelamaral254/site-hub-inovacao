@@ -6,7 +6,7 @@ import { getAllOpportunities } from "@/services/opportunityService";
 import { OpportunityResponseDTO } from "@/interfaces/OpportunityInterfaces";
 import AllOpportunitiesCard from "./AllOpportunitiesCard";
 import NameFilter from "@/components/NameFilter";
-import PublishCardSkeleton from "@/features/authusers/manager/PublishCardSkeleton";
+import PublishCardSkeleton from "@/features/auth-components/manager/PublishCardSkeleton";
 
 interface AllOpportunitiesListProps {
   visibleOpportunities: number;

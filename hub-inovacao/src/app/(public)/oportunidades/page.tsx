@@ -7,7 +7,7 @@ import { Dropdown } from "@/components/Dropdown";
 import { ButtonGrandeSeg } from "@/components/Button";
 import ImagemBOS from "@/assets/ImagemBOS.svg";
 import banneroportunidades from "@/assets/BannerOportunidades.svg";
-import AllOpportunitiesList from "@/features/bos/components/AllOpportunitiesList";
+import AllOpportunitiesList from "@/features/public-components/oportunities/AllOpportunitiesList";
 
 const opportunityTypes = ["Oportunidades", "Problemas", "Ideias"];
 
@@ -67,7 +67,7 @@ export default function Oportunidades() {
           <AllOpportunitiesList 
             visibleOpportunities={visibleOpportunities} 
             filterType={selectedType} 
-            setTotalOpportunities={setTotalOpportunities} // Atualiza o total de oportunidades disponíveis
+            setTotalOpportunities={setTotalOpportunities} 
           />
         </div>
 

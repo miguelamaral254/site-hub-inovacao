@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
 import { getUserByEmail } from "@/services/userService";
-import SidebarCompany from "@/features/users/userscpj/DashboardCompany/SidebarCompany";
-import PageContentCompany from "@/features/users/userscpj/DashboardCompany/PageContentCompany";
+import SidebarCompany from "@/features/auth-components/users/userscpj/DashboardCompany/SidebarCompany";
+import PageContentCompany from "@/features/auth-components/users/userscpj/DashboardCompany/PageContentCompany";
 
 export default function DashboardCompanyPage() {
   const [userData, setUserData] = useState<UserResponseCnpjDTO | UserResponseCpfDTO | undefined>(undefined);

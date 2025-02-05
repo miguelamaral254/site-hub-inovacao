@@ -1,5 +1,5 @@
-import CreateProjectForm from "@/features/authusers/project/components/ModalCreateProject";
-import ProjectList from "@/features/authusers/project/components/ProjectList";
+import CreateProjectForm from "@/features/auth-components/project/ModalCreateProject";
+import ProjectList from "@/features/auth-components/project/ProjectList";
 import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
 
 

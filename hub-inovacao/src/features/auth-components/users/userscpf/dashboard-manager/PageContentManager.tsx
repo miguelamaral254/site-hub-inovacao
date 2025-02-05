@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import CreatePublishForm from "@/features/authusers/manager/CreatePublishForm";
-import PublishList from "@/features/authusers/manager/PublishList";
-import TicketList from "@/features/authusers/manager/TicketList";
+import CreatePublishForm from "@/features/auth-components/manager/CreatePublishForm";
+import PublishList from "@/features/auth-components/manager/PublishList";
+import TicketList from "@/features/auth-components/manager/TicketList";
 import { UserResponseCpfDTO } from "@/interfaces/userInterface";
 
 interface PageContentManagerProps {

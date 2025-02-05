@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "../interfaces/projectInterfaces";
 import useSwal from "@/hooks/useSwal";  // Importando o hook
+import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "./interfaces/projectInterfaces";
 
 interface UpdateProjectDetailsProps {
   project: AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO;

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Role } from "@/interfaces/userInterface";
 import MaskedInput from "react-text-mask";

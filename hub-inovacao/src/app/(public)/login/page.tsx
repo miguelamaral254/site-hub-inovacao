@@ -61,7 +61,7 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col md:flex-row items-center justify-start min-h-screen bg-gray-100 px-40">
       <div className="w-auto flex justify-start items-center "><Image  src={login} alt="imagem Login" className="w-[300px] h-auto md:w-[600px] block"/></div>
-      <div className="bg-white flex-col px-6 py-6 rounded-2xl shadow-lg w-full w-[500px]">
+      <div className="bg-white flex-col px-6 py-6 rounded-2xl shadow-lg w-full">
         <div className="flex justify-center items-center mb-4">
           <Image src={logo} alt="Logo HUBI" className="h-auto w-auto"/>
         </div>

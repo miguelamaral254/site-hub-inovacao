@@ -6,7 +6,7 @@ import { Dropdown } from "@/components/Dropdown";
 import bannerprojetos from "@/assets/BannerProjetos.svg";
 import construcao from "@/assets/ProjetoConstrução.svg";
 import senac from "@/assets/ImagensProjetos/SENAC.png";
-import AllProjectsList from "@/features/projects/components/AllProjectsList";
+import AllProjectsList from "@/features/public-components/projects/AllProjectsList";
 
 const projectTypes = ["Projeto de Inovação", "Projeto de Integração", "Projeto de Extensão"];
 

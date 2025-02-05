@@ -6,7 +6,7 @@ import { getAllProjects } from "@/services/projectService";
 import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
 import CardAcademicProjs from "./CardAcademicProjs";
 import NameFilter from "@/components/NameFilter";
-import ProjectCardSkeleton from "@/features/authusers/project/components/ProjectCardSkeleton";
+import ProjectCardSkeleton from "@/features/auth-components/project/ProjectCardSkeleton";
 
 interface AllProjectsListProps {
   visibleProjects: number;

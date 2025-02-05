@@ -3,10 +3,10 @@
 
 import React, { useState } from "react";
 import { FaFilePdf, FaExternalLinkAlt, FaTimes } from "react-icons/fa";
-import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "../interfaces/projectInterfaces";
 import UpdateProjectDetails from "./UpdateProjectDetails";
 import { updateProjectDetails } from "@/services/projectService";
 import useSwal from "@/hooks/useSwal";
+import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "./interfaces/projectInterfaces";
 
 interface ProjectCardProps {
   project: AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO;

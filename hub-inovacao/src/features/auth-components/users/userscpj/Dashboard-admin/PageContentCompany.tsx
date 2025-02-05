@@ -2,8 +2,8 @@
 "use client";
 
 import { UserResponseCnpjDTO } from "@/interfaces/userInterface";
-import OpportunityList from "@/features/authusers/company/components/OpportunityList";
-import CreateOpportunityForm from "@/features/authusers/company/components/CreateOpportunityForm";
+import OpportunityList from "@/features/auth-components/company/OpportunityList";
+import CreateOpportunityForm from "@/features/auth-components/company/CreateOpportunityForm";
 
 interface PageContentCompanyProps {
   selectedPage: string | null;

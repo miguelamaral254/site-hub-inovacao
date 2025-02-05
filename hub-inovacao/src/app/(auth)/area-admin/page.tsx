@@ -4,8 +4,8 @@
 import { useState, useEffect } from "react";
 import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
 import { getUserByEmail } from "@/services/userService";
-import Sidebar from "@/features/users/userscpf/dashboard/Sidebar";
-import PageContent from "@/features/users/userscpf/dashboard/PageContent";
+import Sidebar from "@/features/auth-components/users/userscpf/dashboard-users/Sidebar";
+import PageContent from "@/features/auth-components/users/userscpf/dashboard-users/PageContent";
 
 export default function DashboardPage() {
   const [userData, setUserData] = useState<UserResponseCnpjDTO | UserResponseCpfDTO | null>(null);

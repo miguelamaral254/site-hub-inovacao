@@ -97,7 +97,7 @@ export default function Inicio() {
             </p>      
         </div>
         <div className="px-3 flex justify-center items-center">
-           <CardEditais titulo="Catalisa ICT - Ciclo 02" image={null} alt="sem imagem" dataPublicado="Publicado em: 04/02/2025" texto="O Catalisa ICT é uma iniciativa do Sebrae que transforma pesquisas acadêmicas em inovações de alto impacto."/>
+           <CardEditais titulo="Catalisa ICT - Ciclo 02" image={"https://picsum.photos/200/300"} alt="sem imagem" dataPublicado="Publicado em: 04/02/2025" texto="O Catalisa ICT é uma iniciativa do Sebrae que transforma pesquisas acadêmicas em inovações de alto impacto."/>
         </div>
       </div>
     </div>
