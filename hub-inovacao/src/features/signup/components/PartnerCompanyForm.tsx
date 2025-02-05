@@ -131,6 +131,11 @@ export default function PartnerCompanyForm({
           Adicionar outro telefone
         </button>
       </div>
+
+      <p className="text-center text-base font-medium mt-4">
+          Já possui uma conta? <a href="/login" className="text-blue-600 font-medium">Faça Login</a>
+      </p>
+      
       <button
         type="submit"
         className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
