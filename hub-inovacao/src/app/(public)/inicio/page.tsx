@@ -18,7 +18,11 @@ export default function Inicio() {
   return (
     <div>
       <div className="flex w-full h-auto bg-gray-500">
-        <Image src={Banner} alt="Banner Inicial"/>
+        <Image 
+          src={Banner} 
+          alt="Banner Inicial" 
+          className="w-full h-auto object-cover"
+        />
       </div>
       <div className="flex flex-row items-center min-h-[529px] justify-between w-full px-[166px]" /* Container HUB */>
         <div className="flex flex-col w-full max-w-[642px] h-auto mt-4 px-4 md:ml-4" >

@@ -40,8 +40,12 @@ const editaisList = [
 export default function PublishPage() {
   return (
     <div>
-      <div className="flex w-full h-auto">
-        <Image src={bannereditais} alt="Banner Editais" />
+      <div className="flex w-full h-auto bg-gray-500">
+        <Image 
+        src={bannereditais} 
+        alt="Banner Editais" 
+        className="w-full h-auto object-cover"
+        />
       </div>
       <div className="flex flex-row items-center min-h-[146px] justify-between w-full px-[166px] mt-6">
         <div className="flex flex-col w-full h-auto mt-4 px-4 md:ml-4">
