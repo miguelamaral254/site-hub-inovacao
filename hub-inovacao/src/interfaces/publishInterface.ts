@@ -18,3 +18,12 @@ export interface PublishCreateDTO {
     finalDate: string;
     publishedDate: string;
   }
+
+  export interface UpdatePublishDetailsDTO {
+     title: string,
+     description: string,
+     acessLink: string,
+     photoLink:string,
+     initialDate: string,
+     finalDate : string
+  }
