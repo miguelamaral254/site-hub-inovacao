@@ -5,6 +5,7 @@
 import { UserResponseCnpjDTO } from "@/interfaces/userInterface";
 import CreatePublishForm from "../manager/CreatePublishForm";
 import PublishList from "../manager/PublishList";
+import TicketList from "../manager/TicketList";
 
 interface AdminPageContentProps {
   selectedPage: string | null;
@@ -21,7 +22,7 @@ export default function AdminPageContent({ selectedPage, userData }: AdminPageCo
           <div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Projetos da Empresa</h3>
             <p className="text-lg text-gray-600 mb-4">Aqui você pode ver tickets respondidos por você.</p>
-           
+            <TicketList statusFilter={"PENDENTE"} />
           </div>
         )}
 

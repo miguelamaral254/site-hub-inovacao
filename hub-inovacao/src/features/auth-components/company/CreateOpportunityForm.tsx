@@ -1,24 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import { FaUser, FaTrashAlt, FaPlusCircle } from 'react-icons/fa';
-import { createOpportunity } from '@/services/opportunityService'; 
-import { OpportunityCreateDTO, TypeBO, StatusSolicitation } from '@/interfaces/OpportunityInterfaces';
-import useSwal from '@/hooks/useSwal'; 
+import { createOpportunity } from '@/services/opportunityService';
+import { OpportunityResponseDTO, TypeBO, StatusSolicitation } from '@/interfaces/OpportunityInterfaces';
+import useSwal from '@/hooks/useSwal';
 
 const CreateOpportunityForm: React.FC = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [urlPhoto, setUrlPhoto] = useState('');
+  const [urlPhoto, setUrlPhoto] = useState<File | null>(null); 
   const [pdfLink, setPdfLink] = useState('');
   const [siteLink, setSiteLink] = useState('');
   const [typeBO, setTypeBO] = useState<TypeBO>(TypeBO.OPORTUNIDADE);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { showSuccess, showError } = useSwal(); 
+  const { showSuccess, showError } = useSwal();
 
   const handleSubmit = async () => {
-    if (!title || !description) {
+    if (!title || !description || !urlPhoto) {
       setErrorMessage('Campos obrigatórios não preenchidos');
       return;
     }
@@ -30,31 +29,27 @@ const CreateOpportunityForm: React.FC = () => {
     }
 
     const parsedUserData = JSON.parse(userData);
-    const status = StatusSolicitation.PENDENTE; // Status inicial como 'PENDENTE'
+    const status = StatusSolicitation.PENDENTE;
 
-    const opportunityData: OpportunityCreateDTO = {
-      title,
-      description,
-      urlPhoto,
-      pdfLink,
-      siteLink,
-      typeBO,
-      authorEmail: parsedUserData.email, 
-      status,
-      flagActive: true, // Podemos iniciar com o status ativo
-      partnerCompanyId: parsedUserData.id, 
-    };
-
-    console.log('Oportunidade a ser enviada:', opportunityData);
-
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('urlPhoto', urlPhoto); 
+    formData.append('pdfLink', pdfLink);
+    formData.append('siteLink', siteLink);
+    formData.append('typeBO', typeBO.toString()); 
+    formData.append('authorEmail', parsedUserData.email);
+    formData.append('status', StatusSolicitation[status]); 
+    formData.append('flagActive', String(true));
+    formData.append('partnerCompanyId', String(parsedUserData.id));
     try {
       setIsLoading(true);
-      await createOpportunity(opportunityData);  
+      await createOpportunity(formData); 
       showSuccess('Oportunidade Criada com Sucesso!');
-      
+
       setTitle('');
       setDescription('');
-      setUrlPhoto('');
+      setUrlPhoto(null);
       setPdfLink('');
       setSiteLink('');
       setTypeBO(TypeBO.OPORTUNIDADE);
@@ -97,14 +92,13 @@ const CreateOpportunityForm: React.FC = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="urlPhoto" className="block text-sm font-medium mb-2">Link da Foto</label>
+          <label htmlFor="urlPhoto" className="block text-sm font-medium mb-2">Escolher Imagem</label>
           <input
-            type="text"
+            type="file"
             id="urlPhoto"
-            value={urlPhoto}
-            onChange={(e) => setUrlPhoto(e.target.value)}
+            onChange={(e) => setUrlPhoto(e.target.files ? e.target.files[0] : null)}
             className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="URL da foto da oportunidade"
+            accept="image/*"
           />
         </div>
 
