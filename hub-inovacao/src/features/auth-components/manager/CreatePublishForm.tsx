@@ -5,15 +5,16 @@ import { PublishCreateDTO } from "@/interfaces/publishInterface";
 
 interface CreatePublishFormProps {
   onClose: () => void;
+  onPublishCreated: () => void; // 🚀 Chama a função para recarregar a lista após o sucesso
 }
 
-const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose }) => {
+const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose, onPublishCreated }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [acessLink, setAcessLink] = useState("");
-  const [photoLink, setPhotoLink] = useState("");
   const [initialDate, setInitialDate] = useState("");
   const [finalDate, setFinalDate] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -30,20 +31,21 @@ const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose }) => {
       title,
       description,
       acessLink,
-      photoLink,
       initialDate: new Date(initialDate).toISOString().split("T")[0],
       finalDate: new Date(finalDate).toISOString().split("T")[0],
       publishedDate,
     };
+
     console.log("Dados enviados:", publishData);
 
     try {
       setIsLoading(true);
-      await createPublish(publishData);
+      await createPublish(publishData, imageFile);
       showSuccess("Publicação Criada com Sucesso!");
       onClose();
+      onPublishCreated(); // 🚀 Atualiza a lista de publicações
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setErrorMessage("Erro ao criar publicação. Tente novamente.");
       showError("Erro ao criar publicação!");
     } finally {
@@ -60,7 +62,7 @@ const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose }) => {
 
         <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium">Título</label>
+            <label className="block text-sm font-medium">Título *</label>
             <input
               type="text"
               className="w-full p-2 border rounded"
@@ -71,7 +73,7 @@ const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium">Descrição</label>
+            <label className="block text-sm font-medium">Descrição *</label>
             <textarea
               className="w-full p-2 border rounded"
               value={description}
@@ -90,18 +92,19 @@ const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose }) => {
             />
           </div>
 
+          {/* Upload de Imagem */}
           <div>
-            <label className="block text-sm font-medium">Link da Foto</label>
+            <label className="block text-sm font-medium">Escolher Imagem</label>
             <input
-              type="text"
+              type="file"
+              onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
               className="w-full p-2 border rounded"
-              value={photoLink}
-              onChange={(e) => setPhotoLink(e.target.value)}
+              accept="image/*"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium">Data de Início</label>
+            <label className="block text-sm font-medium">Data de Início *</label>
             <input
               type="date"
               className="w-full p-2 border rounded"
@@ -112,7 +115,7 @@ const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium">Data Final</label>
+            <label className="block text-sm font-medium">Data Final *</label>
             <input
               type="date"
               className="w-full p-2 border rounded"

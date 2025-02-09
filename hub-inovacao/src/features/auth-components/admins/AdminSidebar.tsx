@@ -32,21 +32,16 @@ export default function AdminSidebar({
         >
           Tickets em aberto (x)
         </button>
+       
         <button
           className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
           onClick={() => setSelectedPage("page3")}
         >
-          Submeter Edital
+          Gerenciar editais
         </button>
         <button
           className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
           onClick={() => setSelectedPage("page4")}
-        >
-          Editais em aberto
-        </button>
-        <button
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
-          onClick={() => setSelectedPage("page5")}
         >
           Gerenciar Usuarios
         </button>

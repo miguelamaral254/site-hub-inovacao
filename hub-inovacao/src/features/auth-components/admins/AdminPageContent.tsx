@@ -17,13 +17,19 @@ interface AdminPageContentProps {
 export default function AdminPageContent({ selectedPage, userData }: AdminPageContentProps) {
   const [isManagerFormOpen, setIsManagerFormOpen] = useState(false);
   const [isPublishFormOpen, setIsPublishFormOpen] = useState(false);
-
+  const [refreshKey, setRefreshKey] = useState(0); // 🚀 Estado para forçar recarregamento da lista de publicações
 
   // ✅ Função para tratar o sucesso da criação do gerente
   const handleManagerCreated = (newManager: CreateUserResponseDTO) => {
     console.log("Novo gerente criado:", newManager);
     setIsManagerFormOpen(false);
     // Aqui você pode adicionar lógica para atualizar a lista de usuários, se necessário
+  };
+
+  // ✅ Função para atualizar a lista de publicações após criar uma nova
+  const handlePublishCreated = () => {
+    setIsPublishFormOpen(false);
+    setRefreshKey((prevKey) => prevKey + 1); // 🔄 Atualiza a lista de publicações
   };
 
   return (
@@ -46,18 +52,12 @@ export default function AdminPageContent({ selectedPage, userData }: AdminPageCo
           </div>
         )}
 
+      
+
         {selectedPage === "page3" && (
           <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6">Submeter Novo Edital</h3>
-            <p className="text-lg text-gray-600 mb-6">Preencha os campos abaixo para submeter um novo edital.</p>
-          
-          </div>
-        )}
-
-{selectedPage === "page4" && (
-          <div>
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-semibold text-gray-900">Editais em aberto</h3>
+              <h3 className="text-2xl mt-20 font-semibold text-gray-900">Editais em aberto</h3>
               <button
                 onClick={() => setIsPublishFormOpen(true)}
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700"
@@ -66,12 +66,12 @@ export default function AdminPageContent({ selectedPage, userData }: AdminPageCo
               </button>
             </div>
             <div className="space-y-4">
-              <PublishList />
+              <PublishList key={refreshKey} />
             </div>
           </div>
         )}
 
-        {selectedPage === "page5" && (
+        {selectedPage === "page4" && (
           <div>
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-semibold text-gray-900">Usuários</h3>
@@ -96,8 +96,14 @@ export default function AdminPageContent({ selectedPage, userData }: AdminPageCo
           onSuccess={handleManagerCreated} 
         />
       )}
-            {isPublishFormOpen && <CreatePublishForm onClose={() => setIsPublishFormOpen(false)} />}
 
+      {/* ✅ Agora, ao criar uma publicação, a lista será atualizada */}
+      {isPublishFormOpen && (
+        <CreatePublishForm 
+          onClose={() => setIsPublishFormOpen(false)} 
+          onPublishCreated={handlePublishCreated} 
+        />
+      )}
     </div>
   );
 }
