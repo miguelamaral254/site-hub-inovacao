@@ -11,6 +11,7 @@ interface PageContentManagerProps {
   userData: UserResponseCpfDTO 
 }
 
+
 export default function PageContentManager({ selectedPage, userData }: PageContentManagerProps) {
   const role = userData?.role;
 

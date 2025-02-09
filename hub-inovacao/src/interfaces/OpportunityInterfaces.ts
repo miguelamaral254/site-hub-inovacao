@@ -12,7 +12,7 @@ export enum TypeBO {
     APROVADA,
    
   }
-  
+
   export interface OpportunityCreateDTO {
     title: string;
     description: string;
