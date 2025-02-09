@@ -75,10 +75,10 @@ export default function UserForm({
           name="email"
           placeholder="E-mail"
           value={formData.email}
-          onChange={handleEmailChange}  // Usar handleEmailChange para validar o e-mail
+          onChange={handleEmailChange}  
           className={`w-full px-4 py-2 border rounded-lg ${errors.email ? 'border-red-500' : ''}`}
         />
-        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}  {/* Exibe o erro se o e-mail não for válido */}
+        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}  
       </div>
 
       <div>

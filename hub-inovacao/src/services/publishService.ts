@@ -3,19 +3,30 @@ import axios from "./api";
 import { AxiosError } from "axios";
 
 export const createPublish = async (
-  publishData: PublishCreateDTO
-): Promise<PublishResponseDTO> => {
+  publishData: PublishCreateDTO,
+  imageFile?: File | null
+): Promise<void> => {
   try {
-    const response = await axios.post<PublishResponseDTO>("/publish/create", publishData);
-    return response.data;
-  } catch (error) {
-    if (error instanceof AxiosError && error.response) {
-      throw new Error(error.response.data.message || "Erro ao criar publicação");
+    const token = localStorage.getItem("token");
+
+    const formData = new FormData();
+    formData.append("dto", new Blob([JSON.stringify(publishData)], { type: "application/json" }));
+
+    if (imageFile) {
+      formData.append("imageFile", imageFile);
     }
-    throw new Error("Erro de conexão com o servidor");
+
+    await axios.post("/publish/create", formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  } catch (error) {
+    console.error("Erro ao criar publicação:", error);
+    throw new Error("Erro ao criar publicação");
   }
 };
-
 export const getAllPublish = async (): Promise<PublishResponseDTO[]> => {
   try {
     const response = await axios.get<PublishResponseDTO[]>("/publish/all");

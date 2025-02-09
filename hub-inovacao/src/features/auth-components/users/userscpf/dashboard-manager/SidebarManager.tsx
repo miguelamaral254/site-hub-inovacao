@@ -47,6 +47,7 @@ export default function SidebarManager({
         >
           Editais em aberto
         </button>
+        
       </div>
     </div>
   );
