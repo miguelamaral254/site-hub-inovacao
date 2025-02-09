@@ -44,6 +44,12 @@ export default function AdminSidebar({
         >
           Editais em aberto
         </button>
+        <button
+          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+          onClick={() => setSelectedPage("page5")}
+        >
+          Gerenciar Usuarios
+        </button>
       </div>
     </div>
   );

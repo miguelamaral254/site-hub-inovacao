@@ -1,3 +1,15 @@
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  registration: string;
+  role: string;
+  institutionOrganization: string;
+  userStatus: boolean;
+  cnpj?: string;
+  cpf?: string;
+  phones: { id: number; number: string }[];
+}
 
 
 export interface CreateUserRequestDTO {
@@ -60,9 +72,6 @@ export interface CreateUserRequestDTO {
     cpf: string;
     phones: PhoneResponseDTO[];
   }
-
-
-
 
   export enum Role {
       ADMIN = 'ADMIN',
