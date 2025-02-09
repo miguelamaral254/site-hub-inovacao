@@ -17,6 +17,7 @@ const CreateOpportunityForm: React.FC = () => {
   const { showSuccess, showError } = useSwal();
 
   const handleSubmit = async () => {
+    console.log()
     if (!title || !description || !urlPhoto) {
       setErrorMessage('Campos obrigatórios não preenchidos');
       return;

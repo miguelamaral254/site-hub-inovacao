@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { FaUser, FaTrashAlt, FaPlusCircle } from 'react-icons/fa';
 import { createProject } from '@/services/projectService'; 
-import { AcademicProjectCreateDTO } from '@/interfaces/AcademicProjectInterface';
 import useSwal from '@/hooks/useSwal'; 
 
 interface CreateProjectFormProps {
@@ -13,7 +12,7 @@ interface CreateProjectFormProps {
 const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ isForProfessor, isForStudent }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [urlPhoto, setUrlPhoto] = useState('');
+  const [urlPhoto, setUrlPhoto] = useState<File | null>(null); // Aceita arquivo
   const [pdfLink, setPdfLink] = useState('');
   const [siteLink, setSiteLink] = useState('');
   const [typeAP, setTypeAP] = useState("PI");
@@ -24,7 +23,7 @@ const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ isForProfessor, i
   const { showSuccess, showError } = useSwal(); 
 
   const handleSubmit = async () => {
-    if (!title || !description) {
+    if (!title || !description || !urlPhoto) {
       setErrorMessage('Campos obrigatórios não preenchidos');
       return;
     }
@@ -38,35 +37,28 @@ const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ isForProfessor, i
     const parsedUserData = JSON.parse(userData);
     const status = 'PENDENTE'; 
 
-    const projectData: AcademicProjectCreateDTO = {
-      title,
-      description,
-      urlPhoto,
-      pdfLink,
-      siteLink,
-      typeAP,
-      userEmail: parsedUserData.email, 
-      status,
-      coauthors: coauthors.map(coauthor => ({
-        name: coauthor.name,
-        email: coauthor.email,
-        phone: coauthor.phone
-      })),
-      studentId: isForStudent ? parsedUserData.id : undefined,
-      professorId: isForProfessor ? parsedUserData.id : undefined,
-    };
-
-    console.log('Projeto a ser enviado:', projectData);
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('urlPhoto', urlPhoto); // Agora aceita imagem
+    formData.append('pdfLink', pdfLink);
+    formData.append('siteLink', siteLink);
+    formData.append('typeAP', typeAP);
+    formData.append('userEmail', parsedUserData.email);
+    formData.append('status', status);
+    formData.append('coauthors', JSON.stringify(coauthors)); 
+    if (isForStudent) formData.append('studentId', String(parsedUserData.id));
+    if (isForProfessor) formData.append('professorId', String(parsedUserData.id));
 
     try {
       setIsLoading(true);
-      await createProject(projectData);  
+      await createProject(formData);  
       showSuccess('Projeto Criado com Sucesso!');
       
       // Limpar os campos após o sucesso
       setTitle('');
       setDescription('');
-      setUrlPhoto('');
+      setUrlPhoto(null);
       setPdfLink('');
       setSiteLink('');
       setTypeAP("PI");
@@ -125,14 +117,13 @@ const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ isForProfessor, i
         </div>
 
         <div className="mb-4">
-          <label htmlFor="urlPhoto" className="block text-sm font-medium mb-2">Link da Foto</label>
+          <label htmlFor="urlPhoto" className="block text-sm font-medium mb-2">Escolher Imagem</label>
           <input
-            type="text"
+            type="file"
             id="urlPhoto"
-            value={urlPhoto}
-            onChange={(e) => setUrlPhoto(e.target.value)}
+            onChange={(e) => setUrlPhoto(e.target.files ? e.target.files[0] : null)}
             className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="URL da foto do projeto"
+            accept="image/*"
           />
         </div>
 
@@ -173,62 +164,6 @@ const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ isForProfessor, i
             <option value="INOVACAO">Projeto de Inovação</option>
           </select>
         </div>
-
-        <div className="mb-4">
-  <h3 className="text-lg font-semibold mb-2 flex items-center">
-    <FaUser className="mr-2" /> Coautores
-  </h3>
-  {coauthors.map((coauthor, index) => (
-    <div key={index} className="mb-4 flex items-center space-x-4">
-      <input
-        type="text"
-        value={coauthor.name}
-        onChange={(e) => {
-          const updatedCoauthors = [...coauthors];
-          updatedCoauthors[index].name = e.target.value;
-          setCoauthors(updatedCoauthors);
-        }}
-        className="w-full md:w-1/3 p-3 border border-gray-300 rounded-md mb-2"
-        placeholder="Nome do coautor"
-      />
-      <input
-        type="email"
-        value={coauthor.email}
-        onChange={(e) => {
-          const updatedCoauthors = [...coauthors];
-          updatedCoauthors[index].email = e.target.value;
-          setCoauthors(updatedCoauthors);
-        }}
-        className="w-full md:w-1/3 p-3 border border-gray-300 rounded-md mb-2"
-        placeholder="Email do coautor"
-      />
-      <input
-        type="text"
-        value={coauthor.phone}
-        onChange={(e) => {
-          const updatedCoauthors = [...coauthors];
-          updatedCoauthors[index].phone = e.target.value;
-          setCoauthors(updatedCoauthors);
-        }}
-        className="w-full md:w-1/3 p-3 border border-gray-300 rounded-md"
-        placeholder="Telefone do coautor"
-      />
-      <button
-        onClick={() => handleRemoveCoauthor(index)}
-        className="text-red-600 mt-2"
-      >
-        <FaTrashAlt />
-      </button>
-    </div>
-  ))}
-  <button
-    onClick={handleAddCoauthor}
-    className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md mt-2"
-  >
-    <FaPlusCircle className="mr-2" />
-    Adicionar Coautor
-  </button>
-</div>
 
         <div className="flex justify-between mt-4">
           <button

@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getAllOpportunities } from "@/services/opportunityService";
+import { getApprovedActiveOpportunities } from "@/services/opportunityService";
 import { OpportunityResponseDTO } from "@/interfaces/OpportunityInterfaces";
 import AllOpportunitiesCard from "./AllOpportunitiesCard";
 import NameFilter from "@/components/NameFilter";
@@ -33,7 +33,7 @@ const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({
   useEffect(() => {
     const fetchOpportunities = async () => {
       try {
-        const response = await getAllOpportunities();
+        const response = await getApprovedActiveOpportunities();
         setOpportunities(response);
       } catch (err) {
         setError("Erro ao carregar as oportunidades");

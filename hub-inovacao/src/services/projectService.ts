@@ -5,14 +5,17 @@ import {
 } from "@/features/auth-components/project/interfaces/projectInterfaces";
 import axios from "./api";
 import { AxiosError } from "axios";
-import { AcademicProjectCreateDTO, AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
+import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
 import { UpdateProjectDetails } from "@/features/auth-components/project/interfaces/UpdateProjectDetails";
 
 // Função para criar projeto para professor
-export const createProject = async (
-  projectData: AcademicProjectCreateDTO
-): Promise<AcademicProjectResponseDTO> => {
+export const createProject = async (formData: FormData): Promise<AcademicProjectResponseDTO> => {
   try {
+    const token = localStorage.getItem("token"); 
+    if (!token) {
+      throw new Error("Usuário não autenticado. Faça login novamente.");
+    }
+
     const userRole = localStorage.getItem("role");
     if (!userRole) {
       throw new Error("Papel do usuário não encontrado.");
@@ -20,22 +23,17 @@ export const createProject = async (
 
     console.log("Role do usuário:", userRole);
 
-    // Verificando se o ID do aluno ou professor foi fornecido
-    if (userRole === "professor" && !projectData.professorId) {
-      throw new Error("Id do professor é necessário.");
-    }
-
-    if (userRole === "student" && !projectData.studentId) {
-      throw new Error("Id do aluno é necessário.");
-    }
-
-    // Verificando a URL antes de realizar a requisição
-    const url = `/projects/${userRole.toLocaleLowerCase()}/create`;
+    const url = `/projects/${userRole.toLowerCase()}/create`;
     console.log("URL da requisição:", url);
 
-    const response = await axios.post<AcademicProjectResponseDTO>(url, projectData);
-    console.log("Resposta do servidor:", response);
+    const response = await axios.post<AcademicProjectResponseDTO>(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${token}` // 🔥 Garante que o token está sendo enviado
+      },
+    });
 
+    console.log("Resposta do servidor:", response);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
