@@ -2,11 +2,17 @@ import { PublishCreateDTO, PublishResponseDTO, UpdatePublishDetailsDTO } from "@
 import axios from "./api"; 
 import { AxiosError } from "axios";
 
+
 export const createPublish = async (
   publishData: PublishCreateDTO
 ): Promise<PublishResponseDTO> => {
   try {
-    const response = await axios.post<PublishResponseDTO>("/publish/create", publishData);
+    const token = localStorage.getItem("token"); // Pegando o token armazenado
+    const response = await axios.post<PublishResponseDTO>("/publish/create", publishData, {
+      headers: {
+        Authorization: `Bearer ${token}`, // 🔥 Enviando o token no header
+      },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {

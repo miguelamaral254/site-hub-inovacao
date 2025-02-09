@@ -16,6 +16,8 @@ interface AdminPageContentProps {
 
 export default function AdminPageContent({ selectedPage, userData }: AdminPageContentProps) {
   const [isManagerFormOpen, setIsManagerFormOpen] = useState(false);
+  const [isPublishFormOpen, setIsPublishFormOpen] = useState(false);
+
 
   // ✅ Função para tratar o sucesso da criação do gerente
   const handleManagerCreated = (newManager: CreateUserResponseDTO) => {
@@ -48,14 +50,21 @@ export default function AdminPageContent({ selectedPage, userData }: AdminPageCo
           <div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Submeter Novo Edital</h3>
             <p className="text-lg text-gray-600 mb-6">Preencha os campos abaixo para submeter um novo edital.</p>
-            <CreatePublishForm />
+          
           </div>
         )}
 
-        {selectedPage === "page4" && (
+{selectedPage === "page4" && (
           <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6">Editais em aberto</h3>
-            <p className="text-lg text-gray-600 mb-4">Veja os Editais em aberto.</p>
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-semibold text-gray-900">Editais em aberto</h3>
+              <button
+                onClick={() => setIsPublishFormOpen(true)}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700"
+              >
+                Adicionar Publicação
+              </button>
+            </div>
             <div className="space-y-4">
               <PublishList />
             </div>
@@ -87,6 +96,8 @@ export default function AdminPageContent({ selectedPage, userData }: AdminPageCo
           onSuccess={handleManagerCreated} 
         />
       )}
+            {isPublishFormOpen && <CreatePublishForm onClose={() => setIsPublishFormOpen(false)} />}
+
     </div>
   );
 }
