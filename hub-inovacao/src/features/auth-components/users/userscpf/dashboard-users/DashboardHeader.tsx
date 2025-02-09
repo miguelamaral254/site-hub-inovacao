@@ -19,7 +19,7 @@ export default function DashboardHeader({ userData, errorMessage }: DashboardHea
           <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-full text-lg font-bold">
             {userInitial}
           </div>
-          <p className="mt-2">Seja bem-vindo, {userName}!</p>
+          <p className="mt-2">Boas-vindas, {userName}!</p>
         </div>
       ) : (
         <p className="text-gray-500 text-sm mt-2">Carregando dados...</p>
