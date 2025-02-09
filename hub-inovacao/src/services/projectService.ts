@@ -9,13 +9,10 @@ import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterfac
 import { UpdateProjectDetails } from "@/features/auth-components/project/interfaces/UpdateProjectDetails";
 
 // Função para criar projeto para professor
-export const createProject = async (formData: FormData): Promise<AcademicProjectResponseDTO> => {
+export const createProject = async (
+  projectData: FormData // Alterado para FormData
+): Promise<AcademicProjectResponseDTO> => {
   try {
-    const token = localStorage.getItem("token"); 
-    if (!token) {
-      throw new Error("Usuário não autenticado. Faça login novamente.");
-    }
-
     const userRole = localStorage.getItem("role");
     if (!userRole) {
       throw new Error("Papel do usuário não encontrado.");
@@ -23,17 +20,18 @@ export const createProject = async (formData: FormData): Promise<AcademicProject
 
     console.log("Role do usuário:", userRole);
 
+    // Verificando a URL antes de realizar a requisição
     const url = `/projects/${userRole.toLowerCase()}/create`;
     console.log("URL da requisição:", url);
 
-    const response = await axios.post<AcademicProjectResponseDTO>(url, formData, {
+    const response = await axios.post<AcademicProjectResponseDTO>(url, projectData, {
       headers: {
-        "Content-Type": "multipart/form-data",
-        "Authorization": `Bearer ${token}` // 🔥 Garante que o token está sendo enviado
+        "Content-Type": "multipart/form-data", // Configuração necessária para envio de arquivos
       },
     });
 
     console.log("Resposta do servidor:", response);
+
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
