@@ -63,7 +63,6 @@ const ProjectStatusForm: React.FC<ProjectStatusFormProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
         {/* Botão de Fechar */}
         <button
@@ -107,15 +106,9 @@ const ProjectStatusForm: React.FC<ProjectStatusFormProps> = ({
           >
             {statusToSet === "APROVADA" ? "Aprovar" : "Reprovar"}
           </button>
-          <button
-            className="bg-gray-300 text-black p-2 rounded-md hover:bg-gray-400"
-            onClick={handleClose}
-          >
-            Fechar
-          </button>
         </div>
       </div>
-    </div>
+
   );
 };
 
