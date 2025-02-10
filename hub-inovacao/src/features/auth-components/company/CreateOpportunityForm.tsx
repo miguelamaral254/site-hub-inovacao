@@ -17,46 +17,50 @@ const CreateOpportunityForm: React.FC = () => {
   const { showSuccess, showError } = useSwal();
 
   const handleSubmit = async () => {
-    console.log()
     if (!title || !description || !urlPhoto) {
-      setErrorMessage('Campos obrigatórios não preenchidos');
+      setErrorMessage("Campos obrigatórios não preenchidos");
       return;
     }
-
-    const userData = localStorage.getItem('userData');
+  
+    const userData = localStorage.getItem("userData");
     if (!userData) {
-      setErrorMessage('Dados do usuário não encontrados.');
+      setErrorMessage("Dados do usuário não encontrados.");
       return;
     }
-
+  
     const parsedUserData = JSON.parse(userData);
     const status = StatusSolicitation.PENDENTE;
-
+  
+    const opportunityData = {
+      title,
+      description,
+      pdfLink,
+      siteLink,
+      typeBO,
+      authorEmail: parsedUserData.email,
+      status,
+      flagActive: true,
+      partnerCompanyId: parsedUserData.id,
+    };
+  
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('urlPhoto', urlPhoto); 
-    formData.append('pdfLink', pdfLink);
-    formData.append('siteLink', siteLink);
-    formData.append('typeBO', typeBO.toString()); 
-    formData.append('authorEmail', parsedUserData.email);
-    formData.append('status', StatusSolicitation[status]); 
-    formData.append('flagActive', String(true));
-    formData.append('partnerCompanyId', String(parsedUserData.id));
+    formData.append("dto", new Blob([JSON.stringify(opportunityData)], { type: "application/json" }));
+    formData.append("imageFile", urlPhoto); // Corrigido para o nome correto esperado pelo backend
+  
     try {
       setIsLoading(true);
-      await createOpportunity(formData); 
-      showSuccess('Oportunidade Criada com Sucesso!');
-
-      setTitle('');
-      setDescription('');
+      await createOpportunity(formData);
+      showSuccess("Oportunidade Criada com Sucesso!");
+  
+      setTitle("");
+      setDescription("");
       setUrlPhoto(null);
-      setPdfLink('');
-      setSiteLink('');
+      setPdfLink("");
+      setSiteLink("");
       setTypeBO(TypeBO.OPORTUNIDADE);
     } catch (error) {
-      setErrorMessage('Erro ao criar oportunidade. Tente novamente.');
-      showError('Erro ao criar oportunidade!');
+      setErrorMessage("Erro ao criar oportunidade. Tente novamente.");
+      showError("Erro ao criar oportunidade!");
     } finally {
       setIsLoading(false);
     }
