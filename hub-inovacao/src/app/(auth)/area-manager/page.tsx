@@ -48,7 +48,7 @@ export default function DashboardManagerPage() {
       router.push("/"); 
     }
   }, [userData, router]);
-
+  console.log("Renderizando App...");
   return (
     <div className="flex min-h-screen bg-gray-100">
       <SidebarManager setSelectedPage={setSelectedPage} userData={userData} errorMessage={errorMessage} />

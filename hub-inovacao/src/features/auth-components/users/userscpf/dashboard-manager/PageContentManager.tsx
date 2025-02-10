@@ -12,6 +12,7 @@ interface PageContentManagerProps {
   userData: UserResponseCpfDTO;
 }
 
+
 export default function PageContentManager({ selectedPage, userData }: PageContentManagerProps) {
   const [isPublishFormOpen, setIsPublishFormOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0); // 🔄 Estado para forçar re-render

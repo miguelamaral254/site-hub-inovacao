@@ -7,8 +7,7 @@ import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterfac
 import TicketCard from "./TicketCard";
 import NameFilter from "@/components/NameFilter";
 import { Dropdown } from "@/components/Dropdown";
-import { OpportunityResponseDTO } from "@/interfaces/OpportunityInterfaces";
-
+import { OpportunityResponseDTO, StatusSolicitation, TypeBO } from "@/interfaces/OpportunityInterfaces";
 interface TicketListProps {
   statusFilter: string;
 }
@@ -23,9 +22,11 @@ export default function TicketList({ statusFilter }: TicketListProps) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-
+  
+ 
   const validStatus = ["ABERTA", "FECHADA", "PENDENTE"]; 
-  const fetchProjects = async () => {
+ 
+    const fetchProjects = async () => {
     setLoading(true);
     try {
       const fetchedProjects = await getAllProjectsForManager();
@@ -123,14 +124,20 @@ export default function TicketList({ statusFilter }: TicketListProps) {
   return (
     <div className="p-6">
       <NameFilter onSelect={handleNameFilter} />
-      <div className="mt-4 mb-4">
+      <div className="mt-4 mb-4 flex justify-end ">
         <Dropdown
-          options={["Mais novo", "Mais velho"]}
-          defaultText="Ordenar por"
+          options={["Projeto Integrador", "Rec'n'Play", "Projeto de Extensão", "Startup"]}
+          defaultText="Tipos de Projetos"
           onSelect={(option) => handleSortOrder(option === "Mais novo" ? "desc" : "asc")}
         />
       </div>
-
+      <div className="grid grid-cols-6 font-bold bg-gray-100 px-4 gap-6 border-gray-300 text-left">
+        <span>Título</span>
+        <span>Autor</span>
+        <span>Data</span>
+        <span>Tipo</span>
+        <span>Status</span>
+      </div>
       <ul className="divide-y divide-gray-200 mt-4">
         {currentProjects.map((project) => (
           <li key={project.id}>
@@ -143,8 +150,12 @@ export default function TicketList({ statusFilter }: TicketListProps) {
             <TicketCard opportunity={opportunity} fetchProjects={fetchProjects} />
           </li>
         ))}
+        {currentOpportunities.map((opportunity) => (
+          <li key={opportunity.id}>
+            <TicketCard opportunity={opportunity} fetchProjects={fetchProjects} />
+          </li>
+        ))}
       </ul>
-
       <p className="text-gray-600 text-sm mt-2">
         Página {currentPage} de {Math.ceil(filteredProjects.length / itemsPerPage)}
       </p>
