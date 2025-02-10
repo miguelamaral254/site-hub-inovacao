@@ -81,6 +81,7 @@ const handleInicio = () => {
         <RiBookOpenFill className="text-xl hidden group-hover:block text-blue-900" />
           Editais em aberto
         </button>
+
         <hr className="py-4"/>
         <button
           className="group w-full flex flex-row justify-start items-center gap-4 text-[#6F0608] font-normal text-base py-4 px-2 rounded-lg"
@@ -90,6 +91,7 @@ const handleInicio = () => {
          <RiLogoutBoxRFill className="text-xl hidden group-hover:block" />
           Sair
         </button>
+
       </div>
     </div>
   );

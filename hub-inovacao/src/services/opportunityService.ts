@@ -1,13 +1,14 @@
-import { OpportunityCreateDTO, OpportunityResponseDTO, OpportunityUpdateStatusDTO, OpportunityUpdateStatusResponseDTO, UpdateOpportunityDetailsDTO } from "@/interfaces/OpportunityInterfaces";
+import { OpportunityResponseDTO, OpportunityUpdateStatusDTO, OpportunityUpdateStatusResponseDTO, UpdateOpportunityDetailsDTO } from "@/interfaces/OpportunityInterfaces";
 import axios from "./api";
 import { AxiosError } from "axios";
 
-// Função para criar uma nova oportunidade
-export const createOpportunity = async (
-  opportunityData: OpportunityCreateDTO
-): Promise<OpportunityResponseDTO> => {
+export const createOpportunity = async (formData: FormData): Promise<OpportunityResponseDTO> => {
   try {
-    const response = await axios.post<OpportunityResponseDTO>("/opportunities/create", opportunityData);
+    const response = await axios.post<OpportunityResponseDTO>("/opportunities/create", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
@@ -16,7 +17,6 @@ export const createOpportunity = async (
     throw new Error("Erro de conexão com o servidor");
   }
 };
-
 // Função para buscar todas as oportunidades
 export const getAllOpportunities = async (): Promise<OpportunityResponseDTO[]> => {
   try {

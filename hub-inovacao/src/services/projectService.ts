@@ -5,12 +5,12 @@ import {
 } from "@/features/auth-components/project/interfaces/projectInterfaces";
 import axios from "./api";
 import { AxiosError } from "axios";
-import { AcademicProjectCreateDTO, AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
+import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
 import { UpdateProjectDetails } from "@/features/auth-components/project/interfaces/UpdateProjectDetails";
 
 // Função para criar projeto para professor
 export const createProject = async (
-  projectData: AcademicProjectCreateDTO
+  projectData: FormData // Alterado para FormData
 ): Promise<AcademicProjectResponseDTO> => {
   try {
     const userRole = localStorage.getItem("role");
@@ -20,20 +20,16 @@ export const createProject = async (
 
     console.log("Role do usuário:", userRole);
 
-    // Verificando se o ID do aluno ou professor foi fornecido
-    if (userRole === "professor" && !projectData.professorId) {
-      throw new Error("Id do professor é necessário.");
-    }
-
-    if (userRole === "student" && !projectData.studentId) {
-      throw new Error("Id do aluno é necessário.");
-    }
-
     // Verificando a URL antes de realizar a requisição
-    const url = `/projects/${userRole.toLocaleLowerCase()}/create`;
+    const url = `/projects/${userRole.toLowerCase()}/create`;
     console.log("URL da requisição:", url);
 
-    const response = await axios.post<AcademicProjectResponseDTO>(url, projectData);
+    const response = await axios.post<AcademicProjectResponseDTO>(url, projectData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // Configuração necessária para envio de arquivos
+      },
+    });
+
     console.log("Resposta do servidor:", response);
 
     return response.data;
