@@ -40,20 +40,25 @@ No **Hubi**, é possível:
 
 ## 🚀 Tecnologias
 
-### Design UI/UX
-- Prototipação com **Figma**
-- **Photoshop**
-- **Illustrator**
+### Front-end
+- **React**: Biblioteca JavaScript para construção de interfaces de usuário.
+- **Typescript**: Superset de JavaScript que adiciona tipagem estática.
+- **Next.js**: Framework para React com suporte a renderização do lado do servidor e funcionalidades como roteamento dinâmico.
+- **Tailwind CSS**: Framework de utilitários CSS para design responsivo e moderno.
+- **React Icons**: Biblioteca de ícones para React.
+- **React Text Mask**: Biblioteca para mascaramento de inputs.
 
-### Front-end e Back-end
-- **React**
-- **Typescript**
-- **Next.js**
-- **Tailwind CSS**
-- **Java**
+### Backend
+- **Java**: Linguagem de programação utilizada para construir a API do sistema.
+- **Spring Boot**: Framework para desenvolvimento rápido de aplicações backend com Java.
+- **Spring Data JPA**: Implementação do JPA (Java Persistence API) para facilitar o acesso e manipulação de dados no banco de dados.
+- **Spring Security**: Framework para implementação de segurança, incluindo autenticação e autorização.
+- **Springdoc OpenAPI**: Biblioteca para documentação da API com suporte a OpenAPI e Swagger.
+- **JWT**: Utilizado para gerenciamento de autenticação e autorização por tokens JSON Web Token.
 
 ### Banco de Dados
-- **[Tecnologia de banco de dados será especificada aqui]**
+- **MySQL**: Sistema de gerenciamento de banco de dados relacional.
+- **JPA**: Java Persistence API utilizada para interação com o banco de dados através de entidades.
 
 ---
 
