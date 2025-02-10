@@ -19,7 +19,7 @@ export default function PageContent({ selectedPage, userData }: PageContentProps
       <div className="w-full max-w-7xl px-6 py-8">
         {selectedPage === "page1" && (
           <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6">Projetos Aprovados</h3>
+            <h3 className="text-2xl font-semibold text-blue-500 mb-6">Projetos Aprovados</h3>
             <p className="text-lg text-gray-600 mb-4">Aqui você pode ver os projetos acadêmicos aprovados pela sua instituição.</p>
             <ProjectList statusFilter="APROVADA" />
           </div>
@@ -27,7 +27,7 @@ export default function PageContent({ selectedPage, userData }: PageContentProps
 
         {selectedPage === "page2" && (
           <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6">Projetos Pendentes e Reprovados</h3>
+            <h3 className="text-2xl font-semibold text-blue-500 mb-6">Projetos Pendentes e Reprovados</h3>
             <p className="text-lg text-gray-600 mb-4">Verifique os projetos pendentes ou reprovados para poder acompanhar seu progresso e melhorias necessárias.</p>
             <div className="space-y-4">
               <ProjectList statusFilter="PENDENTE" />
@@ -38,7 +38,7 @@ export default function PageContent({ selectedPage, userData }: PageContentProps
 
         {selectedPage === "page3" && (
           <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6">Submeter Projeto Acadêmico</h3>
+            <h3 className="text-2xl font-semibold text-blue-500 mb-6">Submeter Projeto Acadêmico</h3>
             <p className="text-lg text-gray-600 mb-6">Preencha os campos abaixo para criar um novo projeto acadêmico. Certifique-se de fornecer informações precisas e completas.</p>
             <CreateProjectForm
               isForProfessor={isForProfessor}
