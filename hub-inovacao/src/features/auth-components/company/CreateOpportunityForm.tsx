@@ -13,8 +13,23 @@ const CreateOpportunityForm: React.FC = () => {
   const [typeBO, setTypeBO] = useState<TypeBO>(TypeBO.OPORTUNIDADE);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
+  const [error, setError] = useState('');
   const { showSuccess, showError } = useSwal();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+
+    if (file) {
+      if (file.size > 6 * 1024 * 1024) { // Verifica se o arquivo é maior que 6MB
+        setError('O arquivo não pode ser maior que 6MB.');
+        setUrlPhoto(null); // Limpa o arquivo selecionado
+      } else {
+        setError('');
+        setUrlPhoto(file); // Salva o arquivo se a validação passar
+      }
+    }
+  };
+
 
   const handleSubmit = async () => {
     if (!title || !description || !urlPhoto) {
@@ -45,7 +60,7 @@ const CreateOpportunityForm: React.FC = () => {
   
     const formData = new FormData();
     formData.append("dto", new Blob([JSON.stringify(opportunityData)], { type: "application/json" }));
-    formData.append("imageFile", urlPhoto); // Corrigido para o nome correto esperado pelo backend
+    formData.append("imageFile", urlPhoto);
   
     try {
       setIsLoading(true);
@@ -97,15 +112,16 @@ const CreateOpportunityForm: React.FC = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="urlPhoto" className="block text-sm font-medium mb-2">Escolher Imagem</label>
-          <input
-            type="file"
-            id="urlPhoto"
-            onChange={(e) => setUrlPhoto(e.target.files ? e.target.files[0] : null)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            accept="image/*"
-          />
-        </div>
+      <label htmlFor="urlPhoto" className="block text-sm font-medium mb-2">Escolher Imagem</label>
+      <input
+        type="file"
+        id="urlPhoto"
+        onChange={handleFileChange}
+        className="w-full p-3 border border-gray-300 rounded-md"
+        accept="image/*"
+      />
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>} {/* Exibe o erro se houver */}
+    </div>
 
         <div className="mb-4">
           <label htmlFor="pdfLink" className="block text-sm font-medium mb-2">Link do PDF</label>
