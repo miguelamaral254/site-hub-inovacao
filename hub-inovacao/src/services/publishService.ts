@@ -1,6 +1,7 @@
 import { PublishCreateDTO, PublishResponseDTO, UpdatePublishDetailsDTO } from "@/interfaces/publishInterface";
 import axios from "./api"; 
 import { AxiosError } from "axios";
+import { Page } from "@/interfaces/PaginationInterface";
 
 export const createPublish = async (
   publishData: PublishCreateDTO,
@@ -27,15 +28,19 @@ export const createPublish = async (
     throw new Error("Erro ao criar publicação");
   }
 };
-export const getAllPublish = async (): Promise<PublishResponseDTO[]> => {
+export const getAllPublish = async (
+  page: number,
+  size: number
+): Promise<Page<PublishResponseDTO>> => {
   try {
-    const response = await axios.get<PublishResponseDTO[]>("/publish/all");
+    const response = await axios.get<Page<PublishResponseDTO>>("/publish/all", {
+      params: { page, size },
+    });
+
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError && error.response) {
-      throw new Error(error.response.data.message || "Erro ao listar publicações");
-    }
-    throw new Error("Erro de conexão com o servidor");
+    console.error("Erro ao buscar publicações:", error);
+    throw new Error("Erro ao buscar publicações.");
   }
 };
 export const updatePublish = async (

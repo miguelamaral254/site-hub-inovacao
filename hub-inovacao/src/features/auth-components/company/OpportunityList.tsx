@@ -9,9 +9,11 @@ import OpportunityCardSkeleton from "./OpportunityCardSkeleton";
 
 interface OpportunityListProps {
   statusFilter: string;
+  page: number;  // Adicionando a página como prop
+  size: number;  // Adicionando o tamanho da página como prop
 }
 
-export default function OpportunityList({ statusFilter }: OpportunityListProps) {
+export default function OpportunityList({ statusFilter, page, size }: OpportunityListProps) {
   const [opportunities, setOpportunities] = useState<OpportunityResponseDTO[]>([]);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
@@ -27,9 +29,10 @@ export default function OpportunityList({ statusFilter }: OpportunityListProps) 
         return;
       }
       const userData = JSON.parse(userName);
-      const companyName = userData.name; 
-  
-      const fetchedOpportunities = await getOpportunitiesByCompanyName(companyName); 
+      const companyName = userData.name;
+
+      // Ajuste: passando os parâmetros page e size
+      const fetchedOpportunities = await getOpportunitiesByCompanyName(companyName, page, size);
 
       const validStatus = ["APROVADA", "PENDENTE", "REPROVADA"];
       
@@ -39,14 +42,15 @@ export default function OpportunityList({ statusFilter }: OpportunityListProps) 
         return;
       }
 
-      const filteredOpportunities = fetchedOpportunities.filter((opportunity) => {
+      // Acessando as oportunidades a partir do conteúdo da página
+      const filteredOpportunities = fetchedOpportunities.content.filter((opportunity) => {
         const status = opportunity.status?.toString().toUpperCase();
         return status && status === statusFilter.toUpperCase();
       });
 
       setOpportunities(filteredOpportunities);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setError("Erro ao carregar oportunidades.");
     } finally {
       setLoading(false);
@@ -55,7 +59,7 @@ export default function OpportunityList({ statusFilter }: OpportunityListProps) 
 
   useEffect(() => {
     fetchOpportunities();
-  }, [statusFilter]);
+  }, [statusFilter, page, size]); // Adicionando page e size no array de dependências
 
   return (
     <div className="p-6">

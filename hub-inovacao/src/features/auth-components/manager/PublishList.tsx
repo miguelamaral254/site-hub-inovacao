@@ -14,14 +14,13 @@ export default function PublishList() {
   const [selectedPublish, setSelectedPublish] = useState<PublishResponseDTO | null>(null);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // 📌 Mostra 5 publicações por página
+  const itemsPerPage = 5;
 
   const fetchPublishes = async () => {
     setLoading(true);
     try {
-      const fetchedPublishes = await getAllPublish();
-      setPublishes(fetchedPublishes);
-      setCurrentPage(1); // Sempre volta para a página 1 ao buscar novos dados
+      const fetchedPublishes = await getAllPublish(currentPage, itemsPerPage); // Passando os parâmetros de paginação
+      setPublishes(fetchedPublishes.content); // Ajustando para pegar apenas o conteúdo
     } catch (error) {
       console.log(error);
       setError("Erro ao carregar publicações.");
@@ -32,18 +31,14 @@ export default function PublishList() {
 
   useEffect(() => {
     fetchPublishes();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]); // Recarrega quando a página for alterada
 
   const handleEditPublish = (publish: PublishResponseDTO) => {
     setSelectedPublish(publish);
   };
 
-  // 📌 Lógica para paginação
   const totalPages = Math.ceil(publishes.length / itemsPerPage);
-  const paginatedPublishes = publishes.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
   return (
     <div className="p-6 space-y-4">
@@ -55,12 +50,12 @@ export default function PublishList() {
       <div className="space-y-4">
         {loading
           ? [...Array(3)].map((_, index) => <PublishCardSkeleton key={index} />)
-          : paginatedPublishes.map((publish, index) => (
+          : publishes.map((publish, index) => (
               <PublishCard key={index} publish={publish} onEdit={handleEditPublish} />
             ))}
       </div>
 
-      {/* 📌 Paginação */}
+      {/* Paginação */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center space-x-4 mt-6">
           <button

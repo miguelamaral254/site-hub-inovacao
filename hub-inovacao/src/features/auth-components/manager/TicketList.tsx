@@ -8,6 +8,7 @@ import TicketCard from "./TicketCard";
 import NameFilter from "@/components/NameFilter";
 import { Dropdown } from "@/components/Dropdown";
 import { OpportunityResponseDTO, StatusSolicitation, TypeBO } from "@/interfaces/OpportunityInterfaces";
+
 interface TicketListProps {
   statusFilter: string;
 }
@@ -22,21 +23,23 @@ export default function TicketList({ statusFilter }: TicketListProps) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-  
- 
+
   const validStatus = ["ABERTA", "FECHADA", "PENDENTE"]; 
  
-    const fetchProjects = async () => {
+  // Função para buscar projetos com paginação
+  const fetchProjects = async () => {
     setLoading(true);
     try {
-      const fetchedProjects = await getAllProjectsForManager();
+      const fetchedProjects = await getAllProjectsForManager(currentPage, itemsPerPage); // Passando página e tamanho
       if (statusFilter && !validStatus.includes(statusFilter)) {
         setError("Status inválido.");
         setLoading(false);
         return;
       }
-      const filteredByStatus = fetchedProjects.filter((project) => project.status?.toUpperCase() === statusFilter.toUpperCase());
-      setProjects(filteredByStatus);
+      const filteredByStatus = fetchedProjects.content.filter(
+        (project) => project.status?.toUpperCase() === statusFilter.toUpperCase()
+      );
+      setProjects(fetchedProjects.content);
       setFilteredProjects(filteredByStatus);
     } catch (error) {
       console.log(error);
@@ -50,16 +53,16 @@ export default function TicketList({ statusFilter }: TicketListProps) {
   const fetchOpportunities = async () => {
     setLoading(true);
     try {
-      const fetchedOpportunities = await getAllOpportunities();
+      const fetchedOpportunities = await getAllOpportunities(currentPage, itemsPerPage); // Passando os parâmetros necessários
       if (statusFilter && !validStatus.includes(statusFilter)) {
         setError("Status inválido.");
         setLoading(false);
         return;
       }
-      const filteredByStatus = fetchedOpportunities.filter(
+      const filteredByStatus = fetchedOpportunities.content.filter(
         (opportunity) => opportunity.status && opportunity.status.toString().toUpperCase() === statusFilter.toUpperCase()
       );
-      setOpportunities(filteredByStatus);
+      setOpportunities(fetchedOpportunities.content);
       setFilteredOpportunities(filteredByStatus);
     } catch (error) {
       console.log(error);
@@ -72,7 +75,7 @@ export default function TicketList({ statusFilter }: TicketListProps) {
   useEffect(() => {
     fetchProjects();
     fetchOpportunities(); // Chama a função para oportunidades também
-  }, [statusFilter]);
+  }, [statusFilter, currentPage, itemsPerPage]);
 
   const handleNameFilter = (name: string | null) => {
     if (name && name.trim() !== "") {
@@ -145,11 +148,6 @@ export default function TicketList({ statusFilter }: TicketListProps) {
           </li>
         ))}
         {/* Renderiza as oportunidades */}
-        {currentOpportunities.map((opportunity) => (
-          <li key={opportunity.id}>
-            <TicketCard opportunity={opportunity} fetchProjects={fetchProjects} />
-          </li>
-        ))}
         {currentOpportunities.map((opportunity) => (
           <li key={opportunity.id}>
             <TicketCard opportunity={opportunity} fetchProjects={fetchProjects} />

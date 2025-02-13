@@ -27,12 +27,16 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [nameFilter, setNameFilter] = useState<string | null>(null);
+  const [page, setPage] = useState(1); 
+  const [size, setSize] = useState(visibleProjects); 
 
   useEffect(() => {
     const fetchProjects = async () => {
+      setLoading(true); // Inicia o loading
       try {
-        const response = await getAllProjects();
-        setProjetos(response);
+        const response = await getAllProjects(page, size); // Chama a API com paginação
+        setProjetos(response.content); 
+        setTotalProjects(response.totalElements);
       } catch (err) {
         setError("Erro ao carregar os projetos");
       } finally {
@@ -41,15 +45,13 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
     };
 
     fetchProjects();
-  }, []);
+  }, [page, size, filterType, nameFilter, setTotalProjects]);
 
-  // Filtro de tipo
   const filteredProjects =
     filterType && filterType !== "Todos" && typeMap[filterType as keyof typeof typeMap]
       ? projetos.filter((projeto) => projeto.typeAP === typeMap[filterType as keyof typeof typeMap])
       : projetos;
 
-  // Filtro por nome
   const filteredByName = nameFilter
     ? filteredProjects.filter(
         (projeto) =>
@@ -59,7 +61,6 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
       )
     : filteredProjects;
 
-  // Atualiza o total de projetos disponíveis para controle do botão "Carregar Mais"
   useEffect(() => {
     setTotalProjects(filteredByName.length);
   }, [filteredByName, setTotalProjects]);
@@ -73,6 +74,7 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
       </div>
     );
 
+  // Exibe erro
   if (error) return <div className="text-center text-red-500">{error}</div>;
 
   return (
@@ -106,6 +108,18 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
           ))}
         </div>
       )}
+
+      {/* Aqui você pode adicionar a lógica para o botão "Carregar Mais", com controle de página */}
+      <div className="text-center mt-6">
+        {filteredByName.length > visibleProjects && (
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded"
+            onClick={() => setPage((prevPage) => prevPage + 1)}
+          >
+            Carregar Mais
+          </button>
+        )}
+      </div>
     </div>
   );
 };
