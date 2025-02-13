@@ -1,6 +1,7 @@
 import { OpportunityResponseDTO, OpportunityUpdateStatusDTO, OpportunityUpdateStatusResponseDTO, UpdateOpportunityDetailsDTO } from "@/interfaces/OpportunityInterfaces";
 import axios from "./api";
 import { AxiosError } from "axios";
+import { Page } from "@/interfaces/PaginationInterface";
 
 export const createOpportunity = async (formData: FormData): Promise<OpportunityResponseDTO> => {
   try {
@@ -18,9 +19,14 @@ export const createOpportunity = async (formData: FormData): Promise<Opportunity
   }
 };
 // Função para buscar todas as oportunidades
-export const getAllOpportunities = async (): Promise<OpportunityResponseDTO[]> => {
+export const getAllOpportunities = async (
+  page: number,
+  size: number
+): Promise<Page<OpportunityResponseDTO>> => {
   try {
-    const response = await axios.get<OpportunityResponseDTO[]>("/opportunities/all");
+    const response = await axios.get<Page<OpportunityResponseDTO>>("/opportunities/all", {
+      params: { page, size },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
@@ -29,11 +35,15 @@ export const getAllOpportunities = async (): Promise<OpportunityResponseDTO[]> =
     throw new Error("Erro de conexão com o servidor");
   }
 };
-
 // Função para obter oportunidades aprovadas e ativas
-export const getApprovedActiveOpportunities = async (): Promise<OpportunityResponseDTO[]> => {
+export const getApprovedActiveOpportunities = async (
+  page: number,
+  size: number
+): Promise<Page<OpportunityResponseDTO>> => {
   try {
-    const response = await axios.get<OpportunityResponseDTO[]>("/opportunities/approved/active");
+    const response = await axios.get<Page<OpportunityResponseDTO>>("/opportunities/approved/active", {
+      params: { page, size },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
@@ -42,19 +52,16 @@ export const getApprovedActiveOpportunities = async (): Promise<OpportunityRespo
     throw new Error("Erro de conexão com o servidor");
   }
 };
-
 export const getOpportunitiesByCompanyName = async (
-  companyName: string
-): Promise<OpportunityResponseDTO[]> => {
+  companyName: string,
+  page: number,
+  size: number
+): Promise<Page<OpportunityResponseDTO>> => {
   try {
-    // Verifique a URL completa antes de fazer a requisição
     const url = `/opportunities/company/${companyName}`;
-
-    // Fazendo a requisição para o servidor
-    const response = await axios.get<OpportunityResponseDTO[]>(url);
-
-    // Verificando a resposta
-
+    const response = await axios.get<Page<OpportunityResponseDTO>>(url, {
+      params: { page, size },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
@@ -63,7 +70,6 @@ export const getOpportunitiesByCompanyName = async (
     throw new Error("Erro de conexão com o servidor");
   }
 };
-// Função para atualizar o status da oportunidade
 
 
 export const updateOpportunityStatus = async (
