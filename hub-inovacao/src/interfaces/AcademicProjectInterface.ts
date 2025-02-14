@@ -57,4 +57,5 @@ export interface AcademicProjectResponseDTO {
   justification?: string;
   studentId?: string;
   studentName?: string;
+  idManager?:number
 }

@@ -18,7 +18,6 @@ export const createOpportunity = async (formData: FormData): Promise<Opportunity
     throw new Error("Erro de conexão com o servidor");
   }
 };
-// Função para buscar todas as oportunidades
 export const getAllOpportunities = async (
   page: number,
   size: number
@@ -35,7 +34,6 @@ export const getAllOpportunities = async (
     throw new Error("Erro de conexão com o servidor");
   }
 };
-// Função para obter oportunidades aprovadas e ativas
 export const getApprovedActiveOpportunities = async (
   page: number,
   size: number
@@ -48,6 +46,24 @@ export const getApprovedActiveOpportunities = async (
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       throw new Error(error.response.data.message || "Erro ao listar oportunidades aprovadas e ativas");
+    }
+    throw new Error("Erro de conexão com o servidor");
+  }
+};
+export const getOpportunitiesForManager = async (
+  idManager: number,
+  page: number,
+  size: number
+): Promise<Page<OpportunityResponseDTO>> => {
+  try {
+    console.log("Calling API with idManager:", idManager);  // Verificar o valor de idManager antes de fazer a solicitação
+    const response = await axios.get<Page<OpportunityResponseDTO>>("/opportunities/manager/all", {
+      params: { idManager, page, size },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw new Error(error.response.data.message || "Erro ao listar oportunidades do gerente");
     }
     throw new Error("Erro de conexão com o servidor");
   }
@@ -70,8 +86,6 @@ export const getOpportunitiesByCompanyName = async (
     throw new Error("Erro de conexão com o servidor");
   }
 };
-
-
 export const updateOpportunityStatus = async (
   opportunityId: number,
   statusData: OpportunityUpdateStatusDTO
@@ -89,7 +103,6 @@ export const updateOpportunityStatus = async (
     throw new Error("Erro de conexão com o servidor");
   }
 };
-
 export const updateOpportunityDetails = async (
   opportunityId: number,
   updateDTO: UpdateOpportunityDetailsDTO 

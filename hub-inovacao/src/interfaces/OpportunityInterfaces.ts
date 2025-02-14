@@ -44,6 +44,7 @@ export enum TypeBO {
     institutionOrganization: string;
     feedback?: string;
     justification?: string;
+    idManager?:number;
   }
   
   export interface OpportunityUpdateStatusDTO {
