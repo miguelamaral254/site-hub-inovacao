@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import {
@@ -59,7 +60,7 @@ const handleInicio = () => {
         <hr className="py-3" />
         <button
           className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
-          onClick={() => setSelectedPage("page2")}
+          onClick={() => setSelectedPage("page1")}
         >
         <RiTicket2Line className="text-xl block group-hover:hidden" />
         <RiTicket2Fill className="text-xl hidden group-hover:block text-blue-900" />
@@ -67,15 +68,15 @@ const handleInicio = () => {
         </button>
         <button
           className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
-          onClick={() => setSelectedPage("page3")}
+          onClick={() => setSelectedPage("page2")}
         >
-        <RiFolderUploadLine className="text-xl block group-hover:hidden" />
-        <RiFolderUploadFill className="text-xl hidden group-hover:block text-blue-900" />
-          Submeter Edital
+       <RiTicket2Line className="text-xl block group-hover:hidden" />
+       <RiTicket2Fill className="text-xl hidden group-hover:block text-blue-900" />
+          Meus tickets
         </button>
         <button
           className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
-          onClick={() => setSelectedPage("page4")}
+          onClick={() => setSelectedPage("page3")}
         >
         <RiBookOpenLine className="text-xl block group-hover:hidden" />
         <RiBookOpenFill className="text-xl hidden group-hover:block text-blue-900" />
