@@ -8,6 +8,7 @@ import { ButtonGrandeSeg } from "@/components/Button";
 import ImagemBOS from "@/assets/ImagemBOS.svg";
 import banneroportunidades from "@/assets/BannerOportunidades.svg";
 import AllOpportunitiesList from "@/features/public-components/oportunities/AllOpportunitiesList";
+import { ButtonOutline } from "@/components/Button";
 
 const opportunityTypes = ["Oportunidades", "Problemas", "Ideias"];
 
@@ -16,9 +17,7 @@ export default function Oportunidades() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [totalOpportunities, setTotalOpportunities] = useState(0);
 
-  const handleLoadMore = () => {
-    setVisibleOpportunities((prev) => prev + 6);
-  };
+
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -76,15 +75,18 @@ export default function Oportunidades() {
         </div>
 
         {/* Exibir botão "Carregar Mais" apenas se houver mais oportunidades */}
-        {visibleOpportunities < totalOpportunities && (
+        {totalOpportunities > 0 && (
           <div className="flex justify-center mt-6">
-            <button 
-              onClick={handleLoadMore} 
-              className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition"
-            >
-              Carregar Mais
-            </button>
-          </div>
+          <ButtonOutline text={visibleOpportunities >= totalOpportunities ? "Carregar menos" : "Carregar Mais"}
+            onClick={() => {
+              if (visibleOpportunities >= totalOpportunities) {
+                setVisibleOpportunities(6);
+              } else {
+                setVisibleOpportunities((prev) => prev + 6)
+              }
+            }}
+            disabled={totalOpportunities <= 6} />
+        </div>
         )}
       </div>
 

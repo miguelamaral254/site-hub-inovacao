@@ -22,7 +22,8 @@ export default function PageContentManager({ selectedPage, userData }: PageConte
           <div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Projetos da Empresa</h3>
             <p className="text-lg text-gray-600 mb-4">Aqui você pode ver tickets respondidos por você.</p>
-           
+            <TicketList statusFilter={"ABERTA"} />
+            <TicketList statusFilter={"FECHADA"} />
           </div>
         )}
 

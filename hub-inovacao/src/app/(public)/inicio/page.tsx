@@ -62,9 +62,9 @@ export default function Inicio() {
             essas iniciativas fortalecem a criatividade, a pesquisa e o empreendedorismo, preparando profissionais para o mercado.
             </p>  
           </div>
-          <div className="flex flex-row w-full justify-end items-end">
+          <div className="flex flex-row w-full justify-end items-end gap-4">
             <CardServico titulo="Hub de Inovação (hubi)" texto="Plataforma que promove ambiente dinâmico e colaborativo, 
-            apresentando projetos acadêmicos, Startups, editais e muito mais." image={HUBI} alt="Logo HUBI"/>
+            apresentando projetos acadêmicos, Startups, editais e muito mais." image={HUBI} alt="Logo HUBI" link="/inicio"/>
             <CardServico titulo="Senac Eventos (NRF 2025)" texto="Aplicativo de agenda desenvolvido para a missão NRF 2025 realizada em janeiro de 2025. "
             image={SenacEventos} alt="Logo SenacEventos"/>
           </div>

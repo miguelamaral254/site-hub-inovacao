@@ -12,11 +12,13 @@ import NameFilter from "@/components/NameFilter";
 interface AllPublishListProps {
   visiblePublications: number;
   filterType: string | null;
+  setTotalEditais: (total: number) => void;
 }
 
 const AllPublishList: React.FC<AllPublishListProps> = ({
   visiblePublications,
   filterType,
+  setTotalEditais,
 }) => {
   const [publications, setPublications] = useState<PublishResponseDTO[]>([]);
   const [filteredPublications, setFilteredPublications] = useState<PublishResponseDTO[]>([]);
@@ -26,13 +28,16 @@ const AllPublishList: React.FC<AllPublishListProps> = ({
   const [endDate, setEndDate] = useState<string | null>(null);
   const [nameFilter, setNameFilter] = useState<string | null>(null);
 
+  
   useEffect(() => {
     const fetchPublications = async () => {
       try {
         const response = await getAllPublish();
-        setPublications(response);
-        setFilteredPublications(response);
+        console.log("Publicações carregadas:", response);
+        setPublications(response);  
+        setFilteredPublications(response);                                       
       } catch (err) {
+        console.error("Erro ao carregar publicações:", err);
         setError("Erro ao carregar as publicações");
       } finally {
         setLoading(false);
@@ -42,22 +47,6 @@ const AllPublishList: React.FC<AllPublishListProps> = ({
     fetchPublications();
   }, []);
 
-  const handleDateFilter = (start: string | null, end: string | null) => {
-    setStartDate(start);
-    setEndDate(end);
-
-    let filtered = publications;
-
-    if (start) {
-      filtered = filtered.filter((publication) => publication.initialDate >= start);
-    }
-
-    if (end) {
-      filtered = filtered.filter((publication) => publication.finalDate <= end);
-    }
-
-    setFilteredPublications(filtered);
-  };
 
   const handleNameFilter = (name: string | null) => {
     setNameFilter(name);
@@ -72,17 +61,21 @@ const AllPublishList: React.FC<AllPublishListProps> = ({
     }
   };
 
-  if (loading) return <div>Carregando publicações...</div>;
-  if (error) return <div>{error}</div>;
-
   const filteredByType = filterType && filterType !== "Todos"
     ? filteredPublications.filter((publication) => publication.title.includes(filterType))
     : filteredPublications;
 
+  useEffect(() => {
+        setTotalEditais(filteredByType.length);
+      }, [filteredByType, setTotalEditais]);
+
+  if (loading) return <div>Carregando publicações...</div>;
+  if (error) return <div>{error}</div>;
+
+  
   return (
     <div className="space-y-6">
      <div className="flex gap-6 justify-end items-center">
-  <DateFilter onSelect={handleDateFilter} />
   <NameFilter onSelect={handleNameFilter} />
 </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6 mt-6">
