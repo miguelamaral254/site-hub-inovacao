@@ -8,11 +8,7 @@ import SenacEventos from "@/assets/SENAC Eventos.png"
 import alagamentos from "@/assets/Alagamento.png"
 import teatro from "@/assets/Teatro.png"
 import Banner from "@/assets/BannerInicio.svg"
-import PassouEncontrou from "@/assets/Startups/PassouEncontrou.png"
-import DecodeByte from "@/assets/Startups/DecodeByte.png"
-import Elementum from "@/assets/Startups/Elementum.png"
-import NOOK from "@/assets/Startups/NOOK.png"
-import ARETIZZE from "@/assets/Startups/ARETIZZE.png"
+import Carrocel from "@/components/Carrocel"
 
 export default function Inicio() {
   return (
@@ -43,14 +39,18 @@ export default function Inicio() {
           <Image src={inicio} alt="imagem login" className="w-full md:max-w-[500px] object-cover mr-2 md:mr-5 rounded-lg"/>
         </div>
       </div>
-      <div className="bg-[#F9F9F9] flex w-full h-auto md:h-[530px] flex-col md:flex-row justify-center items-center gap-10" /* Carrocel */>
-        <Image src={PassouEncontrou} alt="Logo PassouEncontrou"/>
-        <Image src={DecodeByte} alt="Logo DecodeByte"/>
-        <Image src={Elementum} alt="Logo Elementum"/>
-        <Image src={NOOK} alt="Logo passou encontrou"/>
-        <Image src={ARETIZZE} alt="Logo passou encontrou"/>
+      <div className="flex flex-col bg-[#f9f9f9] w-full h-auto md:min-h-[500px] mt-6 items-start text-center">
+        {/* Texto */}
+        <h2 className="text-3xl md:text-5xl text-blue-500 px-40 font-semibold mt-10 md:mt-16">
+          Conheça nossas Startups
+        </h2>  
+
+        {/* Carrossel */}
+        <div className="w-full flex justify-center ">
+          <Carrocel />
+        </div>
       </div>
-      <div className="flex flex-col w-full h-auto min-h-[200px] mt-20 px-[166px]" /* Projetos Academicos */ >
+      <div className="flex flex-col bg-white w-full h-auto md:min-h-[500px] mt-6 px-[166px]" /* Projetos Academicos */ >
         <div className="flex flex-row justify-center items-start mt-20 w-full"/* Projetos Academicos */>
           <div className="flex flex-col justify-start items-start w-full md:max-w-[658px]" /* Textos */>
             <h2 className="text-3xl md:text-5xl text-blue-500 font-semibold">
@@ -70,8 +70,8 @@ export default function Inicio() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-full h-auto min-h-[200px] mt-20 px-[166px]" /* Carrocel */ >
-        <div className="flex flex-row justify-center items-start mt-6 w-full"/* Projetos Academicos */>
+      <div className="flex flex-col bg-[#F9F9F9] w-full h-auto min-h-[200px] mt-20 py-3 " >
+        <div className="flex flex-row justify-center items-start mt-6 w-full"/* Banco de Oportunidades */>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             <CardServico titulo="Alagamentos Constantes na Cidade do Recife" texto="Recife enfrenta problemas frequentes de alagamento durante períodos de chuva intensa, 
             afetando a mobilidade urbana, danificando infraestruturas e colocando em risco a segurança pública." image={alagamentos} alt="Imagem de alagamento"/>
@@ -89,7 +89,7 @@ export default function Inicio() {
           </div>
         </div>
       </div>
-      <div className="flex flex-row items-center min-h-[529px] justify-between w-full px-[166px]" /* Editais */>
+      <div className="flex flex-row bg-white items-center min-h-[529px] justify-between w-full px-[166px]" /* Editais */>
         <div className="flex flex-col w-full max-w-[642px] h-auto px-4 ml-4 " /* Textos */>
             <h3 className="text-2xl md:text-4xl text-blue-500 font-semibold">
               Editais

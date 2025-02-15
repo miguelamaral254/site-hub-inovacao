@@ -52,9 +52,7 @@ const CardStartup = ({ image, alt, titulo, texto , autor, segmento, textoLongo, 
             </div>
     
             <div className="mt-4 flex justify-end">
-                <button onClick={() => setIsOpen(true)}>
-                    <ButtonGrandeSeg text="Conheça Mais a Startup" />
-                </button>
+                <ButtonGrandeSeg text="Conheça Mais a Startup" onClick={() => setIsOpen(true)} />
             </div>
     
             {isOpen && (

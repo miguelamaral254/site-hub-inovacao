@@ -45,7 +45,7 @@ const UpdateProjectDetails = ({ project, isOpen, onClose, onSave }: UpdateProjec
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-xl font-bold mb-4">Editar Projeto</h2>
 

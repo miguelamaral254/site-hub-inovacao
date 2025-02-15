@@ -18,7 +18,7 @@ const Projetos = () => {
 
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col bg-[#F9F9F9] min-h-screen">
       <div className="flex w-full h-auto bg-gray-500">
         <Image 
         src={bannerprojetos} 
@@ -27,7 +27,7 @@ const Projetos = () => {
         />
       </div>
 
-      <div className="flex flex-col md:flex-row items-center justify-between w-full px-6 md:px-24 py-10">
+      <div className="flex flex-col bg-white md:flex-row items-center justify-between w-full px-6 md:px-24 py-10">
         <div className="flex flex-col w-full md:w-1/2 h-auto">
           <h2 className="text-3xl md:text-5xl text-blue-500 font-semibold leading-tight">
             Projetos Acadêmicos

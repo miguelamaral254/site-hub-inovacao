@@ -150,11 +150,6 @@ export default function TicketList({ statusFilter }: TicketListProps) {
             <TicketCard opportunity={opportunity} fetchProjects={fetchProjects} />
           </li>
         ))}
-        {currentOpportunities.map((opportunity) => (
-          <li key={opportunity.id}>
-            <TicketCard opportunity={opportunity} fetchProjects={fetchProjects} />
-          </li>
-        ))}
       </ul>
       <p className="text-gray-600 text-sm mt-2">
         Página {currentPage} de {Math.ceil(filteredProjects.length / itemsPerPage)}
