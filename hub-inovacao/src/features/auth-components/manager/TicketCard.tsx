@@ -22,7 +22,7 @@ const TicketCard: React.FC<TicketCardProps> = ({ project, opportunity, fetchProj
    
       <div
         className="p-4 border-b bg-white">
-        <div className="grid grid-cols-6 bg-white flex items-center gap-4">
+        <div className="grid grid-cols-6 bg-white items-center gap-4">
           <h4 className="text-base font-medium text-gray-500 truncate ">
             {project?.title || opportunity?.title || "Título Indefinido"}
           </h4>

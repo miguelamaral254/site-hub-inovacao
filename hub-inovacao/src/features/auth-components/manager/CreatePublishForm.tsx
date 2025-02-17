@@ -1,155 +1,152 @@
-"use client";
-
 import { useState } from "react";
-import { createPublish } from "@/services/publishService"; 
-import useSwal from "@/hooks/useSwal"; 
+import { createPublish } from "@/services/publishService";
+import useSwal from "@/hooks/useSwal";
 import { PublishCreateDTO } from "@/interfaces/publishInterface";
-const CreatePublishForm: React.FC = () => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [acessLink, setAcessLink] = useState('');
-    const [photoLink, setPhotoLink] = useState('');
-    const [initialDate, setInitialDate] = useState('');
-    const [finalDate, setFinalDate] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-  
-    const { showSuccess, showError } = useSwal();
-  
-    // Data de Publicação automaticamente configurada para a data atual
-    const publishedDate = new Date().toISOString().split('T')[0]; // Formato 'YYYY-MM-DD'
-  
-    const handleSubmit = async () => {
-      if (!title || !description) {
-        setErrorMessage("Campos obrigatórios não preenchidos");
-        return;
-      }
-  
-      // Convertendo as datas para o formato correto 'YYYY-MM-DD'
-      const formattedInitialDate = new Date(initialDate).toISOString().split('T')[0];
-      const formattedFinalDate = new Date(finalDate).toISOString().split('T')[0];
-      const formattedPublishedDate = new Date(publishedDate).toISOString().split('T')[0];
-  
-      const publishData: PublishCreateDTO = {
-        title,
-        description,
-        acessLink,
-        photoLink,
-        initialDate: formattedInitialDate,
-        finalDate: formattedFinalDate,
-        publishedDate: formattedPublishedDate, // Data de publicação já definida automaticamente
-      };
-  
-      try {
-        setIsLoading(true);
-        await createPublish(publishData);
-        showSuccess("Publicação Criada com Sucesso!");
-  
-        setTitle('');
-        setDescription('');
-        setAcessLink('');
-        setPhotoLink('');
-        setInitialDate('');
-        setFinalDate('');
-      } catch (error) {
-        console.log(error)
-        setErrorMessage("Erro ao criar publicação. Tente novamente.");
-        showError("Erro ao criar publicação!");
-      } finally {
-        setIsLoading(false);
-      }
+
+interface CreatePublishFormProps {
+  onClose: () => void;
+  onPublishCreated: () => void; // 🚀 Chama a função para recarregar a lista após o sucesso
+}
+
+const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose, onPublishCreated }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [acessLink, setAcessLink] = useState("");
+  const [initialDate, setInitialDate] = useState("");
+  const [finalDate, setFinalDate] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const { showSuccess, showError } = useSwal();
+  const publishedDate = new Date().toISOString().split("T")[0];
+
+  const handleSubmit = async () => {
+    if (!title || !description) {
+      setErrorMessage("Campos obrigatórios não preenchidos");
+      return;
+    }
+
+    const publishData: PublishCreateDTO = {
+      title,
+      description,
+      acessLink,
+      initialDate: new Date(initialDate).toISOString().split("T")[0],
+      finalDate: new Date(finalDate).toISOString().split("T")[0],
+      publishedDate,
     };
-  
-    return (
-      <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-        <h2 className="text-2xl font-semibold mb-4">Criar Publicação</h2>
-  
+
+    console.log("Dados enviados:", publishData);
+
+    try {
+      setIsLoading(true);
+      await createPublish(publishData, imageFile);
+      showSuccess("Publicação Criada com Sucesso!");
+      onClose();
+      onPublishCreated(); // 🚀 Atualiza a lista de publicações
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Erro ao criar publicação. Tente novamente.");
+      showError("Erro ao criar publicação!");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
+        <h3 className="text-xl font-semibold mb-4">Criar Publicação</h3>
+
         {errorMessage && <p className="text-red-600 mb-4">{errorMessage}</p>}
-  
-        <form onSubmit={(e) => e.preventDefault()}>
-          <div className="mb-4">
-            <label htmlFor="title" className="block text-sm font-medium mb-2">Título</label>
+
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium">Título *</label>
             <input
               type="text"
-              id="title"
+              className="w-full p-2 border rounded"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              placeholder="Digite o título da publicação"
+              required
             />
           </div>
-  
-          <div className="mb-4">
-            <label htmlFor="description" className="block text-sm font-medium mb-2">Descrição</label>
+
+          <div>
+            <label className="block text-sm font-medium">Descrição *</label>
             <textarea
-              id="description"
+              className="w-full p-2 border rounded"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              placeholder="Descreva a publicação"
+              required
             />
           </div>
-  
-          <div className="mb-4">
-            <label htmlFor="acessLink" className="block text-sm font-medium mb-2">Link de Acesso</label>
+
+          <div>
+            <label className="block text-sm font-medium">Link de Acesso</label>
             <input
               type="text"
-              id="acessLink"
+              className="w-full p-2 border rounded"
               value={acessLink}
               onChange={(e) => setAcessLink(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              placeholder="URL de acesso"
             />
           </div>
-  
-          <div className="mb-4">
-            <label htmlFor="photoLink" className="block text-sm font-medium mb-2">Link da Foto</label>
+
+          {/* Upload de Imagem */}
+          <div>
+            <label className="block text-sm font-medium">Escolher Imagem</label>
             <input
-              type="text"
-              id="photoLink"
-              value={photoLink}
-              onChange={(e) => setPhotoLink(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              placeholder="URL da foto da publicação"
+              type="file"
+              onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
+              className="w-full p-2 border rounded"
+              accept="image/*"
             />
           </div>
-  
-          <div className="mb-4">
-            <label htmlFor="initialDate" className="block text-sm font-medium mb-2">Data de Início</label>
+
+          <div>
+            <label className="block text-sm font-medium">Data de Início *</label>
             <input
               type="date"
-              id="initialDate"
+              className="w-full p-2 border rounded"
               value={initialDate}
               onChange={(e) => setInitialDate(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              placeholder="Selecione a data de início"
+              required
             />
           </div>
-  
-          <div className="mb-4">
-            <label htmlFor="finalDate" className="block text-sm font-medium mb-2">Data Final</label>
+
+          <div>
+            <label className="block text-sm font-medium">Data Final *</label>
             <input
               type="date"
-              id="finalDate"
+              className="w-full p-2 border rounded"
               value={finalDate}
               onChange={(e) => setFinalDate(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              placeholder="Selecione a data final"
+              required
             />
           </div>
-  
-          <div className="flex justify-between mt-4">
+
+          <div className="flex justify-end space-x-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            >
+              Cancelar
+            </button>
             <button
               onClick={handleSubmit}
               disabled={isLoading}
-              className="bg-green-500 text-white px-6 py-3 rounded-md w-full"
+              className={`px-4 py-2 text-white rounded ${
+                isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
+              }`}
             >
-              {isLoading ? 'Enviando...' : 'Criar Publicação'}
+              {isLoading ? "Criando..." : "Criar Publicação"}
             </button>
           </div>
         </form>
       </div>
-    );
-  };
-  
-  export default CreatePublishForm;
+    </div>
+  );
+};
+
+export default CreatePublishForm;

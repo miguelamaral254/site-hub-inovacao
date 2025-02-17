@@ -5,12 +5,13 @@ import {
 } from "@/features/auth-components/project/interfaces/projectInterfaces";
 import axios from "./api";
 import { AxiosError } from "axios";
-import { AcademicProjectCreateDTO, AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
+import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
 import { UpdateProjectDetails } from "@/features/auth-components/project/interfaces/UpdateProjectDetails";
+import { Page } from "@/interfaces/PaginationInterface";
 
 // Função para criar projeto para professor
 export const createProject = async (
-  projectData: AcademicProjectCreateDTO
+  projectData: FormData // Alterado para FormData
 ): Promise<AcademicProjectResponseDTO> => {
   try {
     const userRole = localStorage.getItem("role");
@@ -20,20 +21,16 @@ export const createProject = async (
 
     console.log("Role do usuário:", userRole);
 
-    // Verificando se o ID do aluno ou professor foi fornecido
-    if (userRole === "professor" && !projectData.professorId) {
-      throw new Error("Id do professor é necessário.");
-    }
-
-    if (userRole === "student" && !projectData.studentId) {
-      throw new Error("Id do aluno é necessário.");
-    }
-
     // Verificando a URL antes de realizar a requisição
-    const url = `/projects/${userRole.toLocaleLowerCase()}/create`;
+    const url = `/projects/${userRole.toLowerCase()}/create`;
     console.log("URL da requisição:", url);
 
-    const response = await axios.post<AcademicProjectResponseDTO>(url, projectData);
+    const response = await axios.post<AcademicProjectResponseDTO>(url, projectData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // Configuração necessária para envio de arquivos
+      },
+    });
+
     console.log("Resposta do servidor:", response);
 
     return response.data;
@@ -49,20 +46,18 @@ export const createProject = async (
 };
 // Função para obter projetos por email
 export const getProjectsByUserEmail = async (
-  email: string
-): Promise<
-  (AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO)[]
-> => {
+  email: string,
+  page: number,
+  size: number
+): Promise<Page<AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO>> => {
   try {
-    const response = await axios.get<
-      AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO[]
-    >("/projects/by-email", {
-      params: { email },
-    });
-
-    const data = Array.isArray(response.data) ? response.data : [response.data];
-
-    return data;
+    const response = await axios.get<Page<AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO>>(
+      "/projects/by-email", // O endpoint correto, a URL base será automaticamente combinada
+      {
+        params: { email, page, size },
+      }
+    );
+    return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       throw new Error(error.response.data.message || "Erro ao buscar projetos");
@@ -70,7 +65,6 @@ export const getProjectsByUserEmail = async (
     throw new Error("Erro de conexão com o servidor");
   }
 };
-
 // Função para listar todos os projetos de professor
 export const getAllProjectsForProfessor = async (): Promise<
   AcademicProjectResponseProfessorDTO[]
@@ -110,22 +104,29 @@ export const getAllProjectsForStudent = async (): Promise<
 };
 
 // Função para listar todos os projetos
-export const getAllProjects = async (): Promise<AcademicProjectResponseDTO[]> => {
+export const getAllProjects = async (
+  page: number,
+  size: number
+): Promise<Page<AcademicProjectResponseDTO>> => {
   try {
-    const response = await axios.get<AcademicProjectResponseDTO[]>("/projects/all");
+    const response = await axios.get<Page<AcademicProjectResponseDTO>>("/projects/all", {
+      params: { page, size },
+    });
+
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError && error.response) {
-      throw new Error(
-        error.response.data.message || "Erro ao listar todos os projetos"
-      );
-    }
-    throw new Error("Erro de conexão com o servidor");
+    console.error("Erro ao listar projetos:", error);
+    throw new Error("Erro ao listar projetos.");
   }
 };
-export const getAllProjectsForManager = async (): Promise<AcademicProjectResponseDTO[]> => {
+export const getAllProjectsForManager = async (
+  page: number,
+  size: number
+): Promise<Page<AcademicProjectResponseDTO>> => {
   try {
-    const response = await axios.get<AcademicProjectResponseDTO[]>("/projects/manager/all");
+    const response = await axios.get<Page<AcademicProjectResponseDTO>>("/projects/manager/all", {
+      params: { page, size },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
@@ -149,7 +150,6 @@ export const getAllProjectsForManager = async (): Promise<AcademicProjectRespons
       throw new Error("Erro de conexão com o servidor");
     }
   };
-// Função para atualizar status do projeto
 
         export const updateProjectStatus = async (
           projectId: number,

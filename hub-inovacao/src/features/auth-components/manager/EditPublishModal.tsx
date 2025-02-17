@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { PublishResponseDTO } from "@/interfaces/publishInterface";
+import { PublishResponseDTO, UpdatePublishDetailsDTO } from "@/interfaces/publishInterface";
+import { updatePublish } from "@/services/publishService"; // Importando o serviço de atualização
 
 interface EditPublishModalProps {
   publish: PublishResponseDTO;
@@ -15,11 +16,25 @@ const EditPublishModal: React.FC<EditPublishModalProps> = ({ publish, onClose })
   const [photoLink, setPhotoLink] = useState(publish.photoLink);
   const [initialDate, setInitialDate] = useState(publish.initialDate);
   const [finalDate, setFinalDate] = useState(publish.finalDate);
+  const [error, setError] = useState<string>("");
 
-  const handleSave = () => {
-    // Função para salvar as alterações
-    console.log("Publicação atualizada:", { title, description, acessLink, photoLink, initialDate, finalDate });
-    onClose(); // Fecha o modal após salvar
+  const handleSave = async () => {
+    const updatedPublish: UpdatePublishDetailsDTO = {
+      title,
+      description,
+      acessLink,
+      photoLink,
+      initialDate,
+      finalDate,
+    };
+
+    try {
+      await updatePublish(publish.id, updatedPublish); // Chama a função de atualização
+      onClose(); 
+    } catch (error) {
+      console.log(error)
+      setError("Erro ao atualizar a publicação.");
+    }
   };
 
   return (
@@ -97,6 +112,9 @@ const EditPublishModal: React.FC<EditPublishModalProps> = ({ publish, onClose })
             className="w-full p-2 border border-gray-300 rounded-md"
           />
         </div>
+
+        {/* Exibindo erro caso ocorra */}
+        {error && <p className="text-red-500">{error}</p>}
 
         {/* Botões Salvar e Cancelar */}
         <div className="flex justify-between mt-4">

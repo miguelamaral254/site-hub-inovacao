@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getAllOpportunities } from "@/services/opportunityService";
+import { getApprovedActiveOpportunities } from "@/services/opportunityService";
 import { OpportunityResponseDTO } from "@/interfaces/OpportunityInterfaces";
 import AllOpportunitiesCard from "./AllOpportunitiesCard";
 import NameFilter from "@/components/NameFilter";
@@ -29,12 +29,15 @@ const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [nameFilter, setNameFilter] = useState<string | null>(null);
+  const [page, setPage] = useState<number>(0); 
+  const [size] = useState<number>(10); 
 
   useEffect(() => {
     const fetchOpportunities = async () => {
       try {
-        const response = await getAllOpportunities();
-        setOpportunities(response);
+        const response = await getApprovedActiveOpportunities(page, size);
+        setOpportunities(response.content); 
+        setTotalOpportunities(response.totalElements);  
       } catch (err) {
         setError("Erro ao carregar as oportunidades");
       } finally {
@@ -43,7 +46,7 @@ const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({
     };
 
     fetchOpportunities();
-  }, []);
+  }, [page, size, setTotalOpportunities]);
 
   const filteredByType =
     filterType && filterType !== "Todos" && typeMap[filterType]
@@ -55,10 +58,6 @@ const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({
         opportunity.title.toLowerCase().includes(nameFilter.toLowerCase())
       )
     : filteredByType;
-
-  useEffect(() => {
-    setTotalOpportunities(filteredByName.length);
-  }, [filteredByName, setTotalOpportunities]);
 
   if (loading) {
     return (
@@ -95,6 +94,14 @@ const AllOpportunitiesList: React.FC<AllOpportunitiesListProps> = ({
           />
         ))}
       </div>
+
+      {filteredByName.length < opportunities.length && (
+        <div className="text-center mt-4">
+          <button onClick={() => setPage(page + 1)} className="btn btn-primary">
+            Carregar Mais
+          </button>
+        </div>
+      )}
     </div>
   );
 };

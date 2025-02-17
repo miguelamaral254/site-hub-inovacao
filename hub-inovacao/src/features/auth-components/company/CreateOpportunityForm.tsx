@@ -1,66 +1,81 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import { FaUser, FaTrashAlt, FaPlusCircle } from 'react-icons/fa';
-import { createOpportunity } from '@/services/opportunityService'; 
-import { OpportunityCreateDTO, TypeBO, StatusSolicitation } from '@/interfaces/OpportunityInterfaces';
-import useSwal from '@/hooks/useSwal'; 
+import { createOpportunity } from '@/services/opportunityService';
+import { OpportunityResponseDTO, TypeBO, StatusSolicitation } from '@/interfaces/OpportunityInterfaces';
+import useSwal from '@/hooks/useSwal';
 
 const CreateOpportunityForm: React.FC = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [urlPhoto, setUrlPhoto] = useState('');
+  const [urlPhoto, setUrlPhoto] = useState<File | null>(null); 
   const [pdfLink, setPdfLink] = useState('');
   const [siteLink, setSiteLink] = useState('');
   const [typeBO, setTypeBO] = useState<TypeBO>(TypeBO.OPORTUNIDADE);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [error, setError] = useState('');
+  const { showSuccess, showError } = useSwal();
 
-  const { showSuccess, showError } = useSwal(); 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+
+    if (file) {
+      if (file.size > 6 * 1024 * 1024) { // Verifica se o arquivo é maior que 6MB
+        setError('O arquivo não pode ser maior que 6MB.');
+        setUrlPhoto(null); // Limpa o arquivo selecionado
+      } else {
+        setError('');
+        setUrlPhoto(file); // Salva o arquivo se a validação passar
+      }
+    }
+  };
+
 
   const handleSubmit = async () => {
-    if (!title || !description) {
-      setErrorMessage('Campos obrigatórios não preenchidos');
+    if (!title || !description || !urlPhoto) {
+      setErrorMessage("Campos obrigatórios não preenchidos");
       return;
     }
-
-    const userData = localStorage.getItem('userData');
+  
+    const userData = localStorage.getItem("userData");
     if (!userData) {
-      setErrorMessage('Dados do usuário não encontrados.');
+      setErrorMessage("Dados do usuário não encontrados.");
       return;
     }
-
+  
     const parsedUserData = JSON.parse(userData);
-    const status = StatusSolicitation.PENDENTE; // Status inicial como 'PENDENTE'
-
-    const opportunityData: OpportunityCreateDTO = {
+    const status = StatusSolicitation.PENDENTE;
+  
+    const opportunityData = {
       title,
       description,
-      urlPhoto,
       pdfLink,
       siteLink,
       typeBO,
-      authorEmail: parsedUserData.email, 
+      authorEmail: parsedUserData.email,
       status,
-      flagActive: true, // Podemos iniciar com o status ativo
-      partnerCompanyId: parsedUserData.id, 
+      flagActive: true,
+      partnerCompanyId: parsedUserData.id,
     };
-
-    console.log('Oportunidade a ser enviada:', opportunityData);
-
+  
+    const formData = new FormData();
+    formData.append("dto", new Blob([JSON.stringify(opportunityData)], { type: "application/json" }));
+    formData.append("imageFile", urlPhoto);
+  
     try {
       setIsLoading(true);
-      await createOpportunity(opportunityData);  
-      showSuccess('Oportunidade Criada com Sucesso!');
-      
-      setTitle('');
-      setDescription('');
-      setUrlPhoto('');
-      setPdfLink('');
-      setSiteLink('');
+      await createOpportunity(formData);
+      showSuccess("Oportunidade Criada com Sucesso!");
+  
+      setTitle("");
+      setDescription("");
+      setUrlPhoto(null);
+      setPdfLink("");
+      setSiteLink("");
       setTypeBO(TypeBO.OPORTUNIDADE);
     } catch (error) {
-      setErrorMessage('Erro ao criar oportunidade. Tente novamente.');
-      showError('Erro ao criar oportunidade!');
+      setErrorMessage("Erro ao criar oportunidade. Tente novamente.");
+      showError("Erro ao criar oportunidade!");
     } finally {
       setIsLoading(false);
     }
@@ -97,16 +112,16 @@ const CreateOpportunityForm: React.FC = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="urlPhoto" className="block text-sm font-medium mb-2">Link da Foto</label>
-          <input
-            type="text"
-            id="urlPhoto"
-            value={urlPhoto}
-            onChange={(e) => setUrlPhoto(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="URL da foto da oportunidade"
-          />
-        </div>
+      <label htmlFor="urlPhoto" className="block text-sm font-medium mb-2">Escolher Imagem</label>
+      <input
+        type="file"
+        id="urlPhoto"
+        onChange={handleFileChange}
+        className="w-full p-3 border border-gray-300 rounded-md"
+        accept="image/*"
+      />
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>} {/* Exibe o erro se houver */}
+    </div>
 
         <div className="mb-4">
           <label htmlFor="pdfLink" className="block text-sm font-medium mb-2">Link do PDF</label>

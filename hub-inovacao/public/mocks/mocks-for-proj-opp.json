@@ -1,0 +1,62 @@
+{
+    "projects": [
+      {
+        "id": "1",
+        "title": "Projeto de Pesquisa A",
+        "description": "Descrição do projeto de pesquisa A",
+        "urlPhoto": "https://via.placeholder.com/150",
+        "pdfLink": "https://via.placeholder.com/150",
+        "siteLink": "https://example.com",
+        "typeAP": "Tipo A",
+        "currentUserEmail": "manager@example.com",
+        "creationDate": "2025-01-01T00:00:00Z",
+        "status": "PENDENTE",
+        "idManager": "manager1"
+      },
+      {
+        "id": "2",
+        "title": "Projeto de Pesquisa B",
+        "description": "Descrição do projeto de pesquisa B",
+        "urlPhoto": "https://via.placeholder.com/150",
+        "pdfLink": "https://via.placeholder.com/150",
+        "siteLink": "https://example.com",
+        "typeAP": "Tipo B",
+        "currentUserEmail": "manager@example.com",
+        "creationDate": "2025-02-01T00:00:00Z",
+        "status": "PENDENTE",
+        "idManager": "manager2"
+      }
+    ],
+    "opportunities": [
+      {
+        "id": 1,
+        "title": "Oportunidade A",
+        "description": "Descrição da oportunidade A",
+        "urlPhoto": "https://via.placeholder.com/150",
+        "pdfLink": "https://via.placeholder.com/150",
+        "siteLink": "https://example.com",
+        "typeBO": "Tipo A",
+        "authorEmail": "author@example.com",
+        "status": "PENDENTE",
+        "creationDate": "2025-01-01T00:00:00Z",
+        "flagActive": true,
+        "partnerCompanyId": 1,
+        "institutionOrganization": "Instituição A"
+      },
+      {
+        "id": 2,
+        "title": "Oportunidade B",
+        "description": "Descrição da oportunidade B",
+        "urlPhoto": "https://via.placeholder.com/150",
+        "pdfLink": "https://via.placeholder.com/150",
+        "siteLink": "https://example.com",
+        "typeBO": "Tipo B",
+        "authorEmail": "author@example.com",
+        "status": "PENDENTE",
+        "creationDate": "2025-02-01T00:00:00Z",
+        "flagActive": true,
+        "partnerCompanyId": 2,
+        "institutionOrganization": "Instituição B"
+      }
+    ]
+  }

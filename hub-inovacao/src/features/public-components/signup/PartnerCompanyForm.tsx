@@ -1,4 +1,7 @@
+"use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { ButtonGrande } from "@/components/Button";
+import React, { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 import MaskedInput from "react-text-mask";
 
@@ -11,6 +14,7 @@ interface PartnerCompanyFormProps {
     name: string;
     email: string;
     password: string;
+    confirmPassword: string;
     cnpj: string;
     institutionOrganization: string;
     phones: Phone[];
@@ -18,22 +22,83 @@ interface PartnerCompanyFormProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handlePhoneChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
   handleAddPhone: () => void;
-  handleRemovePhone: (index: number) => void; 
-
+  handleRemovePhone: (index: number) => void;
   handleSubmit: (e: React.FormEvent) => void;
   errors: any;
 }
 
-// Seu componente PartnerCompanyForm atualizado
 export default function PartnerCompanyForm({
   formData,
   handleChange,
   handlePhoneChange,
   handleAddPhone,
-  handleRemovePhone,  
+  handleRemovePhone,
   handleSubmit,
   errors,
 }: PartnerCompanyFormProps) {
+  const [passwordStrength, setPasswordStrength] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+  const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
+
+  useEffect(() => {
+    const isValid = Boolean(
+      formData.name &&
+      validateEmail(formData.email) &&
+      formData.password.length >= 8 &&
+      formData.password === formData.confirmPassword &&
+      formData.cnpj &&
+      formData.institutionOrganization &&
+      formData.phones.length > 0 &&
+      formData.phones.every((phone) => phone.number.length >= 14)
+    );
+
+    setIsFormValid(isValid);
+  }, [formData]);
+
+  const validateEmail = (email: string): boolean => {
+    const regex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/; // Exige @ e um domínio como .com, .org, etc.
+    return regex.test(email);
+  };
+
+  const checkPasswordStrength = (password: string) => {
+    if (password.length < 8) {
+      setPasswordStrength("Fraca");
+    } else if (password.match(/[A-Z]/) && password.match(/\d/)) {
+      setPasswordStrength("Forte");
+    } else {
+      setPasswordStrength("Média");
+    }
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange(e);
+    checkPasswordStrength(e.target.value);
+  };
+
+  const handlePasswordBlur = () => {
+    setPasswordTouched(true);
+  };
+
+  const handleConfirmPasswordBlur = () => {
+    setConfirmPasswordTouched(true);
+    if (formData.confirmPassword && formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = "As senhas não coincidem.";
+    } else {
+      delete errors.confirmPassword;
+    }
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    handleChange(e);
+    if (!validateEmail(value)) {
+      errors.email = "O e-mail deve conter '@' e um domínio válido (ex: .com)";
+    } else {
+      delete errors.email;
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
@@ -43,7 +108,7 @@ export default function PartnerCompanyForm({
           placeholder="Nome da Empresa"
           value={formData.name}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.name ? 'border-red-500' : ''}`}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.name ? "border-red-500" : ""}`}
         />
         {errors.name && <p className="text-red-500 text-sm">Campo obrigatório</p>}
       </div>
@@ -54,33 +119,64 @@ export default function PartnerCompanyForm({
           name="email"
           placeholder="E-mail"
           value={formData.email}
-          onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.email ? 'border-red-500' : ''}`}
+          onChange={handleEmailChange}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.email ? "border-red-500" : ""}`}
         />
-        {errors.email && <p className="text-red-500 text-sm">Campo obrigatório</p>}
+        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
       </div>
 
       <div>
         <input
           type="password"
           name="password"
-          placeholder="Senha"
+          placeholder="Senha (mínimo 8 caracteres)"
           value={formData.password}
-          onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.password ? 'border-red-500' : ''}`}
+          onChange={handlePasswordChange}
+          onBlur={handlePasswordBlur}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.password ? "border-red-500" : ""}`}
         />
-        {errors.password && <p className="text-red-500 text-sm">Campo obrigatório</p>}
+        {passwordTouched && formData.password.length < 8 && (
+          <p className="text-red-500 text-sm">A senha deve ter pelo menos 8 caracteres.</p>
+        )}
+        <p className="text-sm mt-1">
+          Força da senha:{" "}
+          <span
+            className={`font-bold ${
+              passwordStrength === "Forte"
+                ? "text-green-600"
+                : passwordStrength === "Média"
+                ? "text-yellow-500"
+                : "text-red-500"
+            }`}
+          >
+            {passwordStrength}
+          </span>
+        </p>
       </div>
 
-      {/* Máscara para CNPJ */}
+      <div>
+        <input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirmar Senha"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          onBlur={handleConfirmPasswordBlur}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.confirmPassword ? "border-red-500" : ""}`}
+        />
+        {confirmPasswordTouched && errors.confirmPassword && (
+          <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+        )}
+      </div>
+
       <div>
         <MaskedInput
-          mask={[/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
+          mask={[/\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/]}
           name="cnpj"
           placeholder="CNPJ"
           value={formData.cnpj}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.cnpj ? 'border-red-500' : ''}`}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.cnpj ? "border-red-500" : ""}`}
         />
         {errors.cnpj && <p className="text-red-500 text-sm">Campo obrigatório</p>}
       </div>
@@ -92,56 +188,35 @@ export default function PartnerCompanyForm({
           placeholder="Instituição/Organização"
           value={formData.institutionOrganization}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.institutionOrganization ? 'border-red-500' : ''}`}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.institutionOrganization ? "border-red-500" : ""}`}
         />
         {errors.institutionOrganization && <p className="text-red-500 text-sm">Campo obrigatório</p>}
       </div>
 
-     
-<div className="space-y-2">
+      {/* Campo de telefone */}
+      <div className="space-y-2">
         {formData.phones.map((phone, index) => (
           <div key={index} className="flex items-center space-x-2">
             <MaskedInput
-              mask={['(', /\d/, /\d/, ')', ' ',/\d/,' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+              mask={["(", /\d/, /\d/, ")", " ", /\d/, " ", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
               name={`phone-${index}`}
               value={phone.number}
               onChange={(e) => handlePhoneChange(index, e)}
               placeholder="Número de telefone"
-              className={`w-full px-4 py-2 border rounded-lg ${errors[`phone-${index}`] ? 'border-red-500' : ''}`}
+              className={`w-full px-4 py-2 border rounded-lg ${errors[`phone-${index}`] ? "border-red-500" : ""}`}
             />
-            {errors[`phone-${index}`] && <p className="text-red-500 text-sm">Campo obrigatório</p>}
-
-            {/* Ícone de lixeira para remover o telefone */}
-            <button
-              type="button"
-              onClick={() => handleRemovePhone(index)}  // Passa o index para a função handleRemovePhone
-              className="text-red-500 hover:text-red-700"
-            >
+            <button type="button" onClick={() => handleRemovePhone(index)} className="text-red-500 hover:text-red-700">
               <FaTrash />
             </button>
           </div>
         ))}
-
-        {/* Botão para adicionar novo telefone */}
-        <button
-          type="button"
-          onClick={handleAddPhone}
-          className="text-blue-600 hover:underline"
-        >
+        <button type="button" onClick={handleAddPhone} className="text-blue-600 hover:underline">
           Adicionar outro telefone
         </button>
       </div>
 
-      <p className="text-center text-base font-medium mt-4">
-          Já possui uma conta? <a href="/login" className="text-blue-600 font-medium">Faça Login</a>
-      </p>
-      
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
-      >
-        Cadastrar
-      </button>
+      <ButtonGrande type="submit" text="Cadastrar" disabled={!isFormValid} />     
+
     </form>
   );
 }

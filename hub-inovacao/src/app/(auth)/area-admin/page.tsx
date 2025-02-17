@@ -1,16 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useEffect } from "react";
-import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
+import { useRouter } from "next/navigation";
+import { UserResponseCnpjDTO } from "@/interfaces/userInterface";
 import { getUserByEmail } from "@/services/userService";
-import Sidebar from "@/features/auth-components/users/userscpf/dashboard-users/Sidebar";
-import PageContent from "@/features/auth-components/users/userscpf/dashboard-users/PageContent";
+import AdminPageContent from "@/features/auth-components/admins/AdminPageContent";
+import AdminSidebar from "@/features/auth-components/admins/AdminSidebar";
 
-export default function DashboardPage() {
-  const [userData, setUserData] = useState<UserResponseCnpjDTO | UserResponseCpfDTO | null>(null);
+
+export default function AdminPage() {
+  const [userData, setUserData] = useState<UserResponseCnpjDTO | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -19,14 +22,18 @@ export default function DashboardPage() {
       const fetchUserData = async () => {
         try {
           const data = await getUserByEmail(email);
-          setUserData(data);
 
-          // Armazenando userData completo no localStorage para ser acessado em outras páginas
-          localStorage.setItem("userData", JSON.stringify(data));
+          if ((data as UserResponseCnpjDTO)?.cnpj) {
+            setUserData(data as UserResponseCnpjDTO);
 
-          // Console log para verificar o que foi armazenado no localStorage
-          console.log("Dados armazenados no localStorage:", localStorage.getItem("userData"));
+            localStorage.setItem("userData", JSON.stringify(data));
+
+            console.log("Dados armazenados no localStorage:", localStorage.getItem("userData"));
+          } else {
+            setErrorMessage("Usuário não encontrado ou não é um usuário com CPF.");
+          }
         } catch (error) {
+          console.log(error);
           setErrorMessage("Erro ao buscar os dados.");
         }
       };
@@ -37,12 +44,22 @@ export default function DashboardPage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (userData && userData.role !== "ADMIN") {
+      router.push("/"); 
+    }
+  }, [userData, router]);
+
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <Sidebar setSelectedPage={setSelectedPage} userData={userData} errorMessage={errorMessage} />
-      
+      <AdminSidebar setSelectedPage={setSelectedPage} userData={userData} errorMessage={errorMessage} />
+
       <div className="flex-grow p-6">
-        <PageContent selectedPage={selectedPage} userData={userData} />
+        {userData ? (
+          <AdminPageContent selectedPage={selectedPage} userData={userData} />
+        ) : (
+          <div>Carregando...</div>
+        )}
       </div>
     </div>
   );

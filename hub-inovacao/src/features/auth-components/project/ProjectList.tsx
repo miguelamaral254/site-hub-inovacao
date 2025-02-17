@@ -13,42 +13,38 @@ export default function ProjectList({ statusFilter }: ProjectListProps) {
   const [projects, setProjects] = useState<(AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO)[]>([]);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const [totalPages, setTotalPages] = useState<number>(1); // Total de páginas
 
   const fetchProjects = async () => {
     setLoading(true);
     try {
-      const email = localStorage.getItem("email");
-      if (!email) {
-        setError("Email não encontrado.");
-        setLoading(false);
-        return;
-      }
+        const email = localStorage.getItem("email");
+        if (!email) {
+            setError("Email não encontrado.");
+            setLoading(false);
+            return;
+        }
 
-      const fetchedProjects = await getProjectsByUserEmail(email);
-      const validStatus = ["APROVADA", "PENDENTE", "REPROVADA"];
-      if (statusFilter && !validStatus.includes(statusFilter)) {
-        setError("Status inválido.");
-        setLoading(false);
-        return;
-      }
+        const fetchedProjects = await getProjectsByUserEmail(email, currentPage - 1, itemsPerPage); 
 
-      const filteredProjects = fetchedProjects.filter((project) => {
-        const status = project.status?.toUpperCase();
-        return status && status === statusFilter.toUpperCase();
-      });
+        // Loga os dados retornados da API
+        console.log("Projetos retornados: ", fetchedProjects);
 
-      setProjects(filteredProjects);
+        setProjects(fetchedProjects.content);
+        setTotalPages(fetchedProjects.totalPages); 
     } catch (error) {
-      console.log(error)
-      setError("Erro ao carregar projetos.");
+        console.error("Erro ao carregar projetos: ", error);
+        setError("Erro ao carregar projetos.");
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
-
+};
   useEffect(() => {
     fetchProjects();
-  }, [statusFilter]);
+  }, [statusFilter, currentPage]); 
 
   if (loading) {
     return (
@@ -76,6 +72,26 @@ export default function ProjectList({ statusFilter }: ProjectListProps) {
           </li>
         ))}
         </ul>
+      </div>
+
+      <div className="flex justify-between items-center mt-4">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md disabled:opacity-50"
+        >
+          Voltar
+        </button>
+        <p className="text-gray-600 text-sm">
+          Página {currentPage} de {totalPages}
+        </p>
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md disabled:opacity-50"
+        >
+          Avançar
+        </button>
       </div>
     </div>
   );
