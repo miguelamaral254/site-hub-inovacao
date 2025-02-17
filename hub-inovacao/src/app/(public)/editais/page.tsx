@@ -5,41 +5,21 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import bannereditais from "@/assets/BannerEditais.svg";
 import { CardEditais } from "@/components/Card";
+import PublishCard from "@/features/auth-components/manager/PublishCard";
 
-const editaisList = [
-  {
-    titulo: "Catalisa ICT - Ciclo 02",
-    image: "https://picsum.photos/200/300",
-    alt: "sem imagem",
-    dataPublicado: "Publicado em: 04/02/2025",
-    texto: "O Catalisa ICT é uma iniciativa do Sebrae que transforma pesquisas acadêmicas em inovações de alto impacto."
-  },
-  {
-    titulo: "Compete Superior",
-    image: "https://picsum.photos/200/300",
-    alt: "sem imagem",
-    dataPublicado: "Publicado em: 04/02/2025",
-    texto: "A chamada convida docentes vinculados a uma Instituição de Ciência, Tecnologia e Inovação com sede no Estado de Pernambuco (ICT-PE) a submeterem propostas até 20 de janeiro de 2025."
-  },
-  {
-    titulo: "Compet Soluções",
-    image: "https://picsum.photos/200/300",
-    alt: "sem imagem",
-    dataPublicado: "Publicado em: 04/02/2025",
-    texto: "Micro e pequenas empresas de Pernambuco que apresentem soluções inovadoras e ampliem a competitividade territorial do estado."
-  },
-  {
-    titulo: "Incubação de Startups Senac",
-    image: "https://picsum.photos/200/300",
-    alt: "sem imagem",
-    dataPublicado: "Publicado em: 04/02/2025",
-    texto: "Uma iniciativa do Senac Pernambuco voltada para fomentar empreendimentos de base tecnológica nas áreas de atuação da instituição."
-  }
-];
+import AllPublishList from "@/features/public-components/publish/AllPublishList";
+import { ButtonOutline } from "@/components/Button";
+
 
 export default function PublishPage() {
+ const [visiblePublications, setvisiblePublications] = useState(2)
+ const [filterType, setfilterType] = useState<string | null>(null);
+ const [totalEditais, setTotalEditais] = useState(0);
+
+
+
   return (
-    <div>
+    <div className="bg-[#F9F9F9]">
       <div className="flex w-full h-auto bg-gray-500">
         <Image 
         src={bannereditais} 
@@ -55,17 +35,25 @@ export default function PublishPage() {
           </p>
         </div>
       </div>
-      <div className="grid-flow-col grid-rows-2 gap-4 flex justify-center mt-6">
-        {editaisList.map((edital, index) => (
-          <CardEditais 
-            key={index} 
-            titulo={edital.titulo} 
-            image={edital.image} 
-            alt={edital.alt} 
-            dataPublicado={edital.dataPublicado} 
-            texto={edital.texto} 
-          />
-        ))}
+      <div className="flex flex-col items-center gap-4 py-6 flex justify-center mt-6 bg-white w-full h-auto">
+        <AllPublishList 
+        visiblePublications={visiblePublications}
+        filterType={filterType}
+        setTotalEditais={setTotalEditais}/>
+        
+        {totalEditais > 0 && (
+          <div className="flex justify-center mt-6">
+            <ButtonOutline text={visiblePublications >= totalEditais ? "Carregar menos" : "Carregar Mais"}
+              onClick={() => {
+                if (visiblePublications >= totalEditais) {
+                  setvisiblePublications(2);
+                } else {
+                  setvisiblePublications((prev) => prev + 2)
+                }
+              }}
+              disabled={totalEditais <= 2} />
+          </div>
+        )}
       </div>
       <div className="flex flex-col w-full h-auto min-h-[200px] mt-2 px-[166px]">
         <div className="flex justify-end mr-2 md:mr-5"></div>

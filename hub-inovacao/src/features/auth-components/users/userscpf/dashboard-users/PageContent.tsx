@@ -21,20 +21,26 @@ export default function PageContent({ selectedPage, userData }: PageContentProps
           <div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Projetos Aprovados</h3>
             <p className="text-lg text-gray-600 mb-4">Aqui você pode ver os projetos acadêmicos aprovados pela sua instituição.</p>
+            <div className="grid grid-cols-6 font-bold bg-gray-100 px-6 gap-6 border-gray-300 text-left mt-20 mb-2">
+              <span className="col-span-2">Título</span>
+              <span>Data</span>
+              <span>Tipo</span>
+              <span>Status</span>
+            </div>
+            <ProjectList statusFilter="REPROVADA" />
             <ProjectList statusFilter="APROVADA" />
+            <ProjectList statusFilter="PENDENTE" />
           </div>
         )}
 
-        {selectedPage === "page2" && (
+        {/*selectedPage === "page2" && (
           <div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Projetos Pendentes e Reprovados</h3>
             <p className="text-lg text-gray-600 mb-4">Verifique os projetos pendentes ou reprovados para poder acompanhar seu progresso e melhorias necessárias.</p>
             <div className="space-y-4">
-              <ProjectList statusFilter="PENDENTE" />
-              <ProjectList statusFilter="REPROVADA" />
             </div>
           </div>
-        )}
+        )*/}
 
         {selectedPage === "page3" && (
           <div>

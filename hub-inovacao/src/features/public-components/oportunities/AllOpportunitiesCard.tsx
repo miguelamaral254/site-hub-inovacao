@@ -42,10 +42,7 @@ const AllOpportunitiesCard: React.FC<AllOpportunitiesCardProps> = ({
 
   return (
     <div className="flex flex-col w-full max-w-[350px] h-auto bg-white shadow-lg rounded-lg px-3 py-4 transition-shadow duration-300 relative">
-      
-      <div className={`absolute top-0 left-0 w-full ${bgColor} text-center py-2 rounded-t-lg flex items-center justify-center gap-2`}>
-        {icon} <span className="text-gray-700 text-sm font-medium">{typeBO}</span>
-      </div>
+    
 
       <div className="flex justify-center w-full mt-8">
         <img src={urlPhoto || "/default-image.jpg"} alt={title} className="w-full h-48 object-cover rounded-md" />
@@ -53,11 +50,8 @@ const AllOpportunitiesCard: React.FC<AllOpportunitiesCardProps> = ({
 
       <div className="py-2 mt-3">
         <h5 className="text-2xl font-bold text-gray-950 truncate">{title}</h5>
-        <p className="text-gray-800 mt-2 break-words max-h-24 overflow-auto">{description}</p>
-      </div>
-
-      <div className="mt-2">
-        <p className="text-gray-600 text-sm font-medium">Instituição: {institutionOrganization}</p>
+        <p className={`text-start inline-flex items-center gap-2 mt-3 px-3 py-2 bg-[#3355A5] text-sm rounded-3xl text-white w-auto`}>#{typeBO}</p>
+        <p className="text-gray-800 mt-2 break-words max-h-24 truncate overflow-auto">{description}</p>
       </div>
 
       {/* Criando um espaço extra para evitar sobreposição do botão */}

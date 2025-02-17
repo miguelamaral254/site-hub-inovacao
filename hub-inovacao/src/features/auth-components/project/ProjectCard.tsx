@@ -2,12 +2,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { FaFilePdf, FaExternalLinkAlt, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import UpdateProjectDetails from "./UpdateProjectDetails";
 import { updateProjectDetails } from "@/services/projectService";
 import useSwal from "@/hooks/useSwal";
 import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "./interfaces/projectInterfaces";
-
+import { ButtonGrande, ButtonOutline } from "@/components/Button";
+import { RiTimeLine } from "react-icons/ri";
+import { RiCheckLine } from "react-icons/ri";
+import { RiCloseLine } from "react-icons/ri";
 interface ProjectCardProps {
   project: AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO;
   fetchProjects: () => void;
@@ -81,53 +84,33 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, fetchProjects }) => 
     }
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
+  };
+
   return (
-    <div className="flex flex-col w-full max-w-[350px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg px-3 py-4 ml-[32px] transition-shadow duration-300 relative">
-      <div className="absolute top-4 right-4 ">
-        <p className={`text-sm ${getStatusClass(project.status)}`}>{project.status}</p>
-      </div>
-
-      <div className="flex justify-center w-full">
-        <div className="mb-4 mt-5">
-          <img src={project.urlPhoto} alt={project.title} className="w-full h-48 object-cover rounded-md" />
-        </div>
-      </div>
-
-      <div className="py-2 mt-3 mb-10">
-        <h5 className="text-2xl font-bold text-gray-950">{project.title}</h5>
-        <p className="text-gray-800 mt-4">{project.description}</p>
-      </div>
-
-      <div className="absolute bottom-4 right-4 flex flex-col gap-2">
-        <button
-          onClick={handleEditModalToggle}
-          className="text-sm text-center py-1.5 px-3 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition duration-200"
-        >
-          Editar
-        </button>
-      </div>
-
-      <div className="text-sm mt-4">
-        <div className="flex items-center mb-2">
-          <FaFilePdf className="mr-2" />
-          {project.pdfLink && (
-            <a href={project.pdfLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-              Download PDF
-            </a>
+    <div className=" p-4 border-b bg-white rounded-lg ">
+      <div className="grid grid-cols-6 items-center gap-4">
+        <h5 className="col-span-2 text-xl font-bold text-gray-950">{project.title}</h5>
+        <p className="text-base text-gray-800">{formatDate(project.creationDate)}</p>
+        <p className="text-base text-gray-800">{project.typeAP}</p>
+        {project && (
+          <span className={`text-base flex flex-row gap-2 items-center text-gray-500 font-semibold ${project.status === "APROVADA" ? "text-green-500" : project.status === "REPROVADA" ? "text-red-500" : "text-yellow-500"}`}>          
+            {project.status === "APROVADA" && <RiCheckLine className="text-lg text-green-500 "/>}
+            {project.status === "REPROVADA" && <RiCloseLine className="text-lg text-red-500"/>}
+            {project.status === "PENDENTE" && <RiTimeLine className="text-lg text-yellow-500"/>}
+            {project.status}
+          </span>
           )}
-        </div>
-        <div className="flex items-center mb-2">
-          <FaExternalLinkAlt className="mr-2" />
-          {project.siteLink && (
-            <a href={project.siteLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-              Visitar Site
-            </a>
-          )}
-        </div>
+        <ButtonOutline
+          text="Verificar Situação"
+          onClick={handleModalToggle}
+        />
       </div>
-
+      
       {isModalOpen && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-10">
           <div className="bg-white p-6 rounded-lg w-[80%] max-w-[600px] relative">
             <button
               onClick={handleModalToggle}
@@ -136,17 +119,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, fetchProjects }) => 
               <FaTimes />
             </button>
 
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center mt-2 mb-4">
               <img src={project.urlPhoto} alt={project.title} className="w-full h-48 object-cover rounded-md" />
             </div>
 
-            <h3 className="text-xl font-bold mb-4">{project.title}</h3>
-            <p className="mb-4">{project.description}</p>
+            <h3 className="text-2xl text-[#002B8F] text-medium mb-4">{project.title}</h3>
+            <p className="text-lg text-[#3355A5] text-medium flex items-center gap-2">Data de Criação: <p className="text-gray-900"> {formatDate(project.creationDate)} </p></p>
+            <p className="text-lg text-[#3355A5] text-medium flex items-center gap-2">Tipo: <p className="text-gray-900">{project.typeAP}</p></p>
 
-            <p className="text-gray-600">Data de Criação: {project.creationDate}</p>
-            <p className="text-gray-600">Tipo: {project.typeAP}</p>
-
-            
+            <p className="mt-3 mb-4 text-[#3355A5] flex items-center gap-2">Descrição: <p className="text-gray-900">{project.description}</p></p>
 
             <div className="text-sm text-gray-500 mt-4">
               <p><strong>Status:</strong> <span className={getStatusClass(project.status)}>{project.status}</span></p>
@@ -162,12 +143,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, fetchProjects }) => 
               </div>
             )}
 
-            <button
-              onClick={handleModalToggle}
-              className="mt-4 py-1.5 px-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
-            >
-              Fechar
-            </button>
+            <ButtonGrande
+              text="Editar Projeto"
+              onClick={handleEditModalToggle}
+            />
           </div>
         </div>
       )}

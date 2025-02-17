@@ -59,14 +59,19 @@ export default function ProjectList({ statusFilter }: ProjectListProps) {
   }
 
   return (
-    <div className="p-6">
+    <div className="px-6">
       {error && <p className="text-red-500">{error}</p>}
-      {projects.length === 0 && !error && <p className="text-gray-500">Nenhum projeto encontrado.</p>}
+      {projects.length === 0 && !error && <p className="text-gray-500"></p>}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {projects.map((project, index) => (
-          <ProjectCard key={index} project={project} fetchProjects={fetchProjects} />
+      
+      <div className="grid grid-cols-1 gap-6">
+        <ul className="flex flex-col">
+        {projects.map((project) => (
+          <li key={project.id}>
+            <ProjectCard project={project} fetchProjects={fetchProjects} />
+          </li>
         ))}
+        </ul>
       </div>
 
       <div className="flex justify-between items-center mt-4">

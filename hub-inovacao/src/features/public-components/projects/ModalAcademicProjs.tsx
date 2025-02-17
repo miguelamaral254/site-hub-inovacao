@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { FaFilePdf, FaExternalLinkAlt, FaUser, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 
 interface ProjectModalProps {
   isOpen: boolean;
@@ -38,16 +38,17 @@ const ModalAcademicProjs: React.FC<ProjectModalProps> = ({
   title,
   description,
   urlPhoto,
-  pdfLink,
   siteLink,
   typeAP,
-  currentUserEmail,
   creationDate,
   author,
   coauthors = [],
 }) => {
   if (!isOpen) return null;
-
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
+  };
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg w-[90%] max-w-[600px] relative">
@@ -58,25 +59,18 @@ const ModalAcademicProjs: React.FC<ProjectModalProps> = ({
           <FaTimes />
         </button>
 
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center mb-4 mt-2">
           <img src={urlPhoto} alt={title} className="w-full h-48 object-cover rounded-md" />
         </div>
 
-        <h3 className="text-xl font-bold mb-4">{title}</h3>
-        <p className="mb-4">{description}</p>
-
-        <p className="text-gray-600">Data de submissão: {creationDate}</p>
-        <p className="text-gray-600">
-          <strong>Tipo:</strong> {getTypeText(typeAP)}
+        <h3 className="text-2xl text-[#002B8F] font-bold mb-4">{title}</h3>
+        <p className="mb-4 text-xl text-[#3355A5]">Data de postagem: <span className="text-black">{formatDate(creationDate)}</span></p>
+        <p className="mb-4 text-xl text-[#3355A5]">Autor: <span className="text-black">{author}</span></p>
+        <p className={`text-start inline-flex items-center mb-4 px-3 py-2 bg-[#3355A5] text-base rounded-3xl text-white w-auto`}>
+          <strong>#</strong> {getTypeText(typeAP)}
         </p>
+        <p className="">{description}</p>
 
-        <div className="flex items-center mt-4">
-          <FaUser className="mr-2" />
-          <div>
-            <p className="text-gray-600">Autor: {author}</p>
-            <p className="text-gray-600">Email do Autor: {currentUserEmail}</p>
-          </div>
-        </div>
 
         {coauthors.length > 0 && (
           <div className="mt-4">
@@ -84,10 +78,8 @@ const ModalAcademicProjs: React.FC<ProjectModalProps> = ({
             <div className="space-y-2">
               {coauthors.map((coauthor, index) => (
                 <div key={index} className="flex items-center space-x-2">
-                  <FaUser className="text-gray-600" />
                   <div>
-                    <p className="text-gray-600">{coauthor.name}</p>
-                    <p className="text-sm text-gray-500">{coauthor.email}</p>
+                    <p className="text-gray-600">Coautor: <span className="text-black"> {coauthor.name} </span></p>
                   </div>
                 </div>
               ))}
@@ -96,26 +88,14 @@ const ModalAcademicProjs: React.FC<ProjectModalProps> = ({
         )}
 
         <div className="mt-6 flex justify-start gap-4">
-          {pdfLink && (
-            <a
-              href={pdfLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-start gap-2 text-sm text-gray-700 py-1.5 px-3 rounded-lg border border-gray-400 hover:bg-gray-100 transition"
-            >
-              <FaFilePdf />
-              PDF
-            </a>
-          )}
           {siteLink && (
             <a
               href={siteLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-start gap-2 text-sm text-gray-700 py-1.5 px-3 rounded-lg border border-gray-400 hover:bg-gray-100 transition"
+              className="flex items-center justify-start gap-2 text-sm text-blue-700 rounded-lg"
             >
-              <FaExternalLinkAlt />
-              Visitar Site
+              Link para uma página web ou protótipo
             </a>
           )}
         </div>

@@ -1,8 +1,10 @@
 interface ButtonProps {
   text: string;
   onClick?: () => void; 
-  type?: "button" | "submit" | "reset"
+  type?: "button" | "submit" | "reset";
   disabled?: boolean;
+}
+
 
 }
 const ButtonGrande = ({ text, onClick, type = "button", disabled = false }: ButtonProps) => {
@@ -57,10 +59,12 @@ const ButtonPequenoSeg = ({ text, onClick }: ButtonProps) => {
   )
 }
 
-const ButtonOutline = ({ text, onClick }: ButtonProps) => {
+const ButtonOutline = ({ text, onClick, disabled }: ButtonProps) => {
   return(
       <div className="flex items-center justify-center">
-              <button onClick={onClick} className="h-auto text-blue-400 flex items-center justify-center text-base md:text-base font-medium border border-blue-400 hover:border-blue-500 hover:text-blue-500 rounded-lg py-2 px-4 transition-all duration-300 active:rounded-3xl whitespace-nowrap">
+              <button onClick={onClick} disabled={disabled} className={`h-auto text-blue-400 flex items-center justify-center text-base md:text-base 
+                font-medium border border-blue-400 hover:border-blue-500 hover:text-blue-500 rounded-lg py-2 px-4 transition-all duration-300 
+                active:rounded-3xl whitespace-nowrap ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}>
                   {text}
               </button>
           </div>

@@ -7,7 +7,7 @@ import bannerprojetos from "@/assets/BannerProjetos.svg";
 import construcao from "@/assets/ProjetoConstrução.svg";
 import senac from "@/assets/ImagensProjetos/SENAC.png";
 import AllProjectsList from "@/features/public-components/projects/AllProjectsList";
-
+import { ButtonOutline } from "@/components/Button";
 const projectTypes = ["Projeto de Inovação", "Projeto de Integração", "Projeto de Extensão"];
 
 const Projetos = () => {
@@ -15,12 +15,10 @@ const Projetos = () => {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [totalProjects, setTotalProjects] = useState(0);
 
-  const handleLoadMore = () => {
-    setVisibleProjects((prev) => prev + 6);
-  };
+
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col bg-[#F9F9F9] min-h-screen">
       <div className="flex w-full h-auto bg-gray-500">
         <Image 
         src={bannerprojetos} 
@@ -29,7 +27,7 @@ const Projetos = () => {
         />
       </div>
 
-      <div className="flex flex-col md:flex-row items-center justify-between w-full px-6 md:px-24 py-10">
+      <div className="flex flex-col bg-white md:flex-row items-center justify-between w-full px-6 md:px-24 py-10">
         <div className="flex flex-col w-full md:w-1/2 h-auto">
           <h2 className="text-3xl md:text-5xl text-blue-500 font-semibold leading-tight">
             Projetos Acadêmicos
@@ -70,13 +68,16 @@ const Projetos = () => {
         {/* Exibe o botão "Carregar Mais" apenas se houver mais projetos a serem exibidos */}
         {totalProjects > 0 && visibleProjects < totalProjects && (
           <div className="flex justify-center mt-6">
-            <button
-              onClick={handleLoadMore}
-              className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition"
-            >
-              Carregar Mais
-            </button>
-          </div>
+          <ButtonOutline text={visibleProjects >= totalProjects ? "Carregar menos" : "Carregar Mais"}
+            onClick={() => {
+              if (visibleProjects >= totalProjects) {
+                setVisibleProjects(4);
+              } else {
+                setVisibleProjects((prev) => prev + 4)
+              }
+            }}
+            disabled={totalProjects <= 2} />
+        </div>
         )}
 
         {/* Se não houver projetos, exibe a imagem de "Projetos em Construção" */}

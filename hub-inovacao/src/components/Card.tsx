@@ -13,6 +13,7 @@ interface CardProps {
   autor?: string;
   segmento?: string;
   link?: string;
+  ButtonGrandSeg?: void
 }
 
 const CardStartup = ({ image, alt, titulo, texto , autor, segmento, textoLongo, link }: CardProps) => {
@@ -51,9 +52,7 @@ const CardStartup = ({ image, alt, titulo, texto , autor, segmento, textoLongo, 
             </div>
     
             <div className="mt-4 flex justify-end">
-                <button onClick={() => setIsOpen(true)}>
-                    <ButtonGrandeSeg text="Conheça Mais a Startup" />
-                </button>
+                <ButtonGrandeSeg text="Conheça Mais a Startup" onClick={() => setIsOpen(true)} />
             </div>
     
             {isOpen && (
@@ -89,10 +88,10 @@ const CardStartup = ({ image, alt, titulo, texto , autor, segmento, textoLongo, 
 
 const CardSimples = ({image, alt, titulo, texto}: CardProps) => {
     return(
-        <div className="flex w-full max-w-[390px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg flex-col px-3 py-6 ml-[32px]
+        <div className="flex w-full max-w-[390px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg flex-col px-3 py-4
             transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] flex-grow">
             <div className="flex justify-center items-center w-full">
-                <Image className="w-[318px] h-auto" src={image} alt={alt}
+                <Image className="w-[318px] h-auto md:h-[190px]" src={image} alt={alt} width={366} height={190}
                 />
             </div>
             <div className="py-2 mt-3">
@@ -110,13 +109,14 @@ const CardSimples = ({image, alt, titulo, texto}: CardProps) => {
     )
 }
 
-const CardServico = ({image, alt, titulo, texto}: CardProps) => {
+const CardServico = ({image, alt, titulo, texto, link}: CardProps) => {
     return(
-
+<a href={link}>
         <div className="flex flex-col w-full max-w-[350px] min-h-[200px] md:min-h-[390px] bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] 
-        rounded-lg px-3 py-4 ml-[32px] transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] flex-grow">
+        rounded-lg px-3 py-4 transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] flex-grow">
+        
         <div className="flex justify-center w-full">
-            <Image className="md:w-[318px] h-auto" src={image} alt={alt}
+            <Image className="md:w-[366px] h-auto md:h-[190px]" src={image} alt={alt} width={366} height={190}
             />
         </div>
         <div className="py-2 mt-3">
@@ -128,7 +128,7 @@ const CardServico = ({image, alt, titulo, texto}: CardProps) => {
             </p>
         </div>
     </div>  
-
+</a>
     )
 }
 

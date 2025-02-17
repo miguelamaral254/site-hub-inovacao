@@ -8,6 +8,7 @@ import { ButtonGrandeSeg } from "@/components/Button";
 import ImagemBOS from "@/assets/ImagemBOS.svg";
 import banneroportunidades from "@/assets/BannerOportunidades.svg";
 import AllOpportunitiesList from "@/features/public-components/oportunities/AllOpportunitiesList";
+import { ButtonOutline } from "@/components/Button";
 
 const opportunityTypes = ["Oportunidades", "Problemas", "Ideias"];
 
@@ -16,12 +17,10 @@ export default function Oportunidades() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [totalOpportunities, setTotalOpportunities] = useState(0);
 
-  const handleLoadMore = () => {
-    setVisibleOpportunities((prev) => prev + 6);
-  };
+
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col bg-[#f9f9f9] min-h-screen">
       <div className="flex w-full h-auto bg-gray-500">
         <Image 
         src={banneroportunidades} 
@@ -30,7 +29,7 @@ export default function Oportunidades() {
         />
       </div>
 
-      <div className="flex flex-col md:flex-row items-center justify-between w-full px-6 md:px-24 py-10">
+      <div className="flex flex-col bg-white md:flex-row items-center justify-between w-full px-6 md:px-24 py-10">
         <div className="flex flex-col w-full md:w-1/2 h-auto">
           <h2 className="text-3xl md:text-5xl text-blue-500 font-semibold leading-tight">
             Banco de Oportunidades (B.O)
@@ -76,19 +75,22 @@ export default function Oportunidades() {
         </div>
 
         {/* Exibir botão "Carregar Mais" apenas se houver mais oportunidades */}
-        {visibleOpportunities < totalOpportunities && (
+        {totalOpportunities > 0 && (
           <div className="flex justify-center mt-6">
-            <button 
-              onClick={handleLoadMore} 
-              className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition"
-            >
-              Carregar Mais
-            </button>
-          </div>
+          <ButtonOutline text={visibleOpportunities >= totalOpportunities ? "Carregar menos" : "Carregar Mais"}
+            onClick={() => {
+              if (visibleOpportunities >= totalOpportunities) {
+                setVisibleOpportunities(6);
+              } else {
+                setVisibleOpportunities((prev) => prev + 6)
+              }
+            }}
+            disabled={totalOpportunities <= 6} />
+        </div>
         )}
       </div>
 
-      <div className="flex flex-col md:flex-row items-center min-h-[529px] justify-between w-full px-[166px]">
+      <div className="flex flex-col bg-white md:flex-row items-center min-h-[529px] justify-between w-full px-[166px]">
         <div className="w-full md:w-[744px] h-auto flex">
           <Image src={ImagemBOS} alt="ImagemProjetos" className="w-full h-full" />
         </div>

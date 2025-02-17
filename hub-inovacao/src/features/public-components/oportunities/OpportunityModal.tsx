@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { FaFilePdf, FaExternalLinkAlt, FaTimes, FaBuilding, FaPhoneAlt } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 
 interface OpportunityModalProps {
   isOpen: boolean;
@@ -24,15 +24,16 @@ const OpportunityModal: React.FC<OpportunityModalProps> = ({
   title,
   description,
   urlPhoto,
-  pdfLink,
   siteLink,
   typeBO,
-  currentUserEmail,
   creationDate,
   institutionOrganization,
 }) => {
   if (!isOpen) return null;
-
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
+  };
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg w-[80%] max-w-[600px] relative">
@@ -40,43 +41,30 @@ const OpportunityModal: React.FC<OpportunityModalProps> = ({
           <FaTimes />
         </button>
 
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center mb-4 mt-2">
           <img src={urlPhoto} alt={title} className="w-full h-48 object-cover rounded-md" />
         </div>
 
         <h3 className="text-xl font-bold mb-4">{title}</h3>
+        <p className="mb-4 text-xl text-[#3355A5]">Data de postagem: <span className="text-black">{formatDate(creationDate)}</span></p>
+        <p className="mb-4 text-xl text-[#3355A5]">Instituição: <span className="text-black"> {institutionOrganization} </span></p>
+        <p className={`inline-flex text-start flex items-center mb-4 px-3 py-2 bg-[#3355A5] text-base rounded-3xl text-white w-auto`}>
+          #{typeBO}
+        </p>
         <p className="mb-4">{description}</p>
-
-        <p className="text-gray-600">Data de Criação: {creationDate}</p>
-        <div className="flex items-center mt-4">
-          <FaBuilding className="mr-2" />
-          <div>
-            <p className="text-gray-600">Instituição: {institutionOrganization}</p>
-            <p className="text-gray-600">Tipo: {typeBO}</p>
-          </div>
+        
+        <div className="mt-6 flex justify-start gap-4">
+          {siteLink && (
+            <a
+              href={siteLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-start gap-2 text-sm text-blue-700 rounded-lg"
+            >
+              Link para uma página web ou protótipo
+            </a>
+          )}
         </div>
-
-        <div className="flex items-center mt-4">
-          <FaPhoneAlt className="mr-2" />
-          <div>
-            <p className="text-gray-600">Contatos:</p>
-            <p className="text-gray-600">Email: {currentUserEmail}</p>
-          </div>
-        </div>
-
-        {pdfLink && (
-          <a href={pdfLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-gray-700 py-1.5 px-3 rounded-lg mt-2">
-            <FaFilePdf />
-            <span>PDF</span>
-          </a>
-        )}
-
-        {siteLink && (
-          <a href={siteLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-gray-700 py-1.5 px-3 rounded-lg mt-2">
-            <FaExternalLinkAlt />
-            <span>Visitar Site</span>
-          </a>
-        )}
       </div>
     </div>
   );

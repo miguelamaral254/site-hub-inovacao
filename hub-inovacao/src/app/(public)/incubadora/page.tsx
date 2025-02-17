@@ -25,7 +25,7 @@ export default function Incubadora() {
   };
 
   return (
-    <div>
+    <div className="bg-[#F9F9F9]">
       <div className="flex w-full h-auto bg-gray-500">
         <Image 
         src={bannerincubadora} 
@@ -33,7 +33,7 @@ export default function Incubadora() {
         className="w-full h-auto object-cover"
         />
       </div>
-      <div className="flex flex-row items-center min-h-[529px] justify-between w-full px-[166px]" /* Container do Ideias*/>
+      <div className="flex flex-row bg-white items-center min-h-[529px] justify-between w-full px-[166px]" /* Container do Ideias*/>
         <div className="flex flex-col w-full max-w-[642px] h-auto mt-4 px-4" >
           <h2 className="text-3xl md:text-5xl text-blue-500 font-semibold">
             A Incubadora i.d.e.i.a.S
@@ -46,7 +46,7 @@ export default function Incubadora() {
           <Image src={ideias} alt="imagemTeste" className="w-full max-w-[400px] md:w-auto md:max-w-[500px] object-cover mr-2 md:mr-5 rounded-lg"/>
         </div>
       </div>
-      <div className="flex flex-col w-full h-auto min-h-[200px] mt-20 px-[166px]" >
+      <div className="flex flex-col w-full h-auto min-h-[200px] mt-6 px-[166px]" >
         <div className="">
           <h3 className="text-2xl md:text-4xl text-blue-500 font-semibold">
             Conheça as Startups incubadas no i.d.e.i.a.S
@@ -110,7 +110,7 @@ export default function Incubadora() {
         </div>
       </div>
       
-      <div className="flex flex-col h-auto min-h-[200px] mt-20 px-[166px]" /* Serviços incubadora */>
+      <div className="flex flex-col bg-white h-auto md:min-h-[600px] mt-6 px-[166px]" /* Serviços incubadora */>
         <div className="flex flex-col max-w-4xl h-auto mt-4" /* Textos */>
             <h3 className="text-2xl md:text-3xl text-blue-500 font-semibold">
               Serviços que a incubadora i.de.i.a.S oferece as Startups
@@ -119,7 +119,7 @@ export default function Incubadora() {
               A Incubadora i.de.i.a.S oferece mentorias especializadas, conexões com investidores e participação em grandes eventos. Com desafios reais, Ideathons e Hackathons, preparamos startups para o mercado. 
             </p>      
         </div>
-        <div className="flex flex-col md:flex-row justify-center items-center mt-6 ">
+        <div className="flex flex-col md:flex-row justify-center items-center mt-6 gap-6">
           <CardServico 
           image={mentorias} 
           alt="Mentorias" 
@@ -138,7 +138,7 @@ export default function Incubadora() {
           texto="A incubadora i.de.i.a.S promove eventos como Ideathons, Hackthons e qualificações em empreendedorismo. "/>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row items-center min-h-[529px] justify-between w-full px-[166px] mt-6">
+      <div className="flex flex-col bg-white md:flex-row items-center min-h-[529px] justify-between w-full px-[166px] mt-20">
           <div className="w-full md:w-[744px] h-auto flex">
               <Image src={ImageProjeto} alt="ImagemProjetos" className="w-full h-full"/>
           </div>
