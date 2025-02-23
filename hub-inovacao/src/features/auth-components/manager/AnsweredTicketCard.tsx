@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
-import { OpportunityResponseDTO, StatusSolicitation } from "@/interfaces/OpportunityInterfaces";  // Garanta que StatusSolicitation esteja importado
+import { OpportunityResponseDTO, StatusSolicitation } from "@/interfaces/OpportunityInterfaces";  
 import ProjectModal from "./ProjectModal";
 import { ButtonGrandeSeg } from "@/components/Button";
 import { RiTimeLine } from "react-icons/ri";
@@ -43,7 +43,7 @@ const AnsweredTicketCard: React.FC<TicketCardProps> = ({ project, opportunity, f
   };
 
   const statusIcon = (status: string | undefined) => {
-    if (!status) return null; // Retorna null se o status for vazio
+    if (!status) return null; 
     switch (status) {
       case "APROVADA":
         return <RiCheckLine className="text-lg" />;

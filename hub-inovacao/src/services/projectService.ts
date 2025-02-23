@@ -121,11 +121,12 @@ export const getAllProjects = async (
 };
 export const getAllProjectsForManager = async (
   page: number,
-  size: number
+  size: number,
+  idManager: string
 ): Promise<Page<AcademicProjectResponseDTO>> => {
   try {
     const response = await axios.get<Page<AcademicProjectResponseDTO>>("/projects/manager/all", {
-      params: { page, size },
+      params: { page, size, idManager },  
     });
     return response.data;
   } catch (error) {
