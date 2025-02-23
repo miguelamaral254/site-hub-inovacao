@@ -1,20 +1,12 @@
-/* eslint-disable @next/next/no-img-element */
+
 "use client";
 
+import { PublishResponseDTO } from "@/interfaces/publishInterface";
 import React from "react";
 
-interface AllPublishCardProps {
-  id: string;
-  title: string;
-  description: string;
-  photoLink: string;
-  acessLink: string;
-  initialDate: string;
-  finalDate: string;
-  publishedDate: string;
-}
 
-const AllPublishCard: React.FC<AllPublishCardProps> = ({
+
+const AllPublishCard: React.FC<PublishResponseDTO> = ({
   
   title,
   description,

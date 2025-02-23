@@ -1,5 +1,5 @@
-"use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 import React, { useState, useEffect } from "react";
 import { Role } from "@/interfaces/userInterface";
 import MaskedInput from "react-text-mask";
@@ -15,7 +15,6 @@ interface UserFormProps {
     name: string;
     email: string;
     password: string;
-    confirmPassword: string;
     role: Role;
     cpf: string;
     registration: string;
@@ -42,21 +41,23 @@ export default function UserForm({
   const [isFormValid, setIsFormValid] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
     const isValid = Boolean(
       formData.name &&
       validateEmail(formData.email) &&
       formData.password.length >= 8 &&
-      formData.password === formData.confirmPassword &&
+      formData.password === confirmPassword &&
       formData.cpf &&
       formData.registration &&
       formData.phones.length > 0 &&
       formData.phones.every((phone) => phone.number.length >= 14)
     );
-  
+
     setIsFormValid(isValid);
-  }, [formData]);
+  }, [formData, confirmPassword]);
+
   const validateEmail = (email: string): boolean => {
     const regex = /^[a-zA-Z0-9._%+-]+@edu\.pe\.senac\.br$/;
     return regex.test(email);
@@ -81,9 +82,13 @@ export default function UserForm({
     setPasswordTouched(true);
   };
 
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+  };
+
   const handleConfirmPasswordBlur = () => {
     setConfirmPasswordTouched(true);
-    if (formData.confirmPassword && formData.password !== formData.confirmPassword) {
+    if (confirmPassword && formData.password !== confirmPassword) {
       errors.confirmPassword = "As senhas não coincidem.";
     } else {
       delete errors.confirmPassword;
@@ -160,8 +165,8 @@ export default function UserForm({
           type="password"
           name="confirmPassword"
           placeholder="Confirmar Senha"
-          value={formData.confirmPassword || ""} 
-          onChange={handleChange}
+          value={confirmPassword}
+          onChange={handleConfirmPasswordChange}
           onBlur={handleConfirmPasswordBlur}
           className={`w-full px-4 py-2 border rounded-lg ${errors.confirmPassword ? "border-red-500" : ""}`}
         />
@@ -216,8 +221,8 @@ export default function UserForm({
       </div>
 
       <div className="flex flex-row justify-center items-center gap-4">
-    
-        <ButtonGrande type="submit" text="Cadastrar" disabled={!isFormValid} />      </div>
+        <ButtonGrande type="submit" text="Cadastrar" disabled={!isFormValid} />
+      </div>
     </form>
   );
 }

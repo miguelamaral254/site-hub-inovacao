@@ -1,5 +1,5 @@
-"use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 import { ButtonGrande } from "@/components/Button";
 import React, { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
@@ -14,7 +14,6 @@ interface PartnerCompanyFormProps {
     name: string;
     email: string;
     password: string;
-    confirmPassword: string;
     cnpj: string;
     institutionOrganization: string;
     phones: Phone[];
@@ -39,6 +38,7 @@ export default function PartnerCompanyForm({
   const [passwordStrength, setPasswordStrength] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState(""); // Local state para confirmar senha
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function PartnerCompanyForm({
       formData.name &&
       validateEmail(formData.email) &&
       formData.password.length >= 8 &&
-      formData.password === formData.confirmPassword &&
+      formData.password === confirmPassword && // Validação contra o confirmPassword local
       formData.cnpj &&
       formData.institutionOrganization &&
       formData.phones.length > 0 &&
@@ -54,10 +54,10 @@ export default function PartnerCompanyForm({
     );
 
     setIsFormValid(isValid);
-  }, [formData]);
+  }, [formData, confirmPassword]); // O formulário será validado quando o confirmPassword mudar
 
   const validateEmail = (email: string): boolean => {
-    const regex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/; // Exige @ e um domínio como .com, .org, etc.
+    const regex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
   };
 
@@ -82,11 +82,15 @@ export default function PartnerCompanyForm({
 
   const handleConfirmPasswordBlur = () => {
     setConfirmPasswordTouched(true);
-    if (formData.confirmPassword && formData.password !== formData.confirmPassword) {
+    if (confirmPassword && formData.password !== confirmPassword) {
       errors.confirmPassword = "As senhas não coincidem.";
     } else {
       delete errors.confirmPassword;
     }
+  };
+
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,8 +163,8 @@ export default function PartnerCompanyForm({
           type="password"
           name="confirmPassword"
           placeholder="Confirmar Senha"
-          value={formData.confirmPassword}
-          onChange={handleChange}
+          value={confirmPassword} // Usando o estado local para confirmação
+          onChange={handleConfirmPasswordChange}
           onBlur={handleConfirmPasswordBlur}
           className={`w-full px-4 py-2 border rounded-lg ${errors.confirmPassword ? "border-red-500" : ""}`}
         />
@@ -193,7 +197,6 @@ export default function PartnerCompanyForm({
         {errors.institutionOrganization && <p className="text-red-500 text-sm">Campo obrigatório</p>}
       </div>
 
-      {/* Campo de telefone */}
       <div className="space-y-2">
         {formData.phones.map((phone, index) => (
           <div key={index} className="flex items-center space-x-2">
@@ -215,8 +218,7 @@ export default function PartnerCompanyForm({
         </button>
       </div>
 
-      <ButtonGrande type="submit" text="Cadastrar" disabled={!isFormValid} />     
-
+      <ButtonGrande type="submit" text="Cadastrar" disabled={!isFormValid} />
     </form>
   );
 }

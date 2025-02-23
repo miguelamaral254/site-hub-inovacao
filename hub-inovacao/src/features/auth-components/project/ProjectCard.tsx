@@ -6,7 +6,7 @@ import { FaTimes } from "react-icons/fa";
 import UpdateProjectDetails from "./UpdateProjectDetails";
 import { updateProjectDetails } from "@/services/projectService";
 import useSwal from "@/hooks/useSwal";
-import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "./interfaces/projectInterfaces";
+import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "../../../interfaces/projectInterfaces";
 import { ButtonGrande, ButtonOutline } from "@/components/Button";
 import { RiTimeLine } from "react-icons/ri";
 import { RiCheckLine } from "react-icons/ri";

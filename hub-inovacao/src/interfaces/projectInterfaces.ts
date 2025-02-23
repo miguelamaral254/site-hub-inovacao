@@ -50,3 +50,10 @@ export interface CoauthorDTO {
     justification: string;
     idManager: string;
   }
+  export interface UpdateProjectDetails {
+    title: string;
+    description: string;
+    urlPhoto: string;
+    pdfLink: string;
+    siteLink: string;
+  }

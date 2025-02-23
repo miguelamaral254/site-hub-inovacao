@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { getAllProjectsForManager } from "@/services/projectService";
 import { getAllOpportunities } from "@/services/opportunityService";

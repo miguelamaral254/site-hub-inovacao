@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
 import ProjectCardSkeleton from "./ProjectCardSkeleton"; // Importando o Skeleton
 import { getProjectsByUserEmail } from "@/services/projectService";
-import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "./interfaces/projectInterfaces";
+import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "../../../interfaces/projectInterfaces";
 
 interface ProjectListProps {
   statusFilter: string;

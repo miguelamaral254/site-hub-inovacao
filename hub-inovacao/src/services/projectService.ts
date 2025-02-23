@@ -2,11 +2,11 @@ import {
   AcademicProjectResponseProfessorDTO,
   AcademicProjectResponseStudentDTO,
   UpdateAcademicProjectStatusDTO,
-} from "@/features/auth-components/project/interfaces/projectInterfaces";
+  UpdateProjectDetails,
+} from "@/interfaces/projectInterfaces";
 import axios from "./api";
 import { AxiosError } from "axios";
 import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
-import { UpdateProjectDetails } from "@/features/auth-components/project/interfaces/UpdateProjectDetails";
 import { Page } from "@/interfaces/PaginationInterface";
 
 // Função para criar projeto para professor
