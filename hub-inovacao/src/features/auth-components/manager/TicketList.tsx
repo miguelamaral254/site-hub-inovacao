@@ -30,7 +30,7 @@ export default function TicketList({ statusFilter }: TicketListProps) {
   const fetchProjects = async () => {
     setLoading(true);
     try {
-      const fetchedProjects = await getAllProjectsForManager(currentPage, itemsPerPage); // Passando página e tamanho
+      const fetchedProjects = await getAllProjectsForManager(currentPage, itemsPerPage, idManager); // Passando página e tamanho
       if (statusFilter && !validStatus.includes(statusFilter)) {
         setError("Status inválido.");
         setLoading(false);
@@ -150,7 +150,9 @@ export default function TicketList({ statusFilter }: TicketListProps) {
         {/* Renderiza as oportunidades */}
         {currentOpportunities.map((opportunity) => (
           <li key={opportunity.id}>
-            <TicketCard opportunity={opportunity} fetchProjects={fetchProjects} />
+            <TicketCard 
+            opportunity={opportunity} 
+            fetchProjects={fetchProjects} />
           </li>
         ))}
       </ul>
