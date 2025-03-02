@@ -53,7 +53,7 @@ export default function DashboardManagerPage() {
     <div className="flex min-h-screen bg-gray-100">
       <SidebarManager setSelectedPage={setSelectedPage} userData={userData} errorMessage={errorMessage} />
 
-      <div className="flex-grow p-6">
+      <div className="flex-grow ml-40 p-6">
         {userData ? (
           <PageContentManager selectedPage={selectedPage} userData={userData} />
         ) : (

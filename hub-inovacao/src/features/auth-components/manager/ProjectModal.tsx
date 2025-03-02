@@ -16,6 +16,7 @@ interface ProjectModalProps {
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({ project, opportunity, fetchProjects, handleClose, statusToSet }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isEditMode, setIsEditMode] = useState(false);
   const [status, setStatus] = useState<"APROVADA" | "REPROVADA">(statusToSet || "APROVADA");
   const [feedback, setFeedback] = useState(project?.feedback || opportunity?.feedback || "");

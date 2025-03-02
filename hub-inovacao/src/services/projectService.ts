@@ -2,11 +2,11 @@ import {
   AcademicProjectResponseProfessorDTO,
   AcademicProjectResponseStudentDTO,
   UpdateAcademicProjectStatusDTO,
-} from "@/features/auth-components/project/interfaces/projectInterfaces";
+  UpdateProjectDetails,
+} from "@/interfaces/projectInterfaces";
 import axios from "./api";
 import { AxiosError } from "axios";
 import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
-import { UpdateProjectDetails } from "@/features/auth-components/project/interfaces/UpdateProjectDetails";
 import { Page } from "@/interfaces/PaginationInterface";
 
 // Função para criar projeto para professor
@@ -121,11 +121,12 @@ export const getAllProjects = async (
 };
 export const getAllProjectsForManager = async (
   page: number,
-  size: number
+  size: number,
+  idManager: string
 ): Promise<Page<AcademicProjectResponseDTO>> => {
   try {
     const response = await axios.get<Page<AcademicProjectResponseDTO>>("/projects/manager/all", {
-      params: { page, size },
+      params: { page, size, idManager },  
     });
     return response.data;
   } catch (error) {

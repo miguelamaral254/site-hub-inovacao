@@ -28,8 +28,7 @@ export default function PageContent({ selectedPage, userData }: PageContentProps
               <span>Status</span>
             </div>
             <ProjectList statusFilter="REPROVADA" />
-            <ProjectList statusFilter="APROVADA" />
-            <ProjectList statusFilter="PENDENTE" />
+           
           </div>
         )}
 

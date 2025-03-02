@@ -1,4 +1,4 @@
-import { CoauthorDTO } from "@/features/auth-components/project/interfaces/projectInterfaces";
+import { CoauthorDTO } from "@/interfaces/projectInterfaces";
 
 export interface AcademicProjectResponseDTO {
   id: string;
@@ -57,5 +57,4 @@ export interface AcademicProjectResponseDTO {
   justification?: string;
   studentId?: string;
   studentName?: string;
-  idManager?:number
 }

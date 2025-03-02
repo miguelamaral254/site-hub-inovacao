@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-"use client";
-
 import React, { useEffect, useState } from "react";
 import { getAllPublish } from "@/services/publishService";
 import AllPublishCard from "./AllPublishCard";
-
 import { PublishResponseDTO } from "@/interfaces/publishInterface";
 import DateFilter from "@/components/DateFilter";
 import NameFilter from "@/components/NameFilter";
@@ -27,17 +24,16 @@ const AllPublishList: React.FC<AllPublishListProps> = ({
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [nameFilter, setNameFilter] = useState<string | null>(null);
+  const [page, setPage] = useState<number>(0);
+  const [size, setSize] = useState<number>(10);
 
-  
   useEffect(() => {
     const fetchPublications = async () => {
       try {
-        const response = await getAllPublish();
-        console.log("Publicações carregadas:", response);
-        setPublications(response);  
-        setFilteredPublications(response);                                       
+        const response = await getAllPublish(page, size);
+        setPublications(response.content);
+        setFilteredPublications(response.content);
       } catch (err) {
-        console.error("Erro ao carregar publicações:", err);
         setError("Erro ao carregar as publicações");
       } finally {
         setLoading(false);
@@ -45,44 +41,56 @@ const AllPublishList: React.FC<AllPublishListProps> = ({
     };
 
     fetchPublications();
-  }, []);
-
+  }, [page, size]);
 
   const handleNameFilter = (name: string | null) => {
     setNameFilter(name);
+  };
 
-    if (name) {
-      const filtered = publications.filter((publication) =>
-        publication.title.toLowerCase().includes(name.toLowerCase())
-      );
-      setFilteredPublications(filtered);
-    } else {
-      setFilteredPublications(publications);
-    }
+  const handleDateFilter = (start: string | null, end: string | null) => {
+    setStartDate(start);
+    setEndDate(end);
   };
 
   const filteredByType = filterType && filterType !== "Todos"
-    ? filteredPublications.filter((publication) => publication.title.includes(filterType))
-    : filteredPublications;
+    ? publications.filter((publication) => publication.title.includes(filterType))
+    : publications;
+
+  const filteredByName = nameFilter
+    ? filteredByType.filter((publication) =>
+        publication.title.toLowerCase().includes(nameFilter.toLowerCase())
+      )
+    : filteredByType;
+
+  const filteredByDate = filteredByName.filter((publication) => {
+    const pubDate = new Date(publication.publishedDate);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+    
+    const isAfterStart = start ? pubDate >= start : true;
+    const isBeforeEnd = end ? pubDate <= end : true;
+    
+    return isAfterStart && isBeforeEnd;
+  });
 
   useEffect(() => {
-        setTotalEditais(filteredByType.length);
-      }, [filteredByType, setTotalEditais]);
+    setTotalEditais(filteredByDate.length);
+  }, [filteredByDate, setTotalEditais]);
 
   if (loading) return <div>Carregando publicações...</div>;
   if (error) return <div>{error}</div>;
 
-  
   return (
     <div className="space-y-6">
-     <div className="flex gap-6 justify-end items-center">
-  <NameFilter onSelect={handleNameFilter} />
-</div>
+      <div className="flex gap-6 justify-end items-center">
+        <NameFilter onSelect={handleNameFilter} />
+        <DateFilter onSelect={handleDateFilter} />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6 mt-6">
-        {filteredByType.slice(0, visiblePublications).map((publication) => (
+        {filteredByDate.slice(0, visiblePublications).map((publication) => (
           <AllPublishCard
             key={publication.id}
-            id={publication.id.toString()}
+            id={publication.id}
             title={publication.title}
             description={publication.description}
             photoLink={publication.photoLink || "/default-image.jpg"}

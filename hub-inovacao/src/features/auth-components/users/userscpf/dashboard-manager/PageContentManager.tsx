@@ -24,15 +24,9 @@ export default function PageContentManager({ selectedPage, userData }: PageConte
   };
 
   return (
-    <div className="flex justify-center items-start">
+    <div className="ml-44 flex justify-center items-start">
       <div className="w-full max-w-6xl px-6 py-8">
-        {selectedPage === "page1" && (
-          <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6">Projetos da Empresa</h3>
-            <p className="text-lg text-gray-600 mb-4">Aqui você pode ver tickets respondidos por você.</p>
-            <TicketList statusFilter={"ABERTA"} />
-          </div>
-        )}
+       
 
 
         {selectedPage === "page1" && (
@@ -44,6 +38,7 @@ export default function PageContentManager({ selectedPage, userData }: PageConte
             </div>
           </div>
         )}
+         
         {selectedPage === "page2" && (
           <div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Projetos da Empresa</h3>
@@ -51,8 +46,10 @@ export default function PageContentManager({ selectedPage, userData }: PageConte
             <TicketListAnswered  />
           </div>
         )}
+        {/*
+            */ }
 
-      {selectedPage === "page4" && (
+      {selectedPage === "page3" && (
 
           <div>
             <div className="flex justify-between items-center mb-6">

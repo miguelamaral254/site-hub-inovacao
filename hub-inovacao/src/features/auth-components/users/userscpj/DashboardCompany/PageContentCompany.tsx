@@ -20,7 +20,7 @@ export default function PageContentCompany({ selectedPage, userData }: PageConte
           <div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Projetos da Empresa</h3>
             <p className="text-lg text-gray-600 mb-4">Aqui você pode ver os projetos da sua empresa.</p>
-            <OpportunityList statusFilter="APROVADA" />
+            <OpportunityList statusFilter="APROVADA" page={0} size={0} />
            
           </div>
         )}
@@ -30,8 +30,8 @@ export default function PageContentCompany({ selectedPage, userData }: PageConte
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Acompanhar Projetos</h3>
             <p className="text-lg text-gray-600 mb-4">Veja os projetos em andamento e tome as devidas providências.</p>
             <div className="space-y-4">
-              <OpportunityList statusFilter="PENDENTE" />
-              <OpportunityList statusFilter="REPROVADA" />
+              <OpportunityList statusFilter="PENDENTE" page={0} size={0} />
+              <OpportunityList statusFilter="REPROVADA" page={0} size={0} />
             </div>
           </div>
         )}
