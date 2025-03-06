@@ -1,7 +1,7 @@
-// services/projectService.ts
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import { Project } from './projectInterface';
 
-export const createProject = async (formData: FormData) => {
+export const createProject = async (formData: FormData): Promise<Project> => {
   try {
     const apiConfig = {
       baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -12,7 +12,7 @@ export const createProject = async (formData: FormData) => {
 
     api.interceptors.request.use(
       (config) => {
-        // Não inclui a parte do token, pois você pediu para remover a lógica de autenticação
+        // Configurações de requisição
         return config;
       },
       (error) => {
@@ -20,8 +20,8 @@ export const createProject = async (formData: FormData) => {
       }
     );
 
-    const response = await api.post(
-      '/projects',  // A URL base já está configurada
+    const response: AxiosResponse<Project> = await api.post(
+      '/projects',
       formData,
       {
         headers: {

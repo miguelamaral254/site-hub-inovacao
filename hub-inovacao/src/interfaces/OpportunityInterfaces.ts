@@ -7,10 +7,9 @@ export enum TypeBO {
   }
   
   export enum StatusSolicitation {
-    PENDENTE,
-    REPROVADA,
-    APROVADA,
-   
+    PENDENTE = "PENDENTE",
+    APROVADO = "APROVADO",
+    INDEFERIDO = "INDEFERIDO",
   }
 
   export interface OpportunityCreateDTO {

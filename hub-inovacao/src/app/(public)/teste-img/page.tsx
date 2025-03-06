@@ -1,15 +1,21 @@
 "use client";
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import { FaTrashAlt, FaPlusCircle } from 'react-icons/fa';
-import MaskedInput from "react-text-mask";
+//import { FaTrashAlt, FaPlusCircle } from 'react-icons/fa';
+//import MaskedInput from "react-text-mask";
 import useSwal from '@/hooks/useSwal'; 
-import { createProject } from './projectFile';
+import { createProject } from '@/features/projects/projectService';
+import { Project, ProjectType } from '@/features/projects/projectInterface';
+import { StatusSolicitation } from '@/interfaces/OpportunityInterfaces';
+
 
 interface CreateProjectFormProps {
   idUser: number;
   idManager: number;
+}
+
+interface FormDataToSubmit {
+  dto: Project;   // Tipando o DTO com o tipo Project
+  file: File | null;  // O arquivo de imagem
 }
 
 const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ idUser, idManager }) => {
@@ -19,20 +25,20 @@ const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ idUser, idManager
 
   const { showSuccess, showError } = useSwal();
 
-  // Mocked data
-  const projectData = {
+  // Mocked project data with type annotations
+  const projectData: Project = {
     title: "Banco de Problemas para Soluções Criativas",
     description: "Plataforma de colaboração para resolução de desafios tecnológicos.",
     urlPhoto: "https://link-para-foto-do-projeto5.com",
     pdfLink: "https://link-para-o-pdf-do-projeto5.com",
     siteLink: "https://www.sitedoproyecto5.com",
-    projectType: "BANCO_DE_PROBLEMA",
-    status: "PENDENTE",
-    idUser: 3,   // Mocked user data (ID from props)
-    idManager: 1, // Mocked manager data (ID from props)
-    feedback: "Projeto aprovado para desenvolvimento.",
-    justification: "Alinhamento com as necessidades do setor tecnológico.",
-    enabled: true,  // Mocked enabled value
+    projectType: ProjectType.BANCO_DE_PROBLEMA,
+    status: StatusSolicitation.PENDENTE,
+    idUser: 1,
+    //idManager: idManager,
+    //feedback: "Projeto aprovado para desenvolvimento.",
+    //justification: "Alinhamento com as necessidades do setor tecnológico.",
+    enabled: true,
     coauthors: [
       {
         name: "Felipe Costa",
@@ -48,29 +54,24 @@ const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ idUser, idManager
       setErrorMessage('A imagem do projeto é obrigatória');
       return;
     }
-  
+
     const formData = new FormData();
     
-    // Adicionando o objeto mockado ao FormData
-    formData.append('dto', new Blob([JSON.stringify(projectData)], { type: 'application/json' }));
-    
-    // Adicionando o arquivo de imagem
-    formData.append('file', imageFile);
-  
-    // Criando um objeto simples para logar
-    const formDataToLog = {
+    // Tipando o DTO ao passar para o FormData
+    const formDataToSubmit: FormDataToSubmit = {
       dto: projectData,
       file: imageFile,
     };
-  
-    console.log('Dados enviados:', formDataToLog); // Logando os dados antes de enviar
-  
+    
+    formData.append('dto', new Blob([JSON.stringify(formDataToSubmit.dto)], { type: 'application/json' }));
+    formData.append('file', formDataToSubmit.file);
+
+    console.log('Dados enviados:', formDataToSubmit); // Logando os dados antes de enviar
+
     try {
       setIsLoading(true);
-      await createProject(formData);  
+      await createProject(formData);
       showSuccess('Projeto Criado com Sucesso!');
-      
-      // Reset form after successful submission
       setImageFile(null);
     } catch (error) {
       setErrorMessage('Erro ao criar projeto. Tente novamente.');
@@ -79,6 +80,7 @@ const CreateProjectForm: React.FC<CreateProjectFormProps> = ({ idUser, idManager
       setIsLoading(false);
     }
   };
+
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold mb-4">Criar Projeto Acadêmico</h2>
