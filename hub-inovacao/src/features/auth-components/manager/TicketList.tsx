@@ -30,7 +30,7 @@ export default function TicketList({ statusFilter }: TicketListProps) {
   const fetchProjects = async () => {
     setLoading(true);
     try {
-      const fetchedProjects = await getAllProjectsForManager(currentPage, itemsPerPage, idManager); // Passando página e tamanho
+      const fetchedProjects = await getAllProjectsForManager(currentPage, itemsPerPage, idManager); 
       if (statusFilter && !validStatus.includes(statusFilter)) {
         setError("Status inválido.");
         setLoading(false);

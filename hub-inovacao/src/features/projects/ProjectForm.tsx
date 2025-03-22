@@ -27,7 +27,7 @@
     const { showSuccess, showError } = useSwal();
 
     const projectData: Project = {
-      title: "Banco de Problemas para Soluções Criativas",
+      title: "jogoslegais",
       description: "Plataforma de colaboração para resolução de desafios tecnológicos.",
       urlPhoto: "https://link-para-foto-do-projeto5.com",
       pdfLink: "https://link-para-o-pdf-do-projeto5.com",
