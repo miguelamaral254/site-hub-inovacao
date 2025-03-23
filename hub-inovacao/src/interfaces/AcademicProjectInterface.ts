@@ -21,6 +21,7 @@ export interface AcademicProjectResponseDTO {
   // Campos específicos para Student
   studentId?: string;
   studentName?: string;
+  studentNameaaaa?: string;
 }
 
 
