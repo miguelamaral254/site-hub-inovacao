@@ -5,8 +5,6 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-
-
 const ButtonGrande = ({ text, onClick, type = "button", disabled = false }: ButtonProps) => {
   return (
     <div className="flex items-center justify-center">
