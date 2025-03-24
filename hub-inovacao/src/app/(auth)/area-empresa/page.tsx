@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
-import { getUserByEmail } from "@/services/userService";
+import { getUserById } from "@/services/userService";
 import SidebarCompany from "@/features/auth-components/users/userscpj/DashboardCompany/SidebarCompany";
 import PageContentCompany from "@/features/auth-components/users/userscpj/DashboardCompany/PageContentCompany";
 
@@ -15,12 +15,13 @@ export default function DashboardCompanyPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const email = localStorage.getItem("email");
+    const id = localStorage.getItem("id");
 
-    if (email) {
+    if (id) {
       const fetchUserData = async () => {
         try {
-          const data = await getUserByEmail(email);
+          const response = await getUserById(parseInt(id));
+          const data = response.data 
           setUserData(data);
           localStorage.setItem("userData", JSON.stringify(data));
         } catch (error) {

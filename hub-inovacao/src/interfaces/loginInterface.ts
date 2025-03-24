@@ -8,4 +8,5 @@ export interface LoginRequestDTO {
     email: string;
     role: string;
     message: string;
+    idUser: number
   }

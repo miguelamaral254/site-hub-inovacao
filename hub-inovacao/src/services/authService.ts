@@ -7,6 +7,7 @@ export const login = async (
 ): Promise<LoginResponseDTO> => {
   try {
     const response = await api.post<LoginResponseDTO>("/auth/login", credentials);
+    console.log(response.data)
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {

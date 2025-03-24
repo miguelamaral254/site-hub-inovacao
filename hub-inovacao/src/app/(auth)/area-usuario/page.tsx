@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
-import { getUserByEmail } from "@/services/userService";
+import { getUserByEmail, getUserById } from "@/services/userService";
 import Sidebar from "@/features/auth-components/users/userscpf/dashboard-users/Sidebar";
 import PageContent from "@/features/auth-components/users/userscpf/dashboard-users/PageContent";
 
@@ -15,17 +15,19 @@ export default function DashboardPage() {
   const router = useRouter(); 
 
   useEffect(() => {
-    const email = localStorage.getItem("email");
+    const id = localStorage.getItem("id");
 
-    if (!email) {
+    if (!id) {
       router.push("/login");
       return;
     }
 
     const fetchUserData = async () => {
       try {
-        const data = await getUserByEmail(email);
+        const response = await getUserById(parseInt(id));
+        const data = response.data 
         setUserData(data);
+
 
         // Verifica se o 'role' é diferente de 'STUDENT' ou 'PROFESSOR'
         if (data.role !== "STUDENT" && data.role !== "PROFESSOR") {
