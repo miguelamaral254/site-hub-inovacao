@@ -43,6 +43,19 @@ export const getUserByEmail = async (email: string): Promise<UserResponseCnpjDTO
     throw new Error("Erro de conexão com o servidor");
   }
 };
+
+export const getUserById = async (id: number): Promise<{ data: UserResponseCnpjDTO | UserResponseCpfDTO }> => {
+  try {
+    const response = await api.get<{ data: UserResponseCnpjDTO | UserResponseCpfDTO }>(`/users/${id}`);
+    return response.data; // Agora o TypeScript entende que `data` existe
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw new Error(error.response.data.message || "Erro ao buscar dados do usuário");
+    }
+    throw new Error("Erro de conexão com o servidor");
+  }
+};
+
 export const getAllPlatformUsers = async (
   page: number,
   size: number

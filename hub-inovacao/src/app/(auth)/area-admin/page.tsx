@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UserResponseCnpjDTO } from "@/interfaces/userInterface";
-import { getUserByEmail } from "@/services/userService";
+import { getUserById } from "@/services/userService";
 import AdminPageContent from "@/features/auth-components/admins/AdminPageContent";
 import AdminSidebar from "@/features/auth-components/admins/AdminSidebar";
 
@@ -16,12 +16,13 @@ export default function AdminPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const email = localStorage.getItem("email");
+    const id = localStorage.getItem("id");
 
-    if (email) {
+    if (id) {
       const fetchUserData = async () => {
         try {
-          const data = await getUserByEmail(email);
+          const response = await getUserById(parseInt(id));
+          const data = response.data 
 
           if ((data as UserResponseCnpjDTO)?.cnpj) {
             setUserData(data as UserResponseCnpjDTO);

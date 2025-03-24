@@ -22,13 +22,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const storedUserEmail = localStorage.getItem("email");
     const storedRole = localStorage.getItem("role");
     const storedToken = localStorage.getItem("token");
+    const storedId = localStorage.getItem("id")
 
-    if (storedUserEmail && storedRole && storedToken) {
+    if (storedUserEmail && storedRole && storedToken && storedId) {
       // Se os dados estiverem no localStorage, restaurar o estado, incluindo a propriedade `message`
       setUser({
         email: storedUserEmail,
         role: storedRole,
         token: storedToken,
+        idUser: parseInt(storedId as string),
         message: "Usuário restaurado com sucesso", 
       });
     }
@@ -41,6 +43,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem("token", response.token);
       localStorage.setItem("email", response.email);
       localStorage.setItem("role", response.role);
+      localStorage.setItem("id", response.idUser.toString())
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -54,6 +57,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     localStorage.removeItem("role");
+    localStorage.removeItem("id");
   };
 
   return (
