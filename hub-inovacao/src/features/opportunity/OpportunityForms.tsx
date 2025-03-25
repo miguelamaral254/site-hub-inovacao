@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { createOpportunity } from '@/services/opportunityService';
-import { OpportunityResponseDTO, TypeBO, StatusSolicitation } from '@/interfaces/OpportunityInterfaces';
+import { Opportunity, TypeBO, StatusSolicitation , OpportunityUpdateStatusDTO} from './OpportunityInterface';
 import useSwal from '@/hooks/useSwal';
 
 const CreateOpportunityForm: React.FC = () => {
@@ -16,10 +16,8 @@ const CreateOpportunityForm: React.FC = () => {
   const [disponibilidadeDados, setDisponibilidadeDados] = useState('');
   const [mentoriaSuporte, setMentoriaSuporte] = useState('');
   const [visitatecnica, setVisitaTecnica] = useState('');
-  const [recursosDisponiveis, setRecursosDisponiveis] = useState('');
+  const [recursosDisponiveis, setRecursosDisponiveis] = useState<string[]>([]);
   const [urlPhoto, setUrlPhoto] = useState<File | null>(null); 
-  const [pdfLink, setPdfLink] = useState('');
-  const [siteLink, setSiteLink] = useState('');
   const [typeBO, setTypeBO] = useState<TypeBO>(TypeBO.OPORTUNIDADE);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -40,7 +38,18 @@ const CreateOpportunityForm: React.FC = () => {
     }
   };
 
-
+  const recursooptions = [
+    "Materiais",
+    "Infraestrutura",
+    "Banco de dados"
+  ]
+  const handleRecursosChange = (recurso: string) => {
+    setRecursosDisponiveis((prev) =>
+      prev.includes(recurso)
+        ? prev.filter((item) => item !== recurso) // Remove se já estiver selecionado
+        : [...prev, recurso] // Adiciona se não estiver selecionado
+    );
+  };
   const handleSubmit = async () => {
     if (!title || !description || !urlPhoto) {
       setErrorMessage("Campos obrigatórios não preenchidos");
@@ -58,9 +67,17 @@ const CreateOpportunityForm: React.FC = () => {
   
     const opportunityData = {
       title,
+      areaProblema,
       description,
-      pdfLink,
-      siteLink,
+      impactoProblema,
+      solucoesTestadas,
+      expectativa,
+      restricoes,
+      restricoesDetalhes,
+      disponibilidadeDados,
+      mentoriaSuporte,
+      visitatecnica,
+      recursosDisponiveis,
       typeBO,
       authorEmail: parsedUserData.email,
       status,
@@ -88,10 +105,8 @@ const CreateOpportunityForm: React.FC = () => {
       setDisponibilidadeDados("");
       setMentoriaSuporte("");
       setVisitaTecnica("");
-      setRecursosDisponiveis("");
+      setRecursosDisponiveis(prev => [...prev, "recursos"]);
       setUrlPhoto(null);
-      setPdfLink("");
-      setSiteLink("");
       setTypeBO(TypeBO.OPORTUNIDADE);
     } catch (error) {
       setErrorMessage("Erro ao criar oportunidade. Tente novamente.");
@@ -101,7 +116,10 @@ const CreateOpportunityForm: React.FC = () => {
     }
   };
 
+
+  
   return (
+    
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold mb-4">Criar Oportunidade</h2>
 
@@ -181,13 +199,21 @@ const CreateOpportunityForm: React.FC = () => {
 
         <div className="mb-4">
           <label htmlFor="restricoes" className="block text-sm font-medium mb-2">Restrições</label>
-          <input
-            type="radio"
-            id="solucoestestadas"
-            value={restricoes}
-            onChange={(e) => setRestricoes(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-          />
+          <div>
+            {["Sim", "Não"].map((opcao) => (
+                <label key={opcao} htmlFor="">
+                    <input
+                        type="radio"
+                        id="solucoestestadas"
+                        value={opcao}
+                        checked={restricoes === opcao}
+                        onChange={(e) => setRestricoes(e.target.value)}
+                        className="w-full p-3 border border-gray-300 rounded-md"
+                    />
+                    {opcao}
+                </label>
+            ))}
+            </div>
         </div>
 
         <div className="mb-4">
@@ -203,36 +229,79 @@ const CreateOpportunityForm: React.FC = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="disponibilidadedados" className="block text-sm font-medium mb-2">Dados disponíveis</label>
-          <input
-            type="radio"
-            id="disponibilidadedados"
-            value={disponibilidadeDados}
-            onChange={(e) => setDisponibilidadeDados(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-          />
+          <label htmlFor="disponibilidadedados" className="block text-sm font-medium mb-2">Disponibilidade de Dados</label>
+          <div>
+            {["Sim", "Não"].map((opcao) => (
+               <label key={opcao} htmlFor="">
+                    <input
+                        type="radio"
+                        id="disponibidadedados"
+                        value={opcao}
+                        checked={disponibilidadeDados === opcao}
+                        onChange={(e) => setDisponibilidadeDados(e.target.value)}
+                        className="w-full p-3 border border-gray-300 rounded-md"
+                        />
+                        {opcao}
+                    </label>     
+                ))}
+            
+            </div>
         </div>
 
         <div className="mb-4">
-          <label htmlFor="visitatecnica" className="block text-sm font-medium mb-2">Visita Técnica</label>
-          <input
-            type="radio"
-            id="visitatecnica"
-            value={visitatecnica}
-            onChange={(e) => setVisitaTecnica(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-          />
+          <label htmlFor="mentoriasuporte" className="block text-sm font-medium mb-2">Mentorias de Suporte</label>
+          <div>
+            {["Sim", "Não"].map((opcao) => (
+                <label key={opcao} htmlFor="">
+                    <input
+                        type="radio"
+                        id="mentoriasuporte"
+                        value={opcao}
+                        checked={mentoriaSuporte === opcao}
+                        onChange={(e) => setMentoriaSuporte(e.target.value)}
+                        className="w-full p-3 border border-gray-300 rounded-md"
+                        />
+                        {opcao}
+                </label>
+            ))}
+            </div>
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="visitatecnica" className="block text-sm font-medium mb-2">Visitas Técnicas</label>
+          <div>
+            {["Sim", "Não"].map((opcao) => (
+            <label key={opcao} htmlFor="">
+                <input
+                    type="radio"
+                    id="visitatecnica"
+                    value={opcao}
+                    checked={visitatecnica === opcao}
+                    onChange={(e) => setVisitaTecnica(e.target.value)}
+                    className="w-full p-3 border border-gray-300 rounded-md"
+                />
+                {opcao}
+            </label>
+            ))}
+            </div>
         </div>
 
         <div className="mb-4">
           <label htmlFor="recursosdisponiveis" className="block text-sm font-medium mb-2">Recursos Disponíveis</label>
-          <input
-            type="checkbox"
-            id="recursosdisponiveis"
-            value={recursosDisponiveis}
-            onChange={(e) => setRecursosDisponiveis(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-          />
+          <div className="flex flex-wrap gap-2">
+                {recursooptions.map((recurso) => (
+                <label key={recurso} className="flex items-center space-x-2">
+                    <input
+                    type="checkbox"
+                    value={recurso}
+                    checked={recursosDisponiveis.includes(recurso)}
+                    onChange={() => handleRecursosChange(recurso)}
+                    className="form-checkbox"
+                    />
+                    <span>{recurso}</span>
+                </label>
+                ))}
+            </div>
         </div>
     
         <div className="mb-4">
@@ -246,31 +315,7 @@ const CreateOpportunityForm: React.FC = () => {
           />
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>} {/* Exibe o erro se houver */}
         </div>
-
-        <div className="mb-4">
-          <label htmlFor="pdfLink" className="block text-sm font-medium mb-2">Link do PDF</label>
-          <input
-            type="text"
-            id="pdfLink"
-            value={pdfLink}
-            onChange={(e) => setPdfLink(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="URL do PDF"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="siteLink" className="block text-sm font-medium mb-2">Link do Site</label>
-          <input
-            type="text"
-            id="siteLink"
-            value={siteLink}
-            onChange={(e) => setSiteLink(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="URL do site"
-          />
-        </div>
-
+        
         <div className="mb-4">
           <label htmlFor="typeBO" className="block text-sm font-medium mb-2">Tipo de Oportunidade</label>
           <select

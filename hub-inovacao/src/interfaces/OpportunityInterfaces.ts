@@ -13,11 +13,11 @@ export enum TypeBO {
    
   }
 
-  export interface OpportunityCreateDTO {
+  export interface Opportunity {
     title: string;
-    description: string;
-    urlPhoto: string;
-    pdfLink: string;
+    description?: string;
+    urlPhoto?: string;
+    pdfLink?: string;
     siteLink: string;
     typeBO: TypeBO;
     authorEmail: string;

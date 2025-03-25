@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
 import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
 import { getUserByEmail } from "@/services/userService";
 import SidebarCompany from "@/features/auth-components/users/userscpj/DashboardCompany/SidebarCompany";
@@ -12,7 +12,7 @@ export default function DashboardCompanyPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
 
-  const router = useRouter();
+  //const router = useRouter();
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -34,12 +34,6 @@ export default function DashboardCompanyPage() {
       setErrorMessage("Email não encontrado.");
     }
   }, []);
-
-  useEffect(() => {
-    if (userData && "cnpj" in userData && userData.role !== "PARTNER_COMPANY") {
-      router.push("/");
-    }
-  }, [userData, router]);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
