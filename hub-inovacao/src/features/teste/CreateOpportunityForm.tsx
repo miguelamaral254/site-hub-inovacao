@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import useSwal from "@/hooks/useSwal";
-import { createOpportunity } from "@/services/opportunityService";
 import { Opportunity, OpportunityType } from "./Opportunity";
 import { StatusSolicitation } from "../cadastro_projeto/ProjectInterface";
+import { createOpportunity } from "./opportunityService";
 
 const CreateOpportunityForm: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -40,13 +40,15 @@ const CreateOpportunityForm: React.FC = () => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("dto", new Blob([JSON.stringify(opportunityData)], { type: "application/json" }));
-    formData.append("file", imageFile);
-
     try {
+      console.log("Enviando dados da oportunidade:");
+      console.log("Opportunity Data:", opportunityData);
+      console.log("Imagem enviada:", imageFile);
+
       setIsLoading(true);
-      await createOpportunity(opportunityData, imageFile, formData);  
+      // Chamada para criar a oportunidade
+      await createOpportunity(opportunityData, imageFile);  
+      
       showSuccess("Oportunidade criada com sucesso!");
       setImageFile(null);
       setErrorMessage("");
