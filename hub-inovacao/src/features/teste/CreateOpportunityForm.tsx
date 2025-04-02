@@ -10,10 +10,11 @@ const CreateOpportunityForm: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [title, setTitle] = useState("");  
+  const [title, setTitle] = useState("");
 
   const { showSuccess, showError } = useSwal();
 
+  // Preparando os dados da oportunidade
   const opportunityData: Opportunity = {
     tituloDesafio: title || "Automatização de Processos Internos", 
     areaProblema: "Processos Internos",
@@ -40,14 +41,15 @@ const CreateOpportunityForm: React.FC = () => {
       return;
     }
 
-    try {
-      console.log("Enviando dados da oportunidade:");
-      console.log("Opportunity Data:", opportunityData);
-      console.log("Imagem enviada:", imageFile);
+    // Criando o FormData para enviar os dados
+    const formData = new FormData();
+    formData.append("dto", new Blob([JSON.stringify(opportunityData)], { type: "application/json" }));
+    formData.append("file", imageFile);
 
+    try {
       setIsLoading(true);
       // Chamada para criar a oportunidade
-      await createOpportunity(opportunityData, imageFile);  
+      await createOpportunity(formData);
       
       showSuccess("Oportunidade criada com sucesso!");
       setImageFile(null);

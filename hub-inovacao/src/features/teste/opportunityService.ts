@@ -5,16 +5,18 @@ import { Opportunity } from "./Opportunity";
 const API_URL = "http://localhost:8080/opportunities";
 
 // Função para criar uma nova oportunidade
-export const createOpportunity = async (data: Opportunity, file?: File) => {
-  const formData = new FormData();
-  formData.append("dto", JSON.stringify(data));
-  if (file) formData.append("file", file);
-
-  return axios.post(`${API_URL}`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+export const createOpportunity = async (formData: FormData): Promise<Opportunity> => {
+  try {
+    const response = await axios.post<Opportunity>(API_URL, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao criar opportunity:", error);
+    throw new Error("Erro ao criar opportunity");
+  }
 };
 
 // Função para buscar oportunidades com filtro e paginação
