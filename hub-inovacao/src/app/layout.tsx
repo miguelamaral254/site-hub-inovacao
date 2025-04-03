@@ -3,6 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/useContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer"; 
+import StepContext from "@/features/cadastro_projeto/StepContext";
 
 
 export const metadata: Metadata = {
@@ -18,13 +19,24 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className="min-h-screen flex flex-col">
+      
         <AuthProvider>
+<<<<<<< HEAD
+          <StepContext>
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+            <Footer /> 
+          </StepContext>
+          
+=======
 
           <Navbar />
             <main className="flex-grow">{children}</main>
           <Footer /> 
 
+>>>>>>> main
         </AuthProvider>
+        
       </body>
     </html>
   );
