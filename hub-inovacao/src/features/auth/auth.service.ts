@@ -1,12 +1,12 @@
-import { LoginRequestDTO, LoginResponseDTO } from "@/features/core/loginInterface";
-import api from "./api";
 import { AxiosError } from "axios";
+import { LoginRequest, LoginResponse } from "./login.interface";
+import api from "../core/api";
 
 export const login = async (
-  credentials: LoginRequestDTO
-): Promise<LoginResponseDTO> => {
+  credentials: LoginRequest
+): Promise<LoginResponse> => {
   try {
-    const response = await api.post<LoginResponseDTO>("/auth/login", credentials);
+    const response = await api.post<LoginResponse>("/auth/login", credentials);
     console.log(response.data)
     return response.data;
   } catch (error) {

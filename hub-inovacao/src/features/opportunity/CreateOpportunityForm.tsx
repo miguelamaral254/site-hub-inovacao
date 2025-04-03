@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import useSwal from "@/hooks/useSwal";
 import { Opportunity, OpportunityType } from "./opportunity.interface";
 import { createOpportunity } from "./opportunity.service";
-import { StatusSolicitation } from "../projects/cadastro_projeto/ProjectInterface";
+import { StatusSolicitation } from "../core/status.interface";
+
 
 const CreateOpportunityForm: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);

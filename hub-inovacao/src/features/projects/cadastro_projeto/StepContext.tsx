@@ -1,7 +1,8 @@
 'use client'
 
 import {  createContext, ReactNode, useState } from "react"
-import { Project, ProjectType, StatusSolicitation } from "./ProjectInterface"
+import { Project, ProjectType } from "../project.interface"
+import { StatusSolicitation } from "@/features/core/status.interface"
 
 type ContextType = {
     step: number,

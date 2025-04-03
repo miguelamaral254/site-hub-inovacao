@@ -1,6 +1,6 @@
 import { ModalTeam } from "../ModalTeam";
 import { useState, useEffect, useContext } from "react";
-import { Coauthor } from "../ProjectInterface";
+import { Coauthor } from "../../project.interface";
 import { TeamCard } from "../TeamCard";
 import { ButtonGrande, ButtonGrandeSeg } from "@/components/Button";
 import { ErrorCard } from "../ErrorCard";

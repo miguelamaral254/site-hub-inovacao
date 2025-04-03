@@ -2,7 +2,7 @@ import { ButtonGrande } from "@/components/Button";
 import { Input } from "@/components/Form/Input";
 import { Select } from "@/components/Form/Select";
 import { useContext, useState } from "react";
-import { ProjectType } from "../ProjectInterface";
+import { ProjectType } from "../../project.interface";
 import { ErrorCard } from "../ErrorCard";
 import { multiStepContext } from "../StepContext";
 

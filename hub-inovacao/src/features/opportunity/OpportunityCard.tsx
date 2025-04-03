@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from 'react';
-import { Opportunity, OpportunityType } from './opportunity.interface';
-import OpportunityModal from './OpportunityModal';  // Importe o modal
+import React, { useState } from "react";
+import { Opportunity, OpportunityType } from "./opportunity.interface";
+import OpportunityModal from "./OpportunityModal"; // Importe o modal
 
 interface OpportunityCardProps {
   opportunity: Opportunity;
@@ -33,17 +33,28 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity }) => {
         </div>
       )}
 
-      {/* Título e Descrição */}
       <div className="py-2 mt-3 mb-10">
-        <h5 className="text-2xl font-bold text-gray-950">{opportunity.tituloDesafio}</h5>
+        <h5 className="text-2xl font-bold text-gray-950">
+          {opportunity.tituloDesafio}
+        </h5>
         <p className="text-gray-800 mt-4">{opportunity.descricaoProblema}</p>
-        <p className="text-gray-600 mt-4"><strong>Área do Problema:</strong> {opportunity.areaProblema}</p>
-        <p className="text-gray-600 mt-4"><strong>Impacto:</strong> {opportunity.impactoProblema}</p>
-        <p className="text-gray-600 mt-4"><strong>Expectativas:</strong> {opportunity.expectativas}</p>
-
-        {/* Exibição do Tipo de Oportunidade */}
         <p className="text-gray-600 mt-4">
-          <strong>Tipo:</strong> {opportunity.opportunityType ? OpportunityType[opportunity.opportunityType as unknown as keyof typeof OpportunityType] : 'Não especificado'}
+          <strong>Área do Problema:</strong> {opportunity.areaProblema}
+        </p>
+        <p className="text-gray-600 mt-4">
+          <strong>Impacto:</strong> {opportunity.impactoProblema}
+        </p>
+        <p className="text-gray-600 mt-4">
+          <strong>Expectativas:</strong> {opportunity.expectativas}
+        </p>
+
+        <p className="text-gray-600 mt-4">
+          <strong>Tipo:</strong>{" "}
+          {opportunity.opportunityType
+            ? OpportunityType[
+                opportunity.opportunityType as unknown as keyof typeof OpportunityType
+              ]
+            : "Não especificado"}
         </p>
 
         {opportunity.mentoriaSuporte && (
@@ -54,22 +65,19 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity }) => {
         )}
       </div>
 
-      {/* Botões */}
       <div className="absolute bottom-4 right-4 flex flex-col gap-2">
         <button
-          onClick={openModal}  // Chama a função para abrir o modal
+          onClick={openModal} 
           className="text-sm text-center py-1.5 px-3 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition duration-200"
         >
           Conheça mais a oportunidade
         </button>
       </div>
-
-      {/* Modal chamado aqui */}
       <OpportunityModal
-  isOpen={isModalOpen}
-  onClose={closeModal}
-  opportunity={opportunity}  // Passando a oportunidade completa, já que o modal está configurado para usá-la diretamente
-/>
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        opportunity={opportunity}
+      />
     </div>
   );
 };

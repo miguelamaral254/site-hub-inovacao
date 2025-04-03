@@ -1,4 +1,4 @@
-import { Coauthor } from "./ProjectInterface"
+import { Coauthor } from "../project.interface"
 import { FaUser } from "react-icons/fa";
 
 export const TeamCard = ({data}: {data: Coauthor}) => {

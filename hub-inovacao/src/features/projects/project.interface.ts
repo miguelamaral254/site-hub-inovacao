@@ -1,18 +1,12 @@
+import { StatusSolicitation } from "../core/status.interface";
+
 export enum ProjectType {
     PROJETO_INTEGRADOR = "PROJETO_INTEGRADOR",
     PROJETO_EXTENSAO = "PROJETO_EXTENSAO",
     PROJETO_INOVACAO = "PROJETO_INOVACAO",
-    BANCO_DE_OPORTUNIDADE = "BANCO_DE_OPORTUNIDADE",
-    BANCO_DE_PROBLEMA = "BANCO_DE_PROBLEMA",
-    BANCO_DE_IDEIA = "BANCO_DE_IDEIA",
-  }
+}
     
-  export enum StatusSolicitation {
-    PENDENTE = "PENDENTE",
-    APROVADA = "APROVADA",
-    INDEFERIDO = "INDEFERIDO",
-  }
-    
+
     export interface Coauthor {
       id?: number;
       name: string;

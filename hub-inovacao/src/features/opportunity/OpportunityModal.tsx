@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React from "react";
@@ -50,7 +51,7 @@ const OpportunityModal: React.FC<OpportunityModalProps> = ({
         )}
 
         {opportunity.opportunityType && (
-          <p className={`inline-flex text-start flex items-center mb-4 px-3 py-2 bg-[#3355A5] text-base rounded-3xl text-white w-auto`}>
+          <p className={`text-start flex items-center mb-4 px-3 py-2 bg-[#3355A5] text-base rounded-3xl text-white w-auto`}>
           <strong>Tipo:</strong> {opportunity.opportunityType ? OpportunityType[opportunity.opportunityType as unknown as keyof typeof OpportunityType] : 'Não especificado'}
           </p>
         )}

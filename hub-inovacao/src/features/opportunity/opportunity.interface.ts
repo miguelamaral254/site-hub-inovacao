@@ -1,4 +1,4 @@
-import { StatusSolicitation } from "../projects/cadastro_projeto/ProjectInterface";
+import { StatusSolicitation } from "../core/status.interface";
 
 export interface Opportunity {
   id?: number;

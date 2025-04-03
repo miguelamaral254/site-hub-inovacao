@@ -1,6 +1,6 @@
 import { Input } from "@/components/Form/Input";
 import { useState } from "react";
-import { Coauthor } from "./ProjectInterface";
+import { Coauthor } from "../project.interface";
 import { ButtonGrande } from "@/components/Button";
 
 type Props = {
