@@ -2,9 +2,9 @@ import { ModalTeam } from "../ModalTeam";
 import { useState, useEffect, useContext } from "react";
 import { Coauthor } from "../ProjectInterface";
 import { TeamCard } from "../TeamCard";
-import { multiStepContext } from "@/features/cadastro_projeto/StepContext";
 import { ButtonGrande, ButtonGrandeSeg } from "@/components/Button";
 import { ErrorCard } from "../ErrorCard";
+import { multiStepContext } from "../StepContext";
 
 type Props = {
     setStep: (step: number) => void

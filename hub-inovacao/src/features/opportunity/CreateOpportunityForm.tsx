@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import useSwal from "@/hooks/useSwal";
-import { Opportunity, OpportunityType } from "./Opportunity";
-import { StatusSolicitation } from "../cadastro_projeto/ProjectInterface";
-import { createOpportunity } from "./opportunityService";
+import { Opportunity, OpportunityType } from "./opportunity.interface";
+import { createOpportunity } from "./opportunity.service";
+import { StatusSolicitation } from "../projects/cadastro_projeto/ProjectInterface";
 
 const CreateOpportunityForm: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -14,7 +14,6 @@ const CreateOpportunityForm: React.FC = () => {
 
   const { showSuccess, showError } = useSwal();
 
-  // Preparando os dados da oportunidade
   const opportunityData: Opportunity = {
     tituloDesafio: title || "Automatização de Processos Internos", 
     areaProblema: "Processos Internos",

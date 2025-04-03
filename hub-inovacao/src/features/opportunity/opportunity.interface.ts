@@ -1,4 +1,4 @@
-import { StatusSolicitation } from "../cadastro_projeto/ProjectInterface";
+import { StatusSolicitation } from "../projects/cadastro_projeto/ProjectInterface";
 
 export interface Opportunity {
   id?: number;
@@ -27,9 +27,8 @@ export interface Opportunity {
 }
 
 export enum OpportunityType {
-  BANCO_DE_OPORTUNIDADE,
-  BANCO_DE_PROBLEMA,
-  BANCO_DE_IDEIA,
-  DESAFIO
-
+  BANCO_DE_OPORTUNIDADE = "Banco de Oportunidade",
+  BANCO_DE_PROBLEMA = "Banco de Problema",
+  BANCO_DE_IDEIA = "Banco de Ideia",
+  DESAFIO = "Desafio"
 }

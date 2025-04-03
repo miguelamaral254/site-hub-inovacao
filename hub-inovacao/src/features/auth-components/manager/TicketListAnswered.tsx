@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getAllProjectsForManager } from "@/services/projectService";
-import { getAllOpportunities } from "@/services/opportunityService";
+import { getAllOpportunities } from "@/features/core/opportunityService";
 import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
 import NameFilter from "@/components/NameFilter";
 import { OpportunityResponseDTO } from "@/interfaces/OpportunityInterfaces";

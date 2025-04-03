@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
-import { Opportunity } from "./Opportunity";
+import { Opportunity } from "./opportunity.interface";
 
 const API_URL = "http://localhost:8080/opportunities";
 

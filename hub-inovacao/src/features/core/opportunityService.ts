@@ -1,7 +1,7 @@
 import axios from "./api";
 import { AxiosError } from "axios";
 import { Page } from "@/interfaces/PaginationInterface";
-import { Opportunity } from "@/features/teste/Opportunity";
+import { Opportunity } from "@/features/opportunity/opportunity.interface";
 
 export const createOpportunity = async (opportunityData: Opportunity, imageFile: File, formData: FormData): Promise<Opportunity> => {
   try {

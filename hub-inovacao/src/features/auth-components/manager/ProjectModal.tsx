@@ -4,7 +4,7 @@ import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterfac
 import { OpportunityResponseDTO } from "@/interfaces/OpportunityInterfaces"; 
 import { ButtonGrande, ButtonOutline } from "@/components/Button";
 import { updateProjectStatus } from "@/services/projectService";
-import { updateOpportunityStatus } from "@/services/opportunityService";
+import { updateOpportunityStatus } from "@/features/core/opportunityService";
 import useSwal from "@/hooks/useSwal";
 
 interface ProjectModalProps {

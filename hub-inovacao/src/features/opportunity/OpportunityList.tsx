@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import OpportunityCard from './OpportunityCard';
-import { Opportunity } from './Opportunity';
-import { searchOpportunities } from './opportunityService'; 
+import { Opportunity } from './opportunity.interface';
+import { searchOpportunities } from './opportunity.service'; 
 
 const OpportunityList: React.FC = () => {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);  

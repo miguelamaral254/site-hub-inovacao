@@ -1,10 +1,10 @@
-import { ButtonGrande, ButtonGrandeSeg } from "@/components/Button";
+import { ButtonGrande } from "@/components/Button";
 import { Input } from "@/components/Form/Input";
 import { Select } from "@/components/Form/Select";
-import { multiStepContext } from "@/features/cadastro_projeto/StepContext";
 import { useContext, useState } from "react";
 import { ProjectType } from "../ProjectInterface";
 import { ErrorCard } from "../ErrorCard";
+import { multiStepContext } from "../StepContext";
 
 type Props = {
     setStep: (step: number) => void

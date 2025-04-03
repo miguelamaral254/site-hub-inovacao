@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { login } from "@/services/authService";
-import { LoginRequestDTO, LoginResponseDTO } from "@/interfaces/loginInterface";
+import { login } from "@/features/core/authService";
+import { LoginRequestDTO, LoginResponseDTO } from "@/features/core/loginInterface";
 
 interface AuthContextData {
   user: LoginResponseDTO | null;

@@ -1,9 +1,9 @@
 import { ButtonGrande, ButtonGrandeSeg } from "@/components/Button";
 import { Input } from "@/components/Form/Input";
-import { multiStepContext } from "@/features/cadastro_projeto/StepContext";
 import { useContext, useState } from "react";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { ErrorCard } from "../ErrorCard";
+import { multiStepContext } from "../StepContext";
 
 type Props = {
     setStep: (step: number) => void
@@ -57,7 +57,7 @@ export const ProjectDetails = ({ setStep }: Props) => {
                     <div className="flex justify-center items-center">
                         <div className="flex items-center gap-2 bg-[#64748B] p-2 text-white rounded-md cursor-pointer">
                             <MdOutlineFileUpload className="text-2xl "/>
-                            Imagem da Logo ou imagem do projeto/B.O
+                            Imagem da Logo ou imagem do projeto
                         </div>
                     </div>
                 </div>

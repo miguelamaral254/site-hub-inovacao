@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/*
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -109,7 +110,6 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
         </div>
       )}
 
-      {/* Aqui você pode adicionar a lógica para o botão "Carregar Mais", com controle de página */}
       <div className="text-center mt-6">
         {filteredByName.length > visibleProjects && (
           <button
@@ -125,3 +125,4 @@ const AllProjectsList: React.FC<AllProjectsListProps> = ({ visibleProjects, filt
 };
 
 export default AllProjectsList;
+*/

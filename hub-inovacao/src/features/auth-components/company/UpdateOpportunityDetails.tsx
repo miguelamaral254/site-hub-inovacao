@@ -3,7 +3,7 @@
 
 import React, { useState } from "react";
 import { OpportunityResponseDTO } from "@/interfaces/OpportunityInterfaces";
-import { updateOpportunityDetails } from "@/services/opportunityService";
+import { updateOpportunityDetails } from "@/features/core/opportunityService";
 import useSwal from "@/hooks/useSwal";
 
 interface UpdateOpportunityDetailsProps {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
 import { OpportunityResponseDTO } from "@/interfaces/OpportunityInterfaces"; 
 import { updateProjectStatus } from "@/services/projectService";
-import { updateOpportunityStatus } from "@/services/opportunityService";
+import { updateOpportunityStatus } from "@/features/core/opportunityService";
 import useSwal from "@/hooks/useSwal";
 
 interface ProjectStatusFormProps {

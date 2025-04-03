@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import { createOpportunity } from '@/services/opportunityService';
+import { createOpportunity } from '@/features/core/opportunityService';
 import { OpportunityResponseDTO, TypeBO, StatusSolicitation } from '@/interfaces/OpportunityInterfaces';
 import useSwal from '@/hooks/useSwal';
 

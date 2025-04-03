@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { getAllProjectsForManager } from "@/services/projectService";
-import { getAllOpportunities } from "@/services/opportunityService";  // Adicione a importação
+import { getAllOpportunities } from "@/features/core/opportunityService";  // Adicione a importação
 import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
 import TicketCard from "./TicketCard";
 import NameFilter from "@/components/NameFilter";
