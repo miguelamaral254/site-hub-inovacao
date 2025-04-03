@@ -12,7 +12,7 @@ import ARETIZZE from "@/assets/Startups/ARETIZZE.png"
 
 export default function Carrossel() {
   return (
-    <div className="relative flex justify-center items-center">
+    <div className="w-full ">
       <Swiper
         modules={[Navigation, Pagination, Autoplay, EffectFade]}
         loop={true}
@@ -22,13 +22,13 @@ export default function Carrossel() {
         navigation={{ prevEl: ".prev-btn", nextEl: ".next-btn" }}
         autoplay={{ delay: 2000, disableOnInteraction: false }}
         breakpoints={{
-          768: { slidesPerView: 3, spaceBetween: 30 },
+          250: { slidesPerView: 2, spaceBetween: 20 },
           1024: { slidesPerView: 4, spaceBetween: 40 },
         }}
-        className="w-full max-w-7xl h-auto md:h-[530px] flex items-center justify-center"
+        className=" max-w-[300px] md:max-w-[900px] h-auto flex items-center justify-center"
       >
         {[PassouEncontrou, DecodeByte, Elementum, NOOK, ARETIZZE].map((logo, index) => (
-          <SwiperSlide key={index} className="flex justify-center items-center flex-shrink-0 mt-40">
+          <SwiperSlide key={index} className="flex justify-center items-center flex-shrink-0 ">
             <Image src={logo} alt={`Logo ${index + 1}`} className="w-auto h-[200px] object-contain" />
           </SwiperSlide>
         ))}

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UserResponseCpfDTO } from "@/interfaces/userInterface"; // Importando o tipo correto
-import { getUserByEmail } from "@/services/userService";
+import { getUserById } from "@/services/userService";
 import PageContentManager from "@/features/auth-components/users/userscpf/dashboard-manager/PageContentManager";
 import SidebarManager from "@/features/auth-components/users/userscpf/dashboard-manager/SidebarManager";
 
@@ -15,12 +15,13 @@ export default function DashboardManagerPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const email = localStorage.getItem("email");
+    const id = localStorage.getItem("id");
 
-    if (email) {
+    if (id) {
       const fetchUserData = async () => {
         try {
-          const data = await getUserByEmail(email);
+          const response = await getUserById(parseInt(id));
+          const data = response.data 
 
           if ((data as UserResponseCpfDTO)?.cpf) {
             setUserData(data as UserResponseCpfDTO);

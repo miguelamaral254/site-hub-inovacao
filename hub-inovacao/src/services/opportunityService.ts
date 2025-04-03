@@ -1,11 +1,11 @@
-import { OpportunityResponseDTO, OpportunityUpdateStatusDTO, OpportunityUpdateStatusResponseDTO, UpdateOpportunityDetailsDTO } from "@/interfaces/OpportunityInterfaces";
 import axios from "./api";
 import { AxiosError } from "axios";
 import { Page } from "@/interfaces/PaginationInterface";
+import { Opportunity } from "@/features/teste/Opportunity";
 
-export const createOpportunity = async (formData: FormData): Promise<OpportunityResponseDTO> => {
+export const createOpportunity = async (opportunityData: Opportunity, imageFile: File, formData: FormData): Promise<Opportunity> => {
   try {
-    const response = await axios.post<OpportunityResponseDTO>("/opportunities/create", formData, {
+    const response = await axios.post<Opportunity>("/opportunities", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

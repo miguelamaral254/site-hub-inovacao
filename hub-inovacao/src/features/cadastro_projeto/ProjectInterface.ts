@@ -9,7 +9,7 @@ export enum ProjectType {
     
   export enum StatusSolicitation {
     PENDENTE = "PENDENTE",
-    APROVADO = "APROVADO",
+    APROVADA = "APROVADA",
     INDEFERIDO = "INDEFERIDO",
   }
     

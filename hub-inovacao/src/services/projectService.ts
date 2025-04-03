@@ -11,7 +11,7 @@ import { Page } from "@/interfaces/PaginationInterface";
 
 // Função para criar projeto para professor
 export const createProject = async (
-  projectData: FormData // Alterado para FormData
+  projectData: FormData 
 ): Promise<AcademicProjectResponseDTO> => {
   try {
     const userRole = localStorage.getItem("role");
