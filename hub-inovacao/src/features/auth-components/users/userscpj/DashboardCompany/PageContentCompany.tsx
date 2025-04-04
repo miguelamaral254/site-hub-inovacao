@@ -3,7 +3,7 @@
 
 import { UserResponseCnpjDTO } from "@/interfaces/userInterface";
 import OpportunityList from "@/features/auth-components/company/OpportunityList";
-import CreateOpportunityForm from "@/features/auth-components/company/CreateOpportunityForm";
+import CreateOpportunityForm from "@/features/opportunity/OpportunityForms";
 
 interface PageContentCompanyProps {
   selectedPage: string | null;

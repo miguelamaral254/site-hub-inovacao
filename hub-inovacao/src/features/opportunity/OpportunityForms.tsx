@@ -1,125 +1,86 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
-import { createOpportunity } from '@/services/opportunityService';
-import { Opportunity, TypeBO, StatusSolicitation , OpportunityUpdateStatusDTO} from './OpportunityInterface';
-import useSwal from '@/hooks/useSwal';
+"use client";
+
+import React, { useState } from "react";
+import useSwal from "@/hooks/useSwal";
+import { Opportunity, OpportunityType } from "./Opportunity";
+import { StatusSolicitation } from "../cadastro_projeto/ProjectInterface";
+import { createOpportunity } from "./OpportunityService";
 
 const CreateOpportunityForm: React.FC = () => {
-  const [title, setTitle] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [title, setTitle] = useState("");
   const [areaProblema, setAreaProblema] = useState('');
   const [description, setDescription] = useState('');
   const [impactoProblema, setImpactoProblema] = useState('');
   const [solucoesTestadas, setSolucoesTestadas] = useState('');
   const [expectativa, setExpectativa] = useState('');
   const [restricoes, setRestricoes] = useState('');
-  const [restricoesDetalhes, setRestricoesDetalhes] = useState('');
   const [disponibilidadeDados, setDisponibilidadeDados] = useState('');
-  const [mentoriaSuporte, setMentoriaSuporte] = useState('');
-  const [visitatecnica, setVisitaTecnica] = useState('');
-  const [recursosDisponiveis, setRecursosDisponiveis] = useState<string[]>([]);
-  const [urlPhoto, setUrlPhoto] = useState<File | null>(null); 
-  const [typeBO, setTypeBO] = useState<TypeBO>(TypeBO.OPORTUNIDADE);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [error, setError] = useState('');
+  const [mentoriaSuporte, setMentoriaSuporte] = useState<boolean | null>(null);
+  const [visitatecnica, setVisitaTecnica] = useState<boolean | null>(null);
+  const [recursosDisponiveis, setRecursosDisponiveis] = useState<string[]>([]);  
+
   const { showSuccess, showError } = useSwal();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-
-    if (file) {
-      if (file.size > 6 * 1024 * 1024) { // Verifica se o arquivo é maior que 6MB
-        setError('O arquivo não pode ser maior que 6MB.');
-        setUrlPhoto(null); // Limpa o arquivo selecionado
-      } else {
-        setError('');
-        setUrlPhoto(file); // Salva o arquivo se a validação passar
-      }
-    }
+  const opportunityData: Opportunity = {
+    tituloDesafio: title || "Automatização de Processos Internos", 
+    areaProblema: areaProblema || "Processos Internos",
+    descricaoProblema:
+      description || "A empresa enfrenta dificuldades na automação de processos financeiros e administrativos.",
+    impactoProblema:
+    impactoProblema || "A ineficiência nos processos internos resulta em atrasos e custos elevados.",
+    solucoesTestadas: solucoesTestadas || "Foi testado o uso de softwares de ERP, mas não atendeu às necessidades.",
+    expectativas: expectativa || "Esperamos melhorar a eficiência operacional e reduzir custos com a automação.",
+    restricoes: restricoes || "Limitação orçamentária para aquisição de novos softwares.",
+    disponibilidadeDados: disponibilidadeDados || "Sim",
+    mentoriaSuporte: mentoriaSuporte ?? undefined,
+    visitasTecnicas: visitatecnica ?? undefined,
+    recursosDisponiveis: ["Materiais", "Infraestrutura", "Banco de dados"],
+    autorizacao: true,
+    opportunityType: OpportunityType.BANCO_DE_PROBLEMA,
+    enterpriseId: 1,
+    status: StatusSolicitation.APROVADA,
   };
 
-  const recursooptions = [
-    "Materiais",
-    "Infraestrutura",
-    "Banco de dados"
-  ]
-  const handleRecursosChange = (recurso: string) => {
-    setRecursosDisponiveis((prev) =>
-      prev.includes(recurso)
-        ? prev.filter((item) => item !== recurso) // Remove se já estiver selecionado
-        : [...prev, recurso] // Adiciona se não estiver selecionado
-    );
-  };
   const handleSubmit = async () => {
-    if (!title || !description || !urlPhoto) {
-      setErrorMessage("Campos obrigatórios não preenchidos");
+    if (!imageFile) {
+      setErrorMessage("A imagem da oportunidade é obrigatória");
       return;
     }
-  
-    const userData = localStorage.getItem("userData");
-    if (!userData) {
-      setErrorMessage("Dados do usuário não encontrados.");
-      return;
-    }
-  
-    const parsedUserData = JSON.parse(userData);
-    const status = StatusSolicitation.PENDENTE;
-  
-    const opportunityData = {
-      title,
-      areaProblema,
-      description,
-      impactoProblema,
-      solucoesTestadas,
-      expectativa,
-      restricoes,
-      restricoesDetalhes,
-      disponibilidadeDados,
-      mentoriaSuporte,
-      visitatecnica,
-      recursosDisponiveis,
-      typeBO,
-      authorEmail: parsedUserData.email,
-      status,
-      flagActive: true,
-      partnerCompanyId: parsedUserData.id,
-    };
-  
+
+    // Criando o FormData para enviar os dados
     const formData = new FormData();
     formData.append("dto", new Blob([JSON.stringify(opportunityData)], { type: "application/json" }));
-    formData.append("imageFile", urlPhoto);
-  
+    formData.append("file", imageFile);
+
     try {
       setIsLoading(true);
+      // Chamada para criar a oportunidade
       await createOpportunity(formData);
-      showSuccess("Oportunidade Criada com Sucesso!");
-  
-      setTitle("");
+      
+      showSuccess("Oportunidade criada com sucesso!");
+      setImageFile(null);
+      setErrorMessage("");
+      setTitle("");  
       setAreaProblema("");
       setDescription("");
       setImpactoProblema("");
       setSolucoesTestadas("");
       setExpectativa("");
       setRestricoes("");
-      setRestricoesDetalhes("");
       setDisponibilidadeDados("");
-      setMentoriaSuporte("");
-      setVisitaTecnica("");
-      setRecursosDisponiveis(prev => [...prev, "recursos"]);
-      setUrlPhoto(null);
-      setTypeBO(TypeBO.OPORTUNIDADE);
     } catch (error) {
-      setErrorMessage("Erro ao criar oportunidade. Tente novamente.");
-      showError("Erro ao criar oportunidade!");
+      console.error(error);
+      showError("Erro ao criar oportunidade.");
+      setErrorMessage("Falha ao criar oportunidade. Tente novamente.");
     } finally {
       setIsLoading(false);
     }
   };
 
-
-  
   return (
-    
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold mb-4">Criar Oportunidade</h2>
 
@@ -127,14 +88,16 @@ const CreateOpportunityForm: React.FC = () => {
 
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="mb-4">
-          <label htmlFor="title" className="block text-sm font-medium mb-2">Título</label>
+          <label htmlFor="title" className="block text-sm font-medium mb-2">
+            Título da Oportunidade
+          </label>
           <input
             type="text"
             id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
+            value={title}  
+            onChange={(e) => setTitle(e.target.value)} 
             placeholder="Digite o título da oportunidade"
+            className="w-full p-3 border border-gray-300 rounded-md"
           />
         </div>
 
@@ -199,144 +162,107 @@ const CreateOpportunityForm: React.FC = () => {
 
         <div className="mb-4">
           <label htmlFor="restricoes" className="block text-sm font-medium mb-2">Restrições</label>
-          <div>
-            {["Sim", "Não"].map((opcao) => (
-                <label key={opcao} htmlFor="">
-                    <input
-                        type="radio"
-                        id="solucoestestadas"
-                        value={opcao}
-                        checked={restricoes === opcao}
-                        onChange={(e) => setRestricoes(e.target.value)}
-                        className="w-full p-3 border border-gray-300 rounded-md"
-                    />
-                    {opcao}
-                </label>
-            ))}
-            </div>
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="restricoesdetalhes" className="block text-sm font-medium mb-2">Detalhes das restrições</label>
           <input
             type="text"
-            id="restricoesdetalhades"
-            value={restricoesDetalhes}
-            onChange={(e) => setRestricoesDetalhes(e.target.value)}
+            id="restricoes"
+            value={restricoes}
+            onChange={(e) => setRestricoes(e.target.value)}
             className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Digite os detalhes das restriçoes."
+            placeholder="Digite qual as restrições que há no projeto"
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="disponibilidadedados" className="block text-sm font-medium mb-2">Disponibilidade de Dados</label>
-          <div>
+          <label className="block text-sm font-medium mb-2">Disponibilidade de Dados</label>
+          <div className="flex gap-4">
             {["Sim", "Não"].map((opcao) => (
-               <label key={opcao} htmlFor="">
-                    <input
-                        type="radio"
-                        id="disponibidadedados"
-                        value={opcao}
-                        checked={disponibilidadeDados === opcao}
-                        onChange={(e) => setDisponibilidadeDados(e.target.value)}
-                        className="w-full p-3 border border-gray-300 rounded-md"
-                        />
-                        {opcao}
-                    </label>     
-                ))}
-            
-            </div>
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="mentoriasuporte" className="block text-sm font-medium mb-2">Mentorias de Suporte</label>
-          <div>
-            {["Sim", "Não"].map((opcao) => (
-                <label key={opcao} htmlFor="">
-                    <input
-                        type="radio"
-                        id="mentoriasuporte"
-                        value={opcao}
-                        checked={mentoriaSuporte === opcao}
-                        onChange={(e) => setMentoriaSuporte(e.target.value)}
-                        className="w-full p-3 border border-gray-300 rounded-md"
-                        />
-                        {opcao}
-                </label>
-            ))}
-            </div>
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="visitatecnica" className="block text-sm font-medium mb-2">Visitas Técnicas</label>
-          <div>
-            {["Sim", "Não"].map((opcao) => (
-            <label key={opcao} htmlFor="">
+              <label key={opcao} className="flex items-center gap-2">
                 <input
-                    type="radio"
-                    id="visitatecnica"
-                    value={opcao}
-                    checked={visitatecnica === opcao}
-                    onChange={(e) => setVisitaTecnica(e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-md"
+                  type="radio"
+                  id={`disponibilidade-${opcao}`}
+                  name="disponibilidadeDados"
+                  value={opcao}
+                  checked={disponibilidadeDados === opcao}
+                  onChange={(e) => setDisponibilidadeDados(e.target.value)}
+                  className="cursor-pointer"
                 />
                 {opcao}
-            </label>
+              </label>
             ))}
+          </div>
+        </div>
+
+        {[
+          { label: "Mentoria e Suporte", name: "mentoriaSuporte", value: mentoriaSuporte, setter: setMentoriaSuporte },
+          { label: "Visita Técnica", name: "visitaTecnica", value: visitatecnica, setter: setVisitaTecnica },
+        ].map(({ label, name, value, setter }) => (
+          <div key={name} className="mb-4">
+            <label className="block text-sm font-medium mb-2">{label}</label>
+            <div className="flex gap-4">
+              {[
+                { text: "Sim", boolValue: true },
+                { text: "Não", boolValue: false },
+              ].map(({ text, boolValue }) => (
+                <label key={text}>
+                  <input
+                    type="radio"
+                    name={name}
+                    value={String(boolValue)}
+                    checked={value === boolValue}
+                    onChange={() => setter(boolValue)}
+                  />{" "}
+                  {text}
+                </label>
+              ))}
             </div>
+          </div>
+        ))}
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2">Recursos Disponíveis</label>
+          <div className="flex flex-col gap-2">
+            {["Materiais", "Infraestrutura", "Banco de Dados"].map((recurso) => (
+              <label key={recurso}>
+                <input
+                  type="checkbox"
+                  value={recurso}
+                  checked={recursosDisponiveis.includes(recurso)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setRecursosDisponiveis([...recursosDisponiveis, recurso]);
+                    } else {
+                      setRecursosDisponiveis(recursosDisponiveis.filter((r) => r !== recurso));
+                    }
+                  }}
+                />{" "}
+                {recurso}
+              </label>
+            ))}
+          </div>
         </div>
 
         <div className="mb-4">
-          <label htmlFor="recursosdisponiveis" className="block text-sm font-medium mb-2">Recursos Disponíveis</label>
-          <div className="flex flex-wrap gap-2">
-                {recursooptions.map((recurso) => (
-                <label key={recurso} className="flex items-center space-x-2">
-                    <input
-                    type="checkbox"
-                    value={recurso}
-                    checked={recursosDisponiveis.includes(recurso)}
-                    onChange={() => handleRecursosChange(recurso)}
-                    className="form-checkbox"
-                    />
-                    <span>{recurso}</span>
-                </label>
-                ))}
-            </div>
-        </div>
-    
-        <div className="mb-4">
-          <label htmlFor="urlPhoto" className="block text-sm font-medium mb-2">Escolher Imagem</label>
+          <label htmlFor="imageFile" className="block text-sm font-medium mb-2">
+            Escolher Imagem
+          </label>
           <input
             type="file"
-            id="urlPhoto"
-            onChange={handleFileChange}
-            className="w-full p-3 border border-gray-300 rounded-md"
+            id="imageFile"
             accept="image/*"
-          />
-          {error && <p className="text-red-500 text-sm mt-2">{error}</p>} {/* Exibe o erro se houver */}
-        </div>
-        
-        <div className="mb-4">
-          <label htmlFor="typeBO" className="block text-sm font-medium mb-2">Tipo de Oportunidade</label>
-          <select
-            id="typeBO"
-            value={typeBO}
-            onChange={(e) => setTypeBO(e.target.value as TypeBO)}
+            onChange={(e) =>
+              setImageFile(e.target.files ? e.target.files[0] : null)
+            }
             className="w-full p-3 border border-gray-300 rounded-md"
-          >
-            <option value={TypeBO.PROBLEMA}>Problema</option>
-            <option value={TypeBO.OPORTUNIDADE}>Oportunidade</option>
-            <option value={TypeBO.IDEIA}>Ideia</option>
-          </select>
+          />
         </div>
 
         <div className="flex justify-between mt-4">
           <button
             onClick={handleSubmit}
             disabled={isLoading}
-            className="bg-green-500 text-white px-6 py-3 rounded-md w-full"
+            className="bg-blue-600 text-white px-6 py-3 rounded-md w-full hover:bg-blue-700 transition"
           >
-            {isLoading ? 'Enviando...' : 'Criar Oportunidade'}
+            {isLoading ? "Enviando..." : "Criar Oportunidade"}
           </button>
         </div>
       </form>
