@@ -31,6 +31,25 @@ export default function RegisterForm() {
     enabled: true,
   });
 
+  const [formDataEnterprise, setFormDataEnterprise] = useState({
+    nomeEmpresa: "",
+    email: "",
+    password: "",
+    cnpj: "",
+    setorAtuacao: "",
+    reprentantName: "",
+    reprentantPosition: "",
+    reprentantEmail: "",
+    reprentantPhone: "",
+    address: {
+      street: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      country: ""
+    }
+  });
+
   const [isPartnerCompany, setIsPartnerCompany] = useState(false);
   const [errors, setErrors] = useState<any>({});
   const { showSuccess, showError } = useSwal();
@@ -38,23 +57,30 @@ export default function RegisterForm() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | CustomChangeEvent
   ) => {
-    if ("nativeEvent" in e) {
-      const { name, value } = e.target as HTMLInputElement | HTMLSelectElement;
-      setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value } = "nativeEvent" in e ? e.target : e.target;
+  
+    if (isPartnerCompany) {
+      setFormDataEnterprise(prev => ({ ...prev, [name]: value }));
     } else {
-      const { name, value } = e.target;
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
-
   const handlePhoneChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const phones = [...formData.phones];
-    const { name, value } = e.target;
-    phones[index] = { ...phones[index], [name]: value };
-    setFormData(prev => ({ ...prev, phones }));
+    if (!isPartnerCompany) {
+      const phones = [...formData.phones];
+      const { name, value } = e.target;
+      phones[index] = { ...phones[index], [name]: value };
+      setFormData(prev => ({ ...prev, phones }));
+    } else {
+      const { name, value } = e.target;
+      setFormDataEnterprise(prev => ({
+        ...prev,
+        reprentantPhone: value, // Para empresas, usamos apenas um telefone
+      }));
+    }
   };
 
   const handleAddPhone = () => {
@@ -105,16 +131,7 @@ export default function RegisterForm() {
         </div>
 
         {isPartnerCompany ? (
-          <EnterpriseForm
-            formData={formData}
-            handleChange={handleChange}
-            handlePhoneChange={handlePhoneChange}
-            handleAddPhone={handleAddPhone}
-            handleRemovePhone={handleRemovePhone}
-            errors={errors}
-            showSuccess={showSuccess}
-            showError={showError}
-          />
+          <EnterpriseForm/>
         ) : (
           <UserForm
             formData={formData}
@@ -128,7 +145,7 @@ export default function RegisterForm() {
         )}
       </div>
       <div className="w-auto flex justify-end items-end">
-        <Image src={cadastro} alt="imagem Login" className="h-auto w-[300px] md:w-[600px] "/>
+        <Image src={cadastro} alt="imagem Cadastro" className="h-auto w-[300px] md:w-[600px]" />
       </div>
     </div>
   );

@@ -1,122 +1,60 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
-
-import { ButtonGrande } from "@/components/Button";
-import React, { useState, useEffect } from "react";
-import { FaTrash } from "react-icons/fa";
+import React, { useState } from "react";
 import MaskedInput from "react-text-mask";
-import { createEnterprise } from "../users/users/enterprise.service"; // Supondo que você tenha essa função
+import { createEnterprise } from "../users/users/enterprise.service";
+import { Role } from "../users/users/user.interface";
+import useSwal from "@/hooks/useSwal";
 
-interface Phone {
-  number: string;
-}
+export default function EnterpriseForm() {
+  const [formData, setFormData] = useState({
+    nomeEmpresa: "",
+    email: "",
+    password: "",
+    cnpj: "",
+    role: Role.ENTERPRISE,
+    setorAtuacao: "",
+    reprentantName: "",
+    reprentantPosition: "",
+    reprentantEmail: "",
+    reprentantPhone: "",
+    address: {
+      street: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      country: "",
+    },
+  });
 
-interface EnterpriseFormProps {
-  formData: {
-    name: string;
-    email: string;
-    password: string;
-    cnpj: string;
-    institutionOrganization: string;
-    phones: Phone[];
-  };
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  handlePhoneChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleAddPhone: () => void;
-  handleRemovePhone: (index: number) => void;
-  errors: any;
-  showSuccess: (title: string, message: string) => void;
-  showError: (title: string, message: string) => void;
-}
+  const { showSuccess, showError } = useSwal();  
 
-export default function EnterpriseForm({
-  formData,
-  handleChange,
-  handlePhoneChange,
-  handleAddPhone,
-  handleRemovePhone,
-  errors,
-  showSuccess,
-  showError,
-}: EnterpriseFormProps) {
-  const [passwordStrength, setPasswordStrength] = useState("");
-  const [isFormValid, setIsFormValid] = useState(false);
-  const [passwordTouched, setPasswordTouched] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
 
-  useEffect(() => {
-    const isValid = Boolean(
-      formData.name &&
-      validateEmail(formData.email) &&
-      formData.password.length >= 8 &&
-      formData.password === confirmPassword &&
-      formData.cnpj &&
-      formData.institutionOrganization &&
-      formData.phones.length > 0 &&
-      formData.phones.every((phone) => phone.number.length >= 14)
-    );
-
-    setIsFormValid(isValid);
-  }, [formData, confirmPassword]);
-
-  const validateEmail = (email: string): boolean => {
-    const regex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
-    return regex.test(email);
-  };
-
-  const checkPasswordStrength = (password: string) => {
-    if (password.length < 8) {
-      setPasswordStrength("Fraca");
-    } else if (password.match(/[A-Z]/) && password.match(/\d/)) {
-      setPasswordStrength("Forte");
+    if (name.startsWith("address.")) {
+      const addressKey = name.split(".")[1];
+      setFormData((prevState) => ({
+        ...prevState,
+        address: {
+          ...prevState.address,
+          [addressKey]: value,
+        },
+      }));
     } else {
-      setPasswordStrength("Média");
-    }
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleChange(e);
-    checkPasswordStrength(e.target.value);
-  };
-
-  const handlePasswordBlur = () => {
-    setPasswordTouched(true);
-  };
-
-  const handleConfirmPasswordBlur = () => {
-    setConfirmPasswordTouched(true);
-    if (confirmPassword && formData.password !== confirmPassword) {
-      errors.confirmPassword = "As senhas não coincidem.";
-    } else {
-      delete errors.confirmPassword;
-    }
-  };
-
-  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.target.value);
-  };
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    handleChange(e);
-    if (!validateEmail(value)) {
-      errors.email = "O e-mail deve conter '@' e um domínio válido (ex: .com)";
-    } else {
-      delete errors.email;
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isFormValid) return;
 
     try {
-      const response = await createEnterprise(formData); // Chama a função para criar a empresa
-      showSuccess("Cadastro realizado com sucesso!", "Você será redirecionado para a página de login.");
+      await createEnterprise(formData);
+      showSuccess("Cadastro realizado com sucesso!", "A empresa foi cadastrada.");  // Exibe o alerta de sucesso
     } catch (error) {
-      showError("Erro ao criar empresa", error.message);
+      showError("Erro ao cadastrar empresa", error.message);  // Exibe o alerta de erro
     }
   };
 
@@ -125,13 +63,12 @@ export default function EnterpriseForm({
       <div>
         <input
           type="text"
-          name="name"
+          name="nomeEmpresa"
           placeholder="Nome da Empresa"
-          value={formData.name}
+          value={formData.nomeEmpresa || ""}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.name ? "border-red-500" : ""}`}
+          className="w-full px-4 py-2 border rounded-lg"
         />
-        {errors.name && <p className="text-red-500 text-sm">Campo obrigatório</p>}
       </div>
 
       <div>
@@ -139,55 +76,10 @@ export default function EnterpriseForm({
           type="email"
           name="email"
           placeholder="E-mail"
-          value={formData.email}
-          onChange={handleEmailChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.email ? "border-red-500" : ""}`}
+          value={formData.email || ""}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border rounded-lg"
         />
-        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-      </div>
-
-      <div>
-        <input
-          type="password"
-          name="password"
-          placeholder="Senha (mínimo 8 caracteres)"
-          value={formData.password}
-          onChange={handlePasswordChange}
-          onBlur={handlePasswordBlur}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.password ? "border-red-500" : ""}`}
-        />
-        {passwordTouched && formData.password.length < 8 && (
-          <p className="text-red-500 text-sm">A senha deve ter pelo menos 8 caracteres.</p>
-        )}
-        <p className="text-sm mt-1">
-          Força da senha:{" "}
-          <span
-            className={`font-bold ${
-              passwordStrength === "Forte"
-                ? "text-green-600"
-                : passwordStrength === "Média"
-                ? "text-yellow-500"
-                : "text-red-500"
-            }`}
-          >
-            {passwordStrength}
-          </span>
-        </p>
-      </div>
-
-      <div>
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirmar Senha"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
-          onBlur={handleConfirmPasswordBlur}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.confirmPassword ? "border-red-500" : ""}`}
-        />
-        {confirmPasswordTouched && errors.confirmPassword && (
-          <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
-        )}
       </div>
 
       <div>
@@ -195,47 +87,128 @@ export default function EnterpriseForm({
           mask={[/\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/]}
           name="cnpj"
           placeholder="CNPJ"
-          value={formData.cnpj}
+          value={formData.cnpj || ""}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.cnpj ? "border-red-500" : ""}`}
+          className="w-full px-4 py-2 border rounded-lg"
         />
-        {errors.cnpj && <p className="text-red-500 text-sm">Campo obrigatório</p>}
       </div>
 
       <div>
         <input
           type="text"
-          name="institutionOrganization"
-          placeholder="Instituição/Organização"
-          value={formData.institutionOrganization}
+          name="setorAtuacao"
+          placeholder="Setor de Atuação"
+          value={formData.setorAtuacao || ""}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.institutionOrganization ? "border-red-500" : ""}`}
+          className="w-full px-4 py-2 border rounded-lg"
         />
-        {errors.institutionOrganization && <p className="text-red-500 text-sm">Campo obrigatório</p>}
       </div>
 
-      <div className="space-y-2">
-        {formData.phones.map((phone, index) => (
-          <div key={index} className="flex items-center space-x-2">
-            <MaskedInput
-              mask={["(", /\d/, /\d/, ")", " ", /\d/, " ", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
-              name={`phone-${index}`}
-              value={phone.number}
-              onChange={(e) => handlePhoneChange(index, e)}
-              placeholder="Número de telefone"
-              className={`w-full px-4 py-2 border rounded-lg ${errors[`phone-${index}`] ? "border-red-500" : ""}`}
-            />
-            <button type="button" onClick={() => handleRemovePhone(index)} className="text-red-500 hover:text-red-700">
-              <FaTrash />
-            </button>
-          </div>
-        ))}
-        <button type="button" onClick={handleAddPhone} className="text-blue-600 hover:underline">
-          Adicionar outro telefone
-        </button>
+      <div>
+        <input
+          type="text"
+          name="reprentantName"
+          placeholder="Nome do Representante"
+          value={formData.reprentantName || ""}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border rounded-lg"
+        />
       </div>
 
-      <ButtonGrande type="submit" text="Cadastrar" disabled={!isFormValid} />
+      <div>
+        <input
+          type="text"
+          name="reprentantPosition"
+          placeholder="Cargo do Representante"
+          value={formData.reprentantPosition || ""}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <input
+          type="email"
+          name="reprentantEmail"
+          placeholder="E-mail do Representante"
+          value={formData.reprentantEmail || ""}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <MaskedInput
+          mask={["(", /\d/, /\d/, ")", " ", /\d/, " ", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
+          name="reprentantPhone"
+          placeholder="Telefone do Representante"
+          value={formData.reprentantPhone || ""}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <input
+          type="text"
+          name="address.street"
+          placeholder="Rua do Endereço"
+          value={formData.address?.street || ""}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <input
+          type="text"
+          name="address.city"
+          placeholder="Cidade"
+          value={formData.address?.city || ""}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <input
+          type="text"
+          name="address.state"
+          placeholder="Estado"
+          value={formData.address?.state || ""}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <input
+          type="text"
+          name="address.zipCode"
+          placeholder="CEP"
+          value={formData.address?.zipCode || ""}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <input
+          type="text"
+          name="address.country"
+          placeholder="País"
+          value={formData.address?.country || ""}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border rounded-lg"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg"
+      >
+        Cadastrar Empresa
+      </button>
     </form>
   );
 }
