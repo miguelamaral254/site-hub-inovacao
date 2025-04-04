@@ -3,19 +3,15 @@ import axios from "axios";
 import { Enterprise } from "./enterprise.interface";
 
 
-const API_URL = "http://localhost:8080/Enterprises";
+const API_URL = "http://localhost:8080/enterprises";
 
-export const createEnterprise = async (formData: FormData): Promise<Enterprise> => {
+export const createEnterprise = async (formData: any): Promise<Enterprise> => {
   try {
-    const response = await axios.post<Enterprise>(API_URL, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axios.post<Enterprise>(API_URL, formData);
     return response.data;
   } catch (error) {
-    console.error("Erro ao criar Enterprise:", error);
-    throw new Error("Erro ao criar Enterprise");
+    console.error("Erro ao criar User:", error);
+    throw new Error("Erro ao criar User");
   }
 };
 export const searchEnterprise = async (

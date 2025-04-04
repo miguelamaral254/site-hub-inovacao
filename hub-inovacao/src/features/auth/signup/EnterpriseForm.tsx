@@ -1,15 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 import { ButtonGrande } from "@/components/Button";
 import React, { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 import MaskedInput from "react-text-mask";
+import { createEnterprise } from "../users/users/enterprise.service"; // Supondo que você tenha essa função
 
 interface Phone {
   number: string;
 }
 
-interface PartnerCompanyFormProps {
+interface EnterpriseFormProps {
   formData: {
     name: string;
     email: string;
@@ -22,23 +25,25 @@ interface PartnerCompanyFormProps {
   handlePhoneChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
   handleAddPhone: () => void;
   handleRemovePhone: (index: number) => void;
-  handleSubmit: (e: React.FormEvent) => void;
   errors: any;
+  showSuccess: (title: string, message: string) => void;
+  showError: (title: string, message: string) => void;
 }
 
-export default function PartnerCompanyForm({
+export default function EnterpriseForm({
   formData,
   handleChange,
   handlePhoneChange,
   handleAddPhone,
   handleRemovePhone,
-  handleSubmit,
   errors,
-}: PartnerCompanyFormProps) {
+  showSuccess,
+  showError,
+}: EnterpriseFormProps) {
   const [passwordStrength, setPasswordStrength] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState(""); // Local state para confirmar senha
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
   useEffect(() => {
@@ -46,7 +51,7 @@ export default function PartnerCompanyForm({
       formData.name &&
       validateEmail(formData.email) &&
       formData.password.length >= 8 &&
-      formData.password === confirmPassword && // Validação contra o confirmPassword local
+      formData.password === confirmPassword &&
       formData.cnpj &&
       formData.institutionOrganization &&
       formData.phones.length > 0 &&
@@ -54,7 +59,7 @@ export default function PartnerCompanyForm({
     );
 
     setIsFormValid(isValid);
-  }, [formData, confirmPassword]); // O formulário será validado quando o confirmPassword mudar
+  }, [formData, confirmPassword]);
 
   const validateEmail = (email: string): boolean => {
     const regex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
@@ -100,6 +105,18 @@ export default function PartnerCompanyForm({
       errors.email = "O e-mail deve conter '@' e um domínio válido (ex: .com)";
     } else {
       delete errors.email;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isFormValid) return;
+
+    try {
+      const response = await createEnterprise(formData); // Chama a função para criar a empresa
+      showSuccess("Cadastro realizado com sucesso!", "Você será redirecionado para a página de login.");
+    } catch (error) {
+      showError("Erro ao criar empresa", error.message);
     }
   };
 
@@ -163,7 +180,7 @@ export default function PartnerCompanyForm({
           type="password"
           name="confirmPassword"
           placeholder="Confirmar Senha"
-          value={confirmPassword} // Usando o estado local para confirmação
+          value={confirmPassword}
           onChange={handleConfirmPasswordChange}
           onBlur={handleConfirmPasswordBlur}
           className={`w-full px-4 py-2 border rounded-lg ${errors.confirmPassword ? "border-red-500" : ""}`}

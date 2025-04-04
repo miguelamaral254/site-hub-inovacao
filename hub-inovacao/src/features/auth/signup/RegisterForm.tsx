@@ -1,16 +1,23 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useState } from "react";
+
+import React, { useState } from "react";
 import { FaUser, FaBuilding } from "react-icons/fa";
-import PartnerCompanyForm from "./PartnerCompanyForm";
 import Image from "next/image";
 import logo from "@/assets/Logo.svg";
-import cadastro from "@/assets/Cadastro.svg"
+import cadastro from "@/assets/Cadastro.svg";
 import UserForm from "./UserForm";
 import useSwal from "@/hooks/useSwal";
 import { Role } from "../users/users/user.interface";
-import { createEnterprise } from "../users/users/enterprise.service";
-import { createUser } from "../users/users/user.service";
+import EnterpriseForm from "./EnterpriseForm";
+
+type CustomChangeEvent = {
+  target: {
+    name: string;
+    value: any;
+  };
+};
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -20,104 +27,46 @@ export default function RegisterForm() {
     role: Role.STUDENT,
     cpf: "",
     registration: "",
-    phones: [{ number: "" }],
-    cnpj: "",
-    institutionOrganization: "",
-    userStatus: true,
+    phones: [{ number: "", countryCode: "55" }],
+    enabled: true,
   });
 
-  const [isPartnerCompany, setIsPartnerCompany] = useState(false); 
-  const [errors, setErrors] = useState<any>({});  
-  const { showSuccess, showError } = useSwal();  
+  const [isPartnerCompany, setIsPartnerCompany] = useState(false);
+  const [errors, setErrors] = useState<any>({});
+  const { showSuccess, showError } = useSwal();
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | CustomChangeEvent
   ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if ("nativeEvent" in e) {
+      const { name, value } = e.target as HTMLInputElement | HTMLSelectElement;
+      setFormData(prev => ({ ...prev, [name]: value }));
+    } else {
+      const { name, value } = e.target;
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handlePhoneChange = (
     index: number,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const phones = [...formData.phones];
-    phones[index].number = e.target.value;
-    setFormData({ ...formData, phones });
+    const { name, value } = e.target;
+    phones[index] = { ...phones[index], [name]: value };
+    setFormData(prev => ({ ...prev, phones }));
   };
 
   const handleAddPhone = () => {
-    setFormData({ ...formData, phones: [...formData.phones, { number: "" }] });
-  };
-  const handleRemovePhone = (index: number) => {
-    const updatedPhones = formData.phones.filter((_, i) => i !== index);
-    setFormData((prevData) => ({
-      ...prevData,
-      phones: updatedPhones,
+    setFormData(prev => ({
+      ...prev,
+      phones: [...prev.phones, { number: "", countryCode: "55" }]
     }));
   };
-  
 
-  const validateForm = () => {
-    const newErrors: any = {};
-    if (!formData.name) newErrors.name = "Campo obrigatório";
-    if (!formData.email) newErrors.email = "Campo obrigatório";
-    if (!formData.password) newErrors.password = "Campo obrigatório";
-    if (!formData.cpf && !isPartnerCompany) newErrors.cpf = "Campo obrigatório";
-    if (!formData.registration && !isPartnerCompany) newErrors.registration = "Campo obrigatório";
-    if (isPartnerCompany && !formData.cnpj) newErrors.cnpj = "Campo obrigatório";
-    if (isPartnerCompany && !formData.institutionOrganization) newErrors.institutionOrganization = "Campo obrigatório";
-    formData.phones.forEach((phone, index) => {
-      if (!phone.number) newErrors[`phone-${index}`] = "Campo obrigatório";
-    });
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) return; 
-
-    console.log("Dados do formulário:", formData);
-
-    try {
-      if (isPartnerCompany) {
-        const response = await createUser(formData); 
-        console.log("Empresa parceira criada com sucesso:", response);
-      } else {
-        const response = await createEnterprise(formData);  
-        console.log("Usuário criado com sucesso:", response);
-      }
-
-      showSuccess("Cadastro realizado com sucesso!", "Você será redirecionado para a página de login.");
-      
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        role: Role.STUDENT,
-        cpf: "",
-        registration: "",
-        phones: [{ number: "" }],
-        cnpj: "",
-        institutionOrganization: "",
-        userStatus: true,
-      });
-
-      setTimeout(() => {
-        window.location.href = "/login";  
-      }, 2000);
-
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        showError("Erro ao criar usuário:", error.message);
-      } else {
-        showError("Erro desconhecido", "Tente novamente.");
-      }
-    }
+  const handleRemovePhone = (index: number) => {
+    const updatedPhones = formData.phones.filter((_, i) => i !== index);
+    setFormData(prev => ({ ...prev, phones: updatedPhones }));
   };
 
   return (
@@ -136,7 +85,7 @@ export default function RegisterForm() {
             className={`flex items-center space-x-2 cursor-pointer ${!isPartnerCompany ? 'text-blue-600' : 'text-gray-400'}`}
             onClick={() => {
               setIsPartnerCompany(false);
-              setFormData({ ...formData, role: Role.STUDENT });  
+              setFormData(prev => ({ ...prev, role: Role.STUDENT }));
             }}
           >
             <FaUser size={30} />
@@ -147,7 +96,7 @@ export default function RegisterForm() {
             className={`flex items-center space-x-2 cursor-pointer ${isPartnerCompany ? 'text-blue-600' : 'text-gray-400'}`}
             onClick={() => {
               setIsPartnerCompany(true);
-              setFormData({ ...formData, role: Role.ENTERPRISE }); 
+              setFormData(prev => ({ ...prev, role: Role.ENTERPRISE }));
             }}
           >
             <FaBuilding size={30} />
@@ -156,29 +105,31 @@ export default function RegisterForm() {
         </div>
 
         {isPartnerCompany ? (
-          <PartnerCompanyForm
+          <EnterpriseForm
             formData={formData}
             handleChange={handleChange}
             handlePhoneChange={handlePhoneChange}
             handleAddPhone={handleAddPhone}
-            handleRemovePhone={handleRemovePhone}  
-            handleSubmit={handleSubmit}
+            handleRemovePhone={handleRemovePhone}
             errors={errors}
+            showSuccess={showSuccess}
+            showError={showError}
           />
         ) : (
           <UserForm
             formData={formData}
             handleChange={handleChange}
-            handlePhoneChange={handlePhoneChange}
             handleAddPhone={handleAddPhone}
-            handleRemovePhone={handleRemovePhone}  
-            handleSubmit={handleSubmit}
+            handleRemovePhone={handleRemovePhone}
             errors={errors}
+            showSuccess={showSuccess}
+            showError={showError}
           />
         )}
       </div>
       <div className="w-auto flex justify-end items-end">
-        <Image  src={cadastro} alt="imagem Login" className="h-auto w-[300px] md:w-[600px] "/></div>
+        <Image src={cadastro} alt="imagem Login" className="h-auto w-[300px] md:w-[600px] "/>
+      </div>
     </div>
   );
 }

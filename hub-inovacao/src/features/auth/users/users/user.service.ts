@@ -6,21 +6,15 @@ import { User } from "./user.interface";
 const API_URL = "http://localhost:8080/users";
 
 // Função para criar uma nova oportunidade
-export const createUser = async (formData: FormData): Promise<User> => {
+export const createUser = async (formData: any): Promise<User> => {
   try {
-    const response = await axios.post<User>(API_URL, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axios.post<User>(API_URL, formData);
     return response.data;
   } catch (error) {
     console.error("Erro ao criar User:", error);
     throw new Error("Erro ao criar User");
   }
 };
-
-// Função para buscar oportunidades com filtro e paginação
 
 export const searchOpportunities = async (
   filters?: Record<string, any>,

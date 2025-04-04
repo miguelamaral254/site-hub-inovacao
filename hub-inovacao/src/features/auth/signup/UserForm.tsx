@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 import React, { useState, useEffect } from "react";
-import { Role } from "@/interfaces/userInterface";
 import MaskedInput from "react-text-mask";
 import { ButtonGrande } from "@/components/Button";
 import { FaTrash } from "react-icons/fa";
+import { Role } from "../users/users/user.interface";
+import { createUser } from "../users/users/user.service";
 
 interface Phone {
+  id?: number;
   number: string;
+  countryCode: string;
 }
 
 interface UserFormProps {
@@ -19,23 +23,26 @@ interface UserFormProps {
     cpf: string;
     registration: string;
     phones: Phone[];
+    enabled: boolean;
+    createdDate?: string;
+    lastModifiedDate?: string;
   };
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  handlePhoneChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | { target: { name: string; value: any } }) => void;
   handleAddPhone: () => void;
   handleRemovePhone: (index: number) => void;
-  handleSubmit: (e: React.FormEvent) => void;
   errors: any;
+  showSuccess: (title: string, message: string) => void;
+  showError: (title: string, message: string) => void;
 }
 
 export default function UserForm({
   formData,
   handleChange,
-  handlePhoneChange,
   handleAddPhone,
   handleRemovePhone,
-  handleSubmit,
   errors,
+  showSuccess,
+  showError,
 }: UserFormProps) {
   const [passwordStrength, setPasswordStrength] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
@@ -43,16 +50,30 @@ export default function UserForm({
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const handlePhoneChange = (index: number, e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    const newPhones = formData.phones.map((phone, i) => 
+      i === index ? { ...phone, [name]: value } : phone
+    );
+    
+    handleChange({
+      target: {
+        name: "phones",
+        value: newPhones
+      }
+    });
+  };
+
   useEffect(() => {
     const isValid = Boolean(
       formData.name &&
       validateEmail(formData.email) &&
       formData.password.length >= 8 &&
       formData.password === confirmPassword &&
-      formData.cpf &&
+      formData.cpf.replace(/\D/g, '').length === 11 &&
       formData.registration &&
       formData.phones.length > 0 &&
-      formData.phones.every((phone) => phone.number.length >= 14)
+      formData.phones.every((phone) => phone.number.replace(/\D/g, '').length >= 10)
     );
 
     setIsFormValid(isValid);
@@ -88,20 +109,35 @@ export default function UserForm({
 
   const handleConfirmPasswordBlur = () => {
     setConfirmPasswordTouched(true);
-    if (confirmPassword && formData.password !== confirmPassword) {
-      errors.confirmPassword = "As senhas não coincidem.";
-    } else {
-      delete errors.confirmPassword;
-    }
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
     handleChange(e);
-    if (!validateEmail(value)) {
+    if (!validateEmail(e.target.value)) {
       errors.email = "Email deve ser do domínio @edu.pe.senac.br";
     } else {
       delete errors.email;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isFormValid) return;
+
+    try {
+      const userData = {
+        ...formData,
+        cpf: formData.cpf.replace(/\D/g, ''),
+        phones: formData.phones.map(phone => ({
+          ...phone,
+          number: phone.number.replace(/\D/g, '')
+        }))
+      };
+
+      await createUser(userData);
+      showSuccess("Cadastro realizado com sucesso!", "Você será redirecionado para a página de login.");
+    } catch (error: any) {
+      showError("Erro ao criar usuário", error.message);
     }
   };
 
@@ -170,8 +206,8 @@ export default function UserForm({
           onBlur={handleConfirmPasswordBlur}
           className={`w-full px-4 py-2 border rounded-lg ${errors.confirmPassword ? "border-red-500" : ""}`}
         />
-        {confirmPasswordTouched && errors.confirmPassword && (
-          <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+        {confirmPasswordTouched && formData.password !== confirmPassword && (
+          <p className="text-red-500 text-sm">As senhas não coincidem</p>
         )}
       </div>
 
@@ -184,7 +220,7 @@ export default function UserForm({
           onChange={handleChange}
           className={`w-full px-4 py-2 border rounded-lg ${errors.cpf ? "border-red-500" : ""}`}
         />
-        {errors.cpf && <p className="text-red-500 text-sm">Campo obrigatório</p>}
+        {errors.cpf && <p className="text-red-500 text-sm">CPF inválido</p>}
       </div>
 
       <div>
@@ -199,23 +235,62 @@ export default function UserForm({
         {errors.registration && <p className="text-red-500 text-sm">Campo obrigatório</p>}
       </div>
 
+      <div>
+        <select
+          name="role"
+          value={formData.role}
+          onChange={handleChange}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.role ? "border-red-500" : ""}`}
+        >
+          <option value={Role.STUDENT}>Estudante</option>
+          <option value={Role.PROFESSOR}>Professor</option>
+          <option value={Role.ENTERPRISE}>Empresa</option>
+          <option value={Role.MANAGER}>Gestor</option>
+        </select>
+        {errors.role && <p className="text-red-500 text-sm">Campo obrigatório</p>}
+      </div>
+
       <div className="space-y-2">
         {formData.phones.map((phone, index) => (
           <div key={index} className="flex items-center space-x-2">
             <MaskedInput
               mask={["(", /\d/, /\d/, ")", " ", /\d/, " ", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
-              name={`phone-${index}`}
+              name="number"
+              placeholder="Número de telefone"
               value={phone.number}
               onChange={(e) => handlePhoneChange(index, e)}
-              placeholder="Número de telefone"
-              className="w-full px-4 py-2 border rounded-lg"
+              className={`w-full px-4 py-2 border rounded-lg ${
+                errors.phones?.[index]?.number ? "border-red-500" : ""
+              }`}
             />
-            <button type="button" onClick={() => handleRemovePhone(index)} className="text-red-500 hover:text-red-700">
+            <select
+              name="countryCode"
+              value={phone.countryCode}
+              onChange={(e) => handlePhoneChange(index, e)}
+              className={`w-full px-4 py-2 border rounded-lg ${
+                errors.phones?.[index]?.countryCode ? "border-red-500" : ""
+              }`}
+            >
+              <option value="55">Brasil (+55)</option>
+              <option value="1">EUA (+1)</option>
+              <option value="44">Reino Unido (+44)</option>
+              <option value="33">França (+33)</option>
+              <option value="34">Espanha (+34)</option>
+            </select>
+            <button
+              type="button"
+              onClick={() => handleRemovePhone(index)}
+              className="text-red-500 hover:text-red-700"
+            >
               <FaTrash />
             </button>
           </div>
         ))}
-        <button type="button" onClick={handleAddPhone} className="text-blue-600 hover:underline">
+        <button
+          type="button"
+          onClick={handleAddPhone}
+          className="text-blue-600 hover:underline"
+        >
           Adicionar outro telefone
         </button>
       </div>

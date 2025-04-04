@@ -1,8 +1,9 @@
-export interface Phone {
-    id?: number;
-    number?: string;
-    type?: string;
-  }
+export 
+interface Phone {
+  id?: number;
+  number: string;
+  countryCode: string;
+}
   
   export enum Role {
     ADMIN = "ADMIN",
@@ -21,7 +22,6 @@ export interface Phone {
     email?: string;
     password?: string;
     cpf?: string;
-    cnpj?: string;
     enabled?: boolean;
     createdDate?: string;
     lastModifiedDate?: string;
