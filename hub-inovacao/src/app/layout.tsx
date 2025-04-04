@@ -21,20 +21,12 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col">
       
         <AuthProvider>
-<<<<<<< HEAD
           <StepContext>
             <Navbar />
             <main className="flex-grow">{children}</main>
             <Footer /> 
           </StepContext>
           
-=======
-
-          <Navbar />
-            <main className="flex-grow">{children}</main>
-          <Footer /> 
-
->>>>>>> main
         </AuthProvider>
         
       </body>
