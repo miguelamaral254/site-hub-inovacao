@@ -103,13 +103,13 @@ export default function EnterpriseForm() {
         "A empresa foi cadastrada."
       );
     } catch (error) {
-      showError("Erro ao cadastrar empresa", error.message);
+      showError("Erro ao cadastrar empresa", (error as Error).message);
     }
   };
 
   const handleCEPChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const cep = e.target.value.replace(/\D/g, "");
-    if (cep.length === 8) {
+    if (cep.length === 9) {
       await getCEPData(cep);
     } else {
       setFormData((prevState) => ({
