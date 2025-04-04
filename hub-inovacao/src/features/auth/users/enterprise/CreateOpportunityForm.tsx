@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/*
 import React, { useState } from 'react';
-import { createOpportunity } from '@/features/core/opportunityService';
-import { OpportunityResponseDTO, TypeBO, StatusSolicitation } from '@/interfaces/OpportunityInterfaces';
+
 import useSwal from '@/hooks/useSwal';
+import { StatusSolicitation } from '@/features/core/status.interface';
 
 const CreateOpportunityForm: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -120,7 +121,7 @@ const CreateOpportunityForm: React.FC = () => {
         className="w-full p-3 border border-gray-300 rounded-md"
         accept="image/*"
       />
-      {error && <p className="text-red-500 text-sm mt-2">{error}</p>} {/* Exibe o erro se houver */}
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>} {/* Exibe o erro se houver *
     </div>
 
         <div className="mb-4">
@@ -176,3 +177,4 @@ const CreateOpportunityForm: React.FC = () => {
 };
 
 export default CreateOpportunityForm;
+*/

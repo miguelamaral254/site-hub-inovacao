@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
-import { Opportunity } from "./opportunity.interface";
+import { User } from "./user.interface";
 
-const API_URL = "http://localhost:8080/opportunities";
+
+const API_URL = "http://localhost:8080/users";
 
 // Função para criar uma nova oportunidade
-export const createOpportunity = async (formData: FormData): Promise<Opportunity> => {
+export const createUser = async (formData: FormData): Promise<User> => {
   try {
-    const response = await axios.post<Opportunity>(API_URL, formData, {
+    const response = await axios.post<User>(API_URL, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
   } catch (error) {
-    console.error("Erro ao criar opportunity:", error);
-    throw new Error("Erro ao criar opportunity");
+    console.error("Erro ao criar User:", error);
+    throw new Error("Erro ao criar User");
   }
 };
 
@@ -29,12 +30,11 @@ export const searchOpportunities = async (
 ) => {
   const params: Record<string, any> = {
     ...filters,
-    page, // Página (indexada a partir de 0)
-    size, // Tamanho da página
-    sort, // Ordenação opcional
+    page, 
+    size, 
+    sort, 
   };
 
-  // Filtros opcionais
   if (filters?.tituloDesafio) {
     params.tituloDesafio = filters.tituloDesafio;
   }
@@ -65,17 +65,17 @@ export const searchOpportunities = async (
     throw error;
   }
 };
-export const getOpportunityById = async (id: number) => {
+export const getUserById = async (id: number) => {
   return axios.get(`${API_URL}/${id}`);
 };
 
 // Função para atualizar a oportunidade (usando PUT)
-export const updateOpportunity = async (id: number, data: Opportunity) => {
+export const updateUser = async (id: number, data: User) => {
   return axios.put(`${API_URL}/${id}`, data);
 };
 
 // Função para excluir a oportunidade (usando DELETE)
-export const deleteOpportunity = async (id: number) => {
+export const deleteUser = async (id: number) => {
   return axios.delete(`${API_URL}/${id}`);
 };
 
@@ -83,6 +83,6 @@ export const deleteOpportunity = async (id: number) => {
 export const updateStatus = async (id: number, status: string) => {
   return axios.patch(`${API_URL}/${id}/status?status=${status}`);
 };
-export const updateOpportunityDetails = async (id: number, data: Opportunity) => {
+export const updateUserDetails = async (id: number, data: User) => {
   return axios.put(`${API_URL}/${id}`, data);
 };

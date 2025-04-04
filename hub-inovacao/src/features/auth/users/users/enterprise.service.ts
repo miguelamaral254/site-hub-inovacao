@@ -1,27 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
-import { Opportunity } from "./opportunity.interface";
+import { Enterprise } from "./enterprise.interface";
 
-const API_URL = "http://localhost:8080/opportunities";
 
-// Função para criar uma nova oportunidade
-export const createOpportunity = async (formData: FormData): Promise<Opportunity> => {
+const API_URL = "http://localhost:8080/Enterprises";
+
+export const createEnterprise = async (formData: FormData): Promise<Enterprise> => {
   try {
-    const response = await axios.post<Opportunity>(API_URL, formData, {
+    const response = await axios.post<Enterprise>(API_URL, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
   } catch (error) {
-    console.error("Erro ao criar opportunity:", error);
-    throw new Error("Erro ao criar opportunity");
+    console.error("Erro ao criar Enterprise:", error);
+    throw new Error("Erro ao criar Enterprise");
   }
 };
-
-// Função para buscar oportunidades com filtro e paginação
-
-export const searchOpportunities = async (
+export const searchEnterprise = async (
   filters?: Record<string, any>,
   page: number = 0,
   size: number = 10,
@@ -29,12 +26,11 @@ export const searchOpportunities = async (
 ) => {
   const params: Record<string, any> = {
     ...filters,
-    page, // Página (indexada a partir de 0)
-    size, // Tamanho da página
-    sort, // Ordenação opcional
+    page, 
+    size, 
+    sort, 
   };
 
-  // Filtros opcionais
   if (filters?.tituloDesafio) {
     params.tituloDesafio = filters.tituloDesafio;
   }
@@ -65,24 +61,18 @@ export const searchOpportunities = async (
     throw error;
   }
 };
-export const getOpportunityById = async (id: number) => {
+export const getEnterpriseById = async (id: number) => {
   return axios.get(`${API_URL}/${id}`);
 };
-
-// Função para atualizar a oportunidade (usando PUT)
-export const updateOpportunity = async (id: number, data: Opportunity) => {
+export const updateEnterprise = async (id: number, data: Enterprise) => {
   return axios.put(`${API_URL}/${id}`, data);
 };
-
-// Função para excluir a oportunidade (usando DELETE)
-export const deleteOpportunity = async (id: number) => {
+export const deleteEnterprise = async (id: number) => {
   return axios.delete(`${API_URL}/${id}`);
 };
-
-// Função para atualizar o status de uma oportunidade
 export const updateStatus = async (id: number, status: string) => {
   return axios.patch(`${API_URL}/${id}/status?status=${status}`);
 };
-export const updateOpportunityDetails = async (id: number, data: Opportunity) => {
+export const updateEnterpriseDetails = async (id: number, data: Enterprise) => {
   return axios.put(`${API_URL}/${id}`, data);
 };

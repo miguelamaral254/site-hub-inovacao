@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
-import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
-import DashboardHeader from "./DashboardHeader";
 import { RiHome2Line, RiHome2Fill, RiLogoutBoxRFill, RiLogoutBoxRLine } from "react-icons/ri";
 import { RiMailLine } from "react-icons/ri";
 import { RiMailFill } from "react-icons/ri";
@@ -12,12 +10,14 @@ import { RiFolderUploadFill } from "react-icons/ri";
 
 import { useAuth } from "@/context/useContext";
 import { useRouter } from "next/navigation";
+import { User } from "./user.interface";
+import DashboardHeader from "../../DashboardHeader";
+
 interface SidebarProps {
   setSelectedPage: (page: string) => void;
-  userData: UserResponseCnpjDTO | UserResponseCpfDTO | null;
+  userData: User | null;
   errorMessage: string;
 }
-
 export default function Sidebar({ setSelectedPage, userData, errorMessage }: SidebarProps) {
 
 

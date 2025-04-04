@@ -1,18 +1,16 @@
-import CreateProjectForm from "@/features/auth-components/project/ModalCreateProject";
-import ProjectList from "@/features/auth-components/project/ProjectList";
-import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
+import ProjectsList from "@/features/projects/ProjectsList";
+import { Role, User } from "./user.interface";
 
 
 interface PageContentProps {
   selectedPage: string | null;
-  userData: UserResponseCnpjDTO | UserResponseCpfDTO | null;
+  userData: User | null;
 }
 
 export default function PageContent({ selectedPage, userData }: PageContentProps) {
   const role = userData?.role;
 
-  const isForProfessor = role === "PROFESSOR";
-  const isForStudent = role === "STUDENT";
+
 
   return (
     <div className="flex justify-center items-start">
@@ -27,8 +25,7 @@ export default function PageContent({ selectedPage, userData }: PageContentProps
               <span>Tipo</span>
               <span>Status</span>
             </div>
-            <ProjectList statusFilter="REPROVADA" />
-           
+            <ProjectsList />
           </div>
         )}
 
@@ -45,10 +42,7 @@ export default function PageContent({ selectedPage, userData }: PageContentProps
           <div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Submeter Projeto Acadêmico</h3>
             <p className="text-lg text-gray-600 mb-6">Preencha os campos abaixo para criar um novo projeto acadêmico. Certifique-se de fornecer informações precisas e completas.</p>
-            <CreateProjectForm
-              isForProfessor={isForProfessor}
-              isForStudent={isForStudent}
-            />
+           
           </div>
         )}
       </div>

@@ -2,14 +2,15 @@
 "use client";
 import { useState } from "react";
 import { FaUser, FaBuilding } from "react-icons/fa";
-import { Role } from "@/interfaces/userInterface";  
 import PartnerCompanyForm from "./PartnerCompanyForm";
 import Image from "next/image";
 import logo from "@/assets/Logo.svg";
 import cadastro from "@/assets/Cadastro.svg"
 import UserForm from "./UserForm";
-import { createUserWithCnpj, createUserWithCpf } from "@/services/userService";
 import useSwal from "@/hooks/useSwal";
+import { Role } from "../users/users/user.interface";
+import { createEnterprise } from "../users/users/enterprise.service";
+import { createUser } from "../users/users/user.service";
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -84,10 +85,10 @@ export default function RegisterForm() {
 
     try {
       if (isPartnerCompany) {
-        const response = await createUserWithCnpj(formData); 
+        const response = await createUser(formData); 
         console.log("Empresa parceira criada com sucesso:", response);
       } else {
-        const response = await createUserWithCpf(formData);  
+        const response = await createEnterprise(formData);  
         console.log("Usuário criado com sucesso:", response);
       }
 
@@ -146,7 +147,7 @@ export default function RegisterForm() {
             className={`flex items-center space-x-2 cursor-pointer ${isPartnerCompany ? 'text-blue-600' : 'text-gray-400'}`}
             onClick={() => {
               setIsPartnerCompany(true);
-              setFormData({ ...formData, role: Role.PARTNER_COMPANY }); 
+              setFormData({ ...formData, role: Role.ENTERPRISE }); 
             }}
           >
             <FaBuilding size={30} />

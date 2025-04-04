@@ -1,8 +1,7 @@
-// components/DashboardHeader.tsx
-import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
+import { User } from "./users/users/user.interface";
 
 interface DashboardHeaderProps {
-  userData: UserResponseCnpjDTO | UserResponseCpfDTO | null;
+  userData: User | null;
   errorMessage: string;
 }
 
