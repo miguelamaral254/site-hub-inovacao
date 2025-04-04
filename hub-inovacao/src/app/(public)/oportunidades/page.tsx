@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React, { useState } from "react";
@@ -7,8 +8,8 @@ import { Dropdown } from "@/components/Dropdown";
 import { ButtonGrandeSeg } from "@/components/Button";
 import ImagemBOS from "@/assets/ImagemBOS.svg";
 import banneroportunidades from "@/assets/BannerOportunidades.svg";
-import AllOpportunitiesList from "@/features/public-components/oportunities/AllOpportunitiesList";
 import { ButtonOutline } from "@/components/Button";
+import OpportunityList from "@/features/opportunity/OpportunityList";
 
 const opportunityTypes = ["Oportunidades", "Problemas", "Ideias"];
 
@@ -67,11 +68,8 @@ export default function Oportunidades() {
         </div>
 
         <div>
-          <AllOpportunitiesList 
-            visibleOpportunities={visibleOpportunities} 
-            filterType={selectedType} 
-            setTotalOpportunities={setTotalOpportunities} 
-          />
+        <OpportunityList />
+
         </div>
 
         {/* Exibir botão "Carregar Mais" apenas se houver mais oportunidades */}

@@ -1,9 +1,9 @@
-import { AddTeam } from "@/features/cadastro_projeto/steps/AddTeam"
-import { Feedbacks } from "@/features/cadastro_projeto/steps/Feedbacks"
-import { ProjectIdentify } from "@/features/cadastro_projeto/steps/ProjectIdentify"
+import { AddTeam } from "@/features/projects/cadastro_projeto/steps/AddTeam"
+import { Finalizado } from "@/features/projects/cadastro_projeto/steps/Finalizado"
+import { ProjectDetails } from "@/features/projects/cadastro_projeto/steps/ProjectDetails"
+import { ProjectIdentify } from "@/features/projects/cadastro_projeto/steps/ProjectIdentify"
 import { CheckMark } from "./CheckMark"
-import { ProjectDetails } from "@/features/cadastro_projeto/steps/ProjectDetails"
-import { Finalizado } from "@/features/cadastro_projeto/steps/Finalizado"
+
 
 type Props = {
   step: number,
