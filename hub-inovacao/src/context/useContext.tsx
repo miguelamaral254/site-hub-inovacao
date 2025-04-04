@@ -1,11 +1,12 @@
 "use client";
+import { login } from "@/features/auth/auth.service";
+import { LoginRequest, LoginResponse } from "@/features/auth/login.interface";
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { login } from "@/services/authService";
-import { LoginRequestDTO, LoginResponseDTO } from "@/interfaces/loginInterface";
+
 
 interface AuthContextData {
-  user: LoginResponseDTO | null;
-  loginUser: (credentials: LoginRequestDTO) => Promise<void>;
+  user: LoginResponse | null;
+  loginUser: (credentials: LoginRequest) => Promise<void>;
   logoutUser: () => void;
 }
 
@@ -16,7 +17,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<LoginResponseDTO | null>(null);
+  const [user, setUser] = useState<LoginResponse | null>(null);
 
   useEffect(() => {
     const storedUserEmail = localStorage.getItem("email");
@@ -36,7 +37,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
-  const loginUser = async (credentials: LoginRequestDTO) => {
+  const loginUser = async (credentials: LoginRequest) => {
     try {
       const response = await login(credentials);
       setUser(response);  

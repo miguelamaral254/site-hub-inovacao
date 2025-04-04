@@ -2,12 +2,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import bannereditais from "@/assets/BannerEditais.svg";
-import { CardEditais } from "@/components/Card";
-import PublishCard from "@/features/auth-components/manager/PublishCard";
-
-import AllPublishList from "@/features/public-components/publish/AllPublishList";
+import PublishList from "@/features/publish/PublishList";
 import { ButtonOutline } from "@/components/Button";
 
 
@@ -35,25 +32,8 @@ export default function PublishPage() {
           </p>
         </div>
       </div>
-      <div className="flex flex-col items-center gap-4 py-6 flex justify-center mt-6 bg-white w-full h-auto">
-        <AllPublishList 
-        visiblePublications={visiblePublications}
-        filterType={filterType}
-        setTotalEditais={setTotalEditais}/>
-        
-        {totalEditais > 0 && (
-          <div className="flex justify-center mt-6">
-            <ButtonOutline text={visiblePublications >= totalEditais ? "Carregar menos" : "Carregar Mais"}
-              onClick={() => {
-                if (visiblePublications >= totalEditais) {
-                  setvisiblePublications(2);
-                } else {
-                  setvisiblePublications((prev) => prev + 2)
-                }
-              }}
-              disabled={totalEditais <= 2} />
-          </div>
-        )}
+      <div className="flex flex-col items-center gap-4 py-6 justify-center mt-6 bg-white w-full h-auto">
+        <PublishList />
       </div>
       <div className="flex flex-col w-full h-auto min-h-[200px] mt-2 px-[166px]">
         <div className="flex justify-end mr-2 md:mr-5"></div>
