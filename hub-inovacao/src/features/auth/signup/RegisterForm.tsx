@@ -78,7 +78,7 @@ export default function RegisterForm() {
       const { name, value } = e.target;
       setFormDataEnterprise(prev => ({
         ...prev,
-        reprentantPhone: value, // Para empresas, usamos apenas um telefone
+        reprentantPhone: value, 
       }));
     }
   };

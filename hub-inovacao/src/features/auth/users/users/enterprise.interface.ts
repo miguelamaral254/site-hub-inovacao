@@ -21,6 +21,8 @@ export interface Enterprise {
 export interface Address {
     id?: number;
     street?: string;
+    number?:number;
+    complement?:string;
     city?: string;
     state?: string;
     zipCode?: string;
