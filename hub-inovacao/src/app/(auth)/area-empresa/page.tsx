@@ -2,51 +2,59 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
-import { getUserByEmail } from "@/services/userService";
-import SidebarCompany from "@/features/auth-components/users/userscpj/DashboardCompany/SidebarCompany";
-import PageContentCompany from "@/features/auth-components/users/userscpj/DashboardCompany/PageContentCompany";
+import { Enterprise } from "@/features/auth/users/users/enterprise.interface";
+import Sidebar from "@/features/auth/users/users/Sidebar";
+import PageContent from "@/features/auth/users/users/PageContent";
+import { getEnterpriseById } from "@/features/auth/users/users/enterprise.service";
+
 
 export default function DashboardCompanyPage() {
-  const [userData, setUserData] = useState<UserResponseCnpjDTO | UserResponseCpfDTO | undefined>(undefined);
+  const [userData, setUserData] = useState<Enterprise | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
-
   const router = useRouter();
 
   useEffect(() => {
-    const email = localStorage.getItem("email");
+    const id = localStorage.getItem("id");
 
-    if (email) {
+    if (id) {
       const fetchUserData = async () => {
         try {
-          const data = await getUserByEmail(email);
+          const response = await getEnterpriseById(parseInt(id));
+          const data = response.data;
           setUserData(data);
           localStorage.setItem("userData", JSON.stringify(data));
         } catch (error) {
-          console.log(error)
+          console.log(error);
           setErrorMessage("Erro ao buscar os dados.");
         }
       };
 
       fetchUserData();
     } else {
-      setErrorMessage("Email não encontrado.");
+      setErrorMessage("ID não encontrado.");
     }
   }, []);
 
   useEffect(() => {
-    if (userData && "cnpj" in userData && userData.role !== "PARTNER_COMPANY") {
-      router.push("/");
+    if (userData && userData.cnpj && userData.role !== "ENTERPRISE") {
+      router.push("/"); 
     }
   }, [userData, router]);
 
+  if (errorMessage) {
+    return <div>{errorMessage}</div>;
+  }
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <SidebarCompany setSelectedPage={setSelectedPage} userData={userData as UserResponseCnpjDTO} errorMessage={errorMessage} />
+      <Sidebar setSelectedPage={setSelectedPage} userData={userData} errorMessage={errorMessage} />
       
       <div className="flex-grow p-6">
-        <PageContentCompany selectedPage={selectedPage} userData={userData as UserResponseCnpjDTO} />
+        <PageContent selectedPage={selectedPage} userData={userData} />
       </div>
     </div>
   );

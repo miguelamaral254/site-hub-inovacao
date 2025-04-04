@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .section{
+    @apply py-10 container px-6 mx-auto
+  }
+
+  .topic-title{
+    @apply text-3xl md:text-5xl text-blue-500 font-semibold text-center md:text-left
+  }
+}
+
 
 :root {
 

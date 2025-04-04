@@ -2,43 +2,49 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
-import { getUserByEmail } from "@/services/userService";
-import Sidebar from "@/features/auth-components/users/userscpf/dashboard-users/Sidebar";
-import PageContent from "@/features/auth-components/users/userscpf/dashboard-users/PageContent";
+import Sidebar from "@/features/auth/users/users/Sidebar"; 
+import PageContent from "@/features/auth/users/users/PageContent"; 
+import { User } from "@/features/auth/users/users/user.interface";
+import { getUserById } from "@/features/auth/users/users/user.service";
 
 export default function DashboardPage() {
-  const [userData, setUserData] = useState<UserResponseCnpjDTO | UserResponseCpfDTO | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true); 
-  const router = useRouter(); 
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    const email = localStorage.getItem("email");
+    const id = localStorage.getItem("id");
 
-    if (!email) {
+    if (!id) {
       router.push("/login");
       return;
     }
 
     const fetchUserData = async () => {
       try {
-        const data = await getUserByEmail(email);
-        setUserData(data);
-
-        // Verifica se o 'role' é diferente de 'STUDENT' ou 'PROFESSOR'
-        if (data.role !== "STUDENT" && data.role !== "PROFESSOR") {
-          router.push("/"); // Redireciona para a página inicial
-          return;
+        const numericId = parseInt(id);
+        if (isNaN(numericId)) {
+          throw new Error("ID inválido");
         }
+
+        const response = await getUserById(numericId);
+        const data = response.data;
+        setUserData(data);
 
         localStorage.setItem("userData", JSON.stringify(data));
 
-        console.log("Dados armazenados no localStorage:", localStorage.getItem("userData"));
+        const storedUserData = localStorage.getItem("userData");
+        const parsedUserData = storedUserData ? JSON.parse(storedUserData) : null;
+        
+        if (parsedUserData && parsedUserData.data.role !== "STUDENT" && parsedUserData.data.role !== "PROFESSOR") {
+          console.log("Redirecionando para a página inicial devido à role inválida:", parsedUserData.data.role);
+          router.push("/"); 
+          return;
+        }
       } catch (error) {
-        console.log(error)
-
+        console.log(error);
         setErrorMessage("Erro ao buscar os dados.");
       } finally {
         setLoading(false);
@@ -49,11 +55,11 @@ export default function DashboardPage() {
   }, [router]);
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   if (errorMessage) {
-    return <div>{errorMessage}</div>; 
+    return <div>{errorMessage}</div>;
   }
 
   return (

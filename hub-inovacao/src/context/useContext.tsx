@@ -1,11 +1,12 @@
 "use client";
+import { login } from "@/features/auth/auth.service";
+import { LoginRequest, LoginResponse } from "@/features/auth/login.interface";
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { login } from "@/services/authService";
-import { LoginRequestDTO, LoginResponseDTO } from "@/interfaces/loginInterface";
+
 
 interface AuthContextData {
-  user: LoginResponseDTO | null;
-  loginUser: (credentials: LoginRequestDTO) => Promise<void>;
+  user: LoginResponse | null;
+  loginUser: (credentials: LoginRequest) => Promise<void>;
   logoutUser: () => void;
 }
 
@@ -16,31 +17,34 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<LoginResponseDTO | null>(null);
+  const [user, setUser] = useState<LoginResponse | null>(null);
 
   useEffect(() => {
     const storedUserEmail = localStorage.getItem("email");
     const storedRole = localStorage.getItem("role");
     const storedToken = localStorage.getItem("token");
+    const storedId = localStorage.getItem("id")
 
-    if (storedUserEmail && storedRole && storedToken) {
+    if (storedUserEmail && storedRole && storedToken && storedId) {
       // Se os dados estiverem no localStorage, restaurar o estado, incluindo a propriedade `message`
       setUser({
         email: storedUserEmail,
         role: storedRole,
         token: storedToken,
+        idUser: parseInt(storedId as string),
         message: "Usuário restaurado com sucesso", 
       });
     }
   }, []);
 
-  const loginUser = async (credentials: LoginRequestDTO) => {
+  const loginUser = async (credentials: LoginRequest) => {
     try {
       const response = await login(credentials);
       setUser(response);  
       localStorage.setItem("token", response.token);
       localStorage.setItem("email", response.email);
       localStorage.setItem("role", response.role);
+      localStorage.setItem("id", response.idUser.toString())
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -54,6 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     localStorage.removeItem("role");
+    localStorage.removeItem("id");
   };
 
   return (
