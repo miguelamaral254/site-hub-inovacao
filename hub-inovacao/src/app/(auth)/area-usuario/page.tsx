@@ -38,10 +38,13 @@ export default function DashboardPage() {
         const storedUserData = localStorage.getItem("userData");
         const parsedUserData = storedUserData ? JSON.parse(storedUserData) : null;
         
-        if (parsedUserData && parsedUserData.data.role !== "STUDENT" && parsedUserData.data.role !== "PROFESSOR") {
-          console.log("Redirecionando para a página inicial devido à role inválida:", parsedUserData.data.role);
-          router.push("/"); 
-          return;
+        if (parsedUserData &&
+           parsedUserData.data.role !== "STUDENT" &&
+           parsedUserData.data.role !== "PROFESSOR" &&
+           parsedUserData.data.role !== "MANAGER") {
+            console.log("Redirecionando para a página inicial devido à role inválida:", parsedUserData.data.role);
+            router.push("/"); 
+            return;
         }
       } catch (error) {
         console.log(error);
