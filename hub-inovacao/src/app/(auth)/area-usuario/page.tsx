@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Sidebar from "@/features/auth/users/users/Sidebar"; 
-import PageContent from "@/features/auth/users/users/PageContent"; 
+
 import { User } from "@/features/auth/users/users/user.interface";
 import { getUserById } from "@/features/auth/users/users/user.service";
+import Sidebar from "@/features/auth/signin/Sidebar";
+import PageContent from "@/features/auth/signin/PageContent";
 
 export default function DashboardPage() {
   const [userData, setUserData] = useState<User | null>(null);
@@ -38,10 +39,13 @@ export default function DashboardPage() {
         const storedUserData = localStorage.getItem("userData");
         const parsedUserData = storedUserData ? JSON.parse(storedUserData) : null;
         
-        if (parsedUserData && parsedUserData.data.role !== "STUDENT" && parsedUserData.data.role !== "PROFESSOR") {
-          console.log("Redirecionando para a página inicial devido à role inválida:", parsedUserData.data.role);
-          router.push("/"); 
-          return;
+        if (parsedUserData &&
+           parsedUserData.data.role !== "STUDENT" &&
+           parsedUserData.data.role !== "PROFESSOR" &&
+           parsedUserData.data.role !== "MANAGER") {
+            console.log("Redirecionando para a página inicial devido à role inválida:", parsedUserData.data.role);
+            router.push("/"); 
+            return;
         }
       } catch (error) {
         console.log(error);

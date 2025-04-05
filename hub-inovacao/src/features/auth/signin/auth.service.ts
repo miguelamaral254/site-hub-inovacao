@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
+import api from "../../core/api";
 import { LoginRequest, LoginResponse } from "./login.interface";
-import api from "../core/api";
 
 export const login = async (
   credentials: LoginRequest

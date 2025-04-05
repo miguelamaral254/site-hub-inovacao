@@ -13,18 +13,10 @@ const LoginForm: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
-
   useEffect(() => {
     if (user) {
-      if (user.role === "ENTERPRISE") {
-        router.push("/area-empresa");
-      } else if (user.role === "ADMIN") {
-        router.push("/area-admin");
-      } else if (user.role === "MANAGER") {
-        router.push("/area-manager");
-      } else {
-        router.push("/area-usuario");
-      }
+      const destination = user.role === "ENTERPRISE" ? "/area-empresa" : "/area-usuario";
+      router.push(destination);
     }
   }, [user, router]);
 
