@@ -52,13 +52,12 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed top-0 w-full  bg-white shadow-md z-50`}>
-
       <div className={`flex ${openMenu ? 'flex-col' : 'flex-row'} md:flex-row items-center py-4 gap-5 justify-between section`}>
         <div className="flex items-center justify-start w-auto min-w-[100px] md:min-w-[136px] cursor-pointer" onClick={handleRedirect}>
           <Image src={logo} alt="Logo HUBI" className={`w-[60%] ${openMenu ? 'w-[100%]' : 'w-[60%]'} h-auto`}/>
         </div>
         <div
-          className={`${openMenu ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-center justify-end px-[32px] space-x-6 gap-[32px] w-full`}
+          className={`${openMenu ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-center justify-end   gap-12 w-full`}
         >
           {[
             { href: "/inicio", label: "Início" },

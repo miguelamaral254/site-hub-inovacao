@@ -29,7 +29,7 @@ const ButtonGrandeSeg = ({ text, onClick }: ButtonProps) => {
     <div className="flex items-center justify-center">
       <button 
         onClick={onClick} 
-        className="h-auto w-full text-white font-medium text-base md:text-lg flex justify-center items-center bg-orange-500 hover:bg-orange-600 rounded-lg py-2 px-4 transition-all duration-300 active:rounded-3xl whitespace-nowrap"
+        className="h-auto w-full text-white font-medium text-base md:text-lg flex justify-center items-center bg-orange-500 hover:bg-orange-600 rounded-lg py-1 px-2 lg:py-2 lg:px-4 transition-all duration-300 active:rounded-3xl whitespace-nowrap"
       >
         {text}
       </button>

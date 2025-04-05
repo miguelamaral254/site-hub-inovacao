@@ -4,7 +4,12 @@
 import Image from "next/image";
 import { useState } from "react";
 import bannereditais from "@/assets/BannerEditais.svg";
+<<<<<<< Updated upstream
 import PublishList from "@/features/publish/PublishList";
+=======
+
+import AllPublishList from "@/features/public-components/publish/AllPublishList";
+>>>>>>> Stashed changes
 import { ButtonOutline } from "@/components/Button";
 
 
@@ -24,7 +29,7 @@ export default function PublishPage() {
         className="w-full h-auto object-cover"
         />
       </div>
-      <div className="flex flex-row items-center min-h-[146px] justify-between w-full px-[166px] mt-6">
+      <div className="flex flex-row items-center justify-between section">
         <div className="flex flex-col w-full h-auto mt-4 px-4 md:ml-4">
           <h2 className="text-3xl md:text-5xl text-blue-500 font-semibold">Editais</h2>
           <p className="mt-6 text-gray-800 text-left">
