@@ -1,6 +1,6 @@
 "use client";
-import { login } from "@/features/auth/auth.service";
-import { LoginRequest, LoginResponse } from "@/features/auth/login.interface";
+import { login } from "@/features/auth/signin/auth.service";
+import { LoginRequest, LoginResponse } from "@/features/auth/signin/login.interface";
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 

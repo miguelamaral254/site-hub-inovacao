@@ -1,4 +1,4 @@
-import { User } from "./users/users/user.interface";
+import { User } from "../users/users/user.interface";
 
 interface DashboardHeaderProps {
   userData: User | null;

@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Sidebar from "@/features/auth/users/users/Sidebar"; 
-import PageContent from "@/features/auth/users/users/PageContent"; 
+
 import { User } from "@/features/auth/users/users/user.interface";
 import { getUserById } from "@/features/auth/users/users/user.service";
+import Sidebar from "@/features/auth/signin/Sidebar";
+import PageContent from "@/features/auth/signin/PageContent";
 
 export default function DashboardPage() {
   const [userData, setUserData] = useState<User | null>(null);

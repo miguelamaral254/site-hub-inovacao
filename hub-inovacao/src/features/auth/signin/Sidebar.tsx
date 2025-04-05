@@ -10,8 +10,9 @@ import { RiFolderUploadFill } from "react-icons/ri";
 
 import { useAuth } from "@/context/useContext";
 import { useRouter } from "next/navigation";
-import { User } from "./user.interface";
-import DashboardHeader from "../../DashboardHeader";
+import { User } from "../users/users/user.interface";
+import DashboardHeader from "./DashboardHeader";
+
 
 interface SidebarProps {
   setSelectedPage: (page: string) => void;
