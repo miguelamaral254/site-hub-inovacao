@@ -1,5 +1,5 @@
 import ProjectsList from "@/features/projects/ProjectsList";
-import { Role, User } from "./user.interface";
+import { User } from "../users/user.interface";
 
 
 interface PageContentProps {
@@ -8,8 +8,8 @@ interface PageContentProps {
 }
 
 export default function PageContent({ selectedPage, userData }: PageContentProps) {
-  const role = userData?.role;
 
+  const role = userData?.role;
 
 
   return (
@@ -29,14 +29,16 @@ export default function PageContent({ selectedPage, userData }: PageContentProps
           </div>
         )}
 
-        {/*selectedPage === "page2" && (
+        {selectedPage === "page2" && role === "MANAGER" &&  (
           <div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Projetos Pendentes e Reprovados</h3>
             <p className="text-lg text-gray-600 mb-4">Verifique os projetos pendentes ou reprovados para poder acompanhar seu progresso e melhorias necessárias.</p>
             <div className="space-y-4">
             </div>
           </div>
-        )*/}
+        )}
+
+     
 
         {selectedPage === "page3" && (
           <div>

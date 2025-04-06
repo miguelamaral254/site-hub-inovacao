@@ -1,12 +1,11 @@
-"use client";
-
+"use client"; 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
-import { User } from "@/features/auth/users/users/user.interface";
-import { getUserById } from "@/features/auth/users/users/user.service";
+import { User } from "@/features/auth/users/user.interface";
+import { getUserById } from "@/features/auth/users/user.service";
 import Sidebar from "@/features/auth/signin/Sidebar";
 import PageContent from "@/features/auth/signin/PageContent";
+import { useAuth } from "@/context/useContext";  // Importando o hook useAuth
 
 export default function DashboardPage() {
   const [userData, setUserData] = useState<User | null>(null);
@@ -14,49 +13,40 @@ export default function DashboardPage() {
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { user } = useAuth();  
 
   useEffect(() => {
-    const id = localStorage.getItem("id");
-
-    if (!id) {
-      router.push("/login");
+    if (!user) {
+      setLoading(false); 
       return;
     }
 
     const fetchUserData = async () => {
       try {
-        const numericId = parseInt(id);
-        if (isNaN(numericId)) {
-          throw new Error("ID inválido");
-        }
-
-        const response = await getUserById(numericId);
-        const data = response.data;
-        setUserData(data);
-
-        localStorage.setItem("userData", JSON.stringify(data));
-
-        const storedUserData = localStorage.getItem("userData");
-        const parsedUserData = storedUserData ? JSON.parse(storedUserData) : null;
-        
-        if (parsedUserData &&
-           parsedUserData.data.role !== "STUDENT" &&
-           parsedUserData.data.role !== "PROFESSOR" &&
-           parsedUserData.data.role !== "MANAGER") {
-            console.log("Redirecionando para a página inicial devido à role inválida:", parsedUserData.data.role);
-            router.push("/"); 
-            return;
+        const response = await getUserById(user.idUser);
+        const data = response.data.data; 
+    
+        setUserData(data); 
+        //console.log("Dados do usuário:", data); 
+    
+        if (
+          data.role !== "STUDENT" &&
+          data.role !== "PROFESSOR" &&
+          data.role !== "MANAGER" 
+        ) {
+          router.push("/"); 
+          return;
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
         setErrorMessage("Erro ao buscar os dados.");
+        
       } finally {
         setLoading(false);
       }
     };
-
     fetchUserData();
-  }, [router]);
+  }, [router, user]); 
 
   if (loading) {
     return <div>Loading...</div>;

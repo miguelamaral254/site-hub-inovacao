@@ -7,10 +7,9 @@ import { RiMailFill } from "react-icons/ri";
 import { RiFolderUploadLine } from "react-icons/ri";
 import { RiFolderUploadFill } from "react-icons/ri";
 
-
 import { useAuth } from "@/context/useContext";
 import { useRouter } from "next/navigation";
-import { User } from "../users/users/user.interface";
+import { User } from "../users/user.interface";
 import DashboardHeader from "./DashboardHeader";
 
 
@@ -19,11 +18,13 @@ interface SidebarProps {
   userData: User | null;
   errorMessage: string;
 }
+
 export default function Sidebar({ setSelectedPage, userData, errorMessage }: SidebarProps) {
-
-
   const { user, logoutUser } = useAuth();
   const router = useRouter();
+
+  // Verifique se userData foi carregado corretamente antes de acessar o role
+  const role = userData?.role;
 
   const handleLogout = () => {
     logoutUser();
@@ -56,12 +57,16 @@ export default function Sidebar({ setSelectedPage, userData, errorMessage }: Sid
           <RiMailFill className="text-xl hidden group-hover:block text-blue-900" />
           Caixa de Entrada
         </button>
-       {/* <button 
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
-          onClick={() => setSelectedPage("page2")}
-        >
-          Acompanhar projetos
-        </button> */}
+        
+        {role === "MANAGER" && (
+          <button 
+            className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
+            onClick={() => setSelectedPage("page2")}
+          >
+            Gerenciar Instituição
+          </button>
+        )}
+
         <button 
           className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
           onClick={() => setSelectedPage("page3")}
@@ -70,6 +75,7 @@ export default function Sidebar({ setSelectedPage, userData, errorMessage }: Sid
           <RiFolderUploadFill className="text-xl hidden group-hover:block text-blue-900" />
           Submeter Projeto
         </button>
+
         <hr />
         <button
           className="group w-full flex flex-row justify-start items-center gap-4 text-[#6F0608] font-normal text-base py-4 px-2 rounded-lg"

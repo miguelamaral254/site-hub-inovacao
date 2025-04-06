@@ -2,7 +2,8 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/useContext";
-import RegisterForm from "@/features/auth/signup/RegisterForm";
+import RegisterForm from "@/features/signup/RegisterForm";
+
 export default function Register() {
   const { user } = useAuth();  
   const router = useRouter();

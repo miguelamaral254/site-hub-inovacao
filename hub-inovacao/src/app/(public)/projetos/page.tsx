@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React, { useState } from "react";
@@ -12,8 +13,8 @@ const projectTypes = ["Projeto de Inovação", "Projeto de Integração", "Proje
 
 const Projetos = () => {
   const [visibleProjects, setVisibleProjects] = useState(4);
-  const [selectedType, setSelectedType] = useState<string | null>(null);
-  const [totalProjects, setTotalProjects] = useState(0);
+  //const [selectedType, setSelectedType] = useState<string | null>(null);
+  //const [totalProjects, setTotalProjects] = useState(0);
 
 
 
@@ -56,16 +57,14 @@ const Projetos = () => {
         </div>
 
         <div className="flex flex-wrap justify-center md:justify-end gap-4 mt-6 mb-6">
+          {/*
           <Dropdown options={projectTypes} onSelect={setSelectedType} defaultText="Filtrar por Tipo" />
+          */}
         </div>
 
-        <AllProjectsList
-          visibleProjects={visibleProjects}
-          filterType={selectedType}
-          setTotalProjects={setTotalProjects} // Passa o total de projetos para controle do botão
-        />
+        <AllProjectsList />
 
-        {/* Exibe o botão "Carregar Mais" apenas se houver mais projetos a serem exibidos */}
+        {/* Exibe o botão "Carregar Mais" apenas se houver mais projetos a serem exibidos
         {totalProjects > 0 && visibleProjects < totalProjects && (
           <div className="flex justify-center mt-6">
           <ButtonOutline text={visibleProjects >= totalProjects ? "Carregar menos" : "Carregar Mais"}
@@ -80,12 +79,12 @@ const Projetos = () => {
         </div>
         )}
 
-        {/* Se não houver projetos, exibe a imagem de "Projetos em Construção" */}
+        {/* Se não houver projetos, exibe a imagem de "Projetos em Construção" 
         {totalProjects === 0 && (
           <div className="flex justify-center items-center mt-6">
             <Image src={construcao} alt="Projetos em Construção" />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

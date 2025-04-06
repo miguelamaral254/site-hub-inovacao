@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ModalTeam } from "../ModalTeam";
 import { useState, useEffect, useContext } from "react";
 import { Coauthor } from "../../project.interface";

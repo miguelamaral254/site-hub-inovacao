@@ -10,7 +10,6 @@ import ModalProject from "./ModalProject";
 
 interface CardServicoProps {
   project: Project;
-  currentUserEmail: string;
 }
 
 const typeMap: Record<ProjectType, { bgColor: string; icon: JSX.Element; label: string }> = {
@@ -21,7 +20,7 @@ const typeMap: Record<ProjectType, { bgColor: string; icon: JSX.Element; label: 
 
 const ProjectCard: React.FC<CardServicoProps> = ({
   project,
-  currentUserEmail,
+  
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { 

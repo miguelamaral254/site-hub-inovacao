@@ -14,7 +14,7 @@ const ProjectsList: React.FC = () => {
       setError('');  
 
       try {
-        const response = await searchProjects({}, 0, 10); // Assume 10 projects per page
+        const response = await searchProjects({}, 0, 10); 
         if (response.data && Array.isArray(response.data.content)) {
           setProjetos(response.data.content);  
         } else {
@@ -39,7 +39,7 @@ const ProjectsList: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {Array.isArray(projetos) && projetos.length > 0 ? (
           projetos.map((projeto) => (
-            <CardAcademicProjs key={projeto.id} project={projeto} currentUserEmail={""} />
+            <CardAcademicProjs key={projeto.id} project={projeto}/>
           ))
         ) : (
           <p className="text-center">Nenhum projeto encontrado.</p>

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import MaskedInput from "react-text-mask";
-import { createEnterprise } from "../users/users/enterprise.service";
-import { Role } from "../users/users/user.interface";
+
 import useSwal from "@/hooks/useSwal";
 import useCEP from "@/hooks/useCEP";
+import { Role } from "../auth/users/user.interface";
+import { createEnterprise } from "../auth/users/enterprise.service";
 
 export default function EnterpriseForm() {
   const [formData, setFormData] = useState({

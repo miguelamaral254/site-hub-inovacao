@@ -2,16 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Enterprise } from "@/features/auth/users/users/enterprise.interface";
-import Sidebar from "@/features/auth/users/users/Sidebar";
-import PageContent from "@/features/auth/users/users/PageContent";
-import { getEnterpriseById } from "@/features/auth/users/users/enterprise.service";
+import { Enterprise } from "@/features/auth/users/enterprise.interface";
+import { getEnterpriseById } from "@/features/auth/users/enterprise.service";
 
 
 export default function DashboardCompanyPage() {
   const [userData, setUserData] = useState<Enterprise | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState("");
-  const [selectedPage, setSelectedPage] = useState<string | null>(null);
+  //const [selectedPage, setSelectedPage] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -51,11 +49,14 @@ export default function DashboardCompanyPage() {
   }
   return (
     <div className="flex min-h-screen bg-gray-100">
+      {/*
+
       <Sidebar setSelectedPage={setSelectedPage} userData={userData} errorMessage={errorMessage} />
       
       <div className="flex-grow p-6">
         <PageContent selectedPage={selectedPage} userData={userData} />
       </div>
+        */}
     </div>
   );
 }

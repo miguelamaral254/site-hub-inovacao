@@ -34,8 +34,6 @@ const LoginForm: React.FC = () => {
           router.push("/area-empresa");
         } else if (user.role === "ADMIN") {
           router.push("/area-admin");
-        } else if (user.role === "MANAGER") {
-          router.push("/area-manager");
         } else {
           router.push("/area-usuario");
         }

@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { createPublish } from "@/services/publishService";
+import { Publish } from "@/features/publish/publish.interface";
 import useSwal from "@/hooks/useSwal";
-import { PublishCreateDTO } from "@/interfaces/publishInterface";
+import { useState } from "react";
+
 
 interface CreatePublishFormProps {
   onClose: () => void;
@@ -19,7 +19,7 @@ const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose, onPublis
   const [errorMessage, setErrorMessage] = useState("");
 
   const { showSuccess, showError } = useSwal();
-  const publishedDate = new Date().toISOString().split("T")[0];
+  const createdDate = new Date().toISOString().split("T")[0];
 
   const handleSubmit = async () => {
     if (!title || !description) {
@@ -27,13 +27,13 @@ const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose, onPublis
       return;
     }
 
-    const publishData: PublishCreateDTO = {
+    const publishData: Publish = {
       title,
       description,
       acessLink,
       initialDate: new Date(initialDate).toISOString().split("T")[0],
       finalDate: new Date(finalDate).toISOString().split("T")[0],
-      publishedDate,
+      createdDate,
     };
 
     console.log("Dados enviados:", publishData);

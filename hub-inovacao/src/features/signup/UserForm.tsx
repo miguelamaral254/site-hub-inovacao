@@ -5,8 +5,9 @@ import React, { useState, useEffect } from "react";
 import MaskedInput from "react-text-mask";
 import { ButtonGrande } from "@/components/Button";
 import { FaTrash } from "react-icons/fa";
-import { Role } from "../users/users/user.interface";
-import { createUser } from "../users/users/user.service";
+import { Role } from "../auth/users/user.interface";
+import { createUser } from "./signup.service";
+
 
 interface Phone {
   id?: number;

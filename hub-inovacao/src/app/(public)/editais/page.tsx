@@ -4,13 +4,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import bannereditais from "@/assets/BannerEditais.svg";
-<<<<<<< Updated upstream
 import PublishList from "@/features/publish/PublishList";
-=======
 
-import AllPublishList from "@/features/public-components/publish/AllPublishList";
->>>>>>> Stashed changes
-import { ButtonOutline } from "@/components/Button";
 
 
 export default function PublishPage() {
