@@ -47,7 +47,6 @@ const useAuthToken = () => {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<{ role: string, email: string, idUser: number } | null>(null);
 
-  // Usa o hook useAuthToken para definir o estado do usuário inicial
   const userFromToken = useAuthToken(); 
 
   useEffect(() => {
