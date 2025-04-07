@@ -1,4 +1,4 @@
-import { ButtonOutline, ButtonPequeno, ButtonPequenoSeg } from "../Button"
+import { ButtonOutline, ButtonPequeno } from "../Button"
 
 export const StepperControl = () => {
     return(

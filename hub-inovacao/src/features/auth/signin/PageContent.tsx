@@ -1,6 +1,7 @@
+"use client";
 import ProjectsList from "@/features/projects/ProjectsList";
-import { Role, User } from "./user.interface";
-
+import { User } from "../users/user.interface";
+import PublishList from "@/features/publish/PublishList";
 
 interface PageContentProps {
   selectedPage: string | null;
@@ -9,8 +10,6 @@ interface PageContentProps {
 
 export default function PageContent({ selectedPage, userData }: PageContentProps) {
   const role = userData?.role;
-
-
 
   return (
     <div className="flex justify-center items-start">
@@ -29,20 +28,33 @@ export default function PageContent({ selectedPage, userData }: PageContentProps
           </div>
         )}
 
-        {/*selectedPage === "page2" && (
-          <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6">Projetos Pendentes e Reprovados</h3>
-            <p className="text-lg text-gray-600 mb-4">Verifique os projetos pendentes ou reprovados para poder acompanhar seu progresso e melhorias necessárias.</p>
-            <div className="space-y-4">
-            </div>
-          </div>
-        )*/}
-
-        {selectedPage === "page3" && (
+        {selectedPage === "page2" && role === "PROFESSOR" || role === "STUDENT" &&(
           <div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Submeter Projeto Acadêmico</h3>
             <p className="text-lg text-gray-600 mb-6">Preencha os campos abaixo para criar um novo projeto acadêmico. Certifique-se de fornecer informações precisas e completas.</p>
-           
+          </div>
+        )}
+
+        {selectedPage === "page3" && role === "MANAGER" && (
+          <div>
+            <h3 className="text-2xl font-semibold text-gray-900 mb-6">Meus tickets atribuidos</h3>
+            <p className="text-lg text-gray-600 mb-4">Verifique os projetos pendentes ou reprovados para poder acompanhar seu progresso e melhorias necessárias.</p>
+            <div className="space-y-4"></div>
+          </div>
+        )}
+         
+         {selectedPage === "page4" && role === "MANAGER" && (
+          <div>
+            <h3 className="text-2xl font-semibold text-gray-900 mb-6">Projetos Pendentes e Reprovados</h3>
+            <p className="text-lg text-gray-600 mb-4">Verifique os projetos pendentes ou reprovados para poder acompanhar seu progresso e melhorias necessárias.</p>
+            <div className="space-y-4"></div>
+          </div>
+        )}
+
+
+        {selectedPage === "page5" && role === "MANAGER" && (
+          <div>
+            <PublishList />
           </div>
         )}
       </div>

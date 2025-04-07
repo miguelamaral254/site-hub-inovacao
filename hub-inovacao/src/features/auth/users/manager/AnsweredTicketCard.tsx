@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { AcademicProjectResponseDTO } from "@/interfaces/AcademicProjectInterface";
-import { OpportunityResponseDTO, StatusSolicitation } from "@/interfaces/OpportunityInterfaces";  
+
 import ProjectModal from "./ProjectModal";
 import { ButtonGrandeSeg } from "@/components/Button";
 import { RiTimeLine } from "react-icons/ri";

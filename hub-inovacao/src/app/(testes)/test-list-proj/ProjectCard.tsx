@@ -5,8 +5,8 @@
 import React, { JSX, useState } from "react";
 import { FaFlask, FaProjectDiagram, FaUniversity } from "react-icons/fa";
 import { ButtonGrandeSeg } from "@/components/Button";
-import { Project, ProjectType } from "./project.interface";
-import ModalProject from "./ModalProject";
+import { Project, ProjectType } from "@/features/projects/project.interface";
+
 
 interface CardServicoProps {
   project: Project;
@@ -20,7 +20,6 @@ const typeMap: Record<ProjectType, { bgColor: string; icon: JSX.Element; label: 
 
 const ProjectCard: React.FC<CardServicoProps> = ({
   project,
-  
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { 
@@ -57,12 +56,13 @@ const ProjectCard: React.FC<CardServicoProps> = ({
         <ButtonGrandeSeg text="Conheça mais o projeto" onClick={() => setIsModalOpen(true)} />
       </div>
 
-      {/* Pass the entire project object */}
+      {/* Pass the entire project object 
       <ModalProject
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         project={project} // Pass the whole project object
       />
+      */}
     </div>
   );
 };

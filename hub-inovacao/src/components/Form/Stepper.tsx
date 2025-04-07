@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react"
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useRef, useState } from "react"
 
 type Props = {
     steps: string[],

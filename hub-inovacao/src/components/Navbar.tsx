@@ -1,38 +1,30 @@
-"use client";
+"use client"; 
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useAuth } from "@/context/useContext";
 import { ButtonGrande } from "./Button";
 import logo from "@/assets/Logo.svg";
-import { IoMdMenu } from "react-icons/io";
-import { IoMdClose } from "react-icons/io";
+import { IoMdMenu, IoMdClose } from "react-icons/io";
+import { useAuth } from "@/context/useContext"; 
 
 const Navbar = () => {
-  const { user, logoutUser } = useAuth();
+  const { user, logoutUser } = useAuth();  
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const [openMenu, setOpenMenu] = useState<boolean>(false)
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
   const router = useRouter();
-  const pathname = usePathname(); // Obtém a rota atual
-
-  const userName = user?.email.split("@")[0] || "";
-  const userInitial = userName.charAt(0).toUpperCase();
+  const pathname = usePathname(); 
 
   const handleLogout = () => {
-    logoutUser();
+    logoutUser(); 
     setDropdownOpen(false);
     router.push("/");
   };
 
   const handleProfileRedirect = () => {
     if (user) {
-      if (user.role === "PARTNER_COMPANY") {
+      if (user.role === "ROLE_ENTERPRISE") {
         router.push("/area-empresa");
-      } else if (user.role === "ADMIN") {
-        router.push("/area-admin");
-      } else if (user.role === "MANAGER") {
-        router.push("/area-manager");
       } else {
         router.push("/area-usuario");
       }
@@ -41,24 +33,21 @@ const Navbar = () => {
   }
 
   const handleRedirect = () => {
-    router.push("/")
-    window.scrollTo(0, 0)
+    router.push("/");
+    window.scrollTo(0, 0);
   }
-
 
   useEffect(() => {
     setDropdownOpen(false);
   }, [user]);
 
   return (
-    <nav className={`fixed top-0 w-full  bg-white shadow-md z-50`}>
+    <nav className="fixed top-0 w-full bg-white shadow-md z-50">
       <div className={`flex ${openMenu ? 'flex-col' : 'flex-row'} md:flex-row items-center py-4 gap-5 justify-between section`}>
         <div className="flex items-center justify-start w-auto min-w-[100px] md:min-w-[136px] cursor-pointer" onClick={handleRedirect}>
-          <Image src={logo} alt="Logo HUBI" className={`w-[60%] ${openMenu ? 'w-[100%]' : 'w-[60%]'} h-auto`}/>
+          <Image src={logo} alt="Logo HUBI" className={`w-[60%] ${openMenu ? 'w-[100%]' : 'w-[60%]'} h-auto`} />
         </div>
-        <div
-          className={`${openMenu ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-center justify-end   gap-12 w-full`}
-        >
+        <div className={`${openMenu ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-center justify-end gap-12 w-full`}>
           {[
             { href: "/inicio", label: "Início" },
             { href: "/incubadora", label: "ICT Senac" },
@@ -82,21 +71,21 @@ const Navbar = () => {
             className={`block ${openMenu ? 'hidden' : 'block'} md:hidden`}
             onClick={() => setOpenMenu(true)}
           >
-            <IoMdMenu className="text-xl cursor-pointer"/>
+            <IoMdMenu className="text-xl cursor-pointer" />
           </div>
-          {openMenu &&
+          {openMenu && (
             <IoMdClose
               className="text-2xl absolute top-4 right-4 cursor-pointer"
               onClick={() => setOpenMenu(false)}
             />
-          }
+          )}
           {user ? (
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition flex items-center justify-center"
               >
-                {userInitial}
+                {/* Profile Icon */}
               </button>
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
@@ -116,10 +105,7 @@ const Navbar = () => {
                     </li>
                     <li>
                       <button
-                        onClick={() => {
-                          handleLogout();
-                          () => setDropdownOpen(false);
-                        }}
+                        onClick={handleLogout}
                         className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
                       >
                         Sair

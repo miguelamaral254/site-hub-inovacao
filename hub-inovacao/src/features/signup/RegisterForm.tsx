@@ -9,8 +9,8 @@ import logo from "@/assets/Logo.svg";
 import cadastro from "@/assets/Cadastro.svg";
 import UserForm from "./UserForm";
 import useSwal from "@/hooks/useSwal";
-import { Role } from "../users/users/user.interface";
 import EnterpriseForm from "./EnterpriseForm";
+import { Role } from "../auth/users/user.interface";
 
 type CustomChangeEvent = {
   target: {
