@@ -1,28 +1,30 @@
+import { useAuth } from "@/context/useContext";
 import { Publish } from "@/features/publish/publish.interface";
+import { createPublish } from "@/features/publish/publish.service";
 import useSwal from "@/hooks/useSwal";
 import { useState } from "react";
 
-
 interface CreatePublishFormProps {
   onClose: () => void;
-  onPublishCreated: () => void; // 🚀 Chama a função para recarregar a lista após o sucesso
+  onPublishCreated: () => void; 
 }
 
-const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose, onPublishCreated }) => {
+const PublishForm: React.FC<CreatePublishFormProps> = ({ onClose, onPublishCreated }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [acessLink, setAcessLink] = useState("");
   const [initialDate, setInitialDate] = useState("");
   const [finalDate, setFinalDate] = useState("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const { showSuccess, showError } = useSwal();
-  const createdDate = new Date().toISOString().split("T")[0];
+
+  const {user} = useAuth();
+  
 
   const handleSubmit = async () => {
-    if (!title || !description) {
+    if (!title || !description || !user) {
       setErrorMessage("Campos obrigatórios não preenchidos");
       return;
     }
@@ -31,19 +33,19 @@ const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose, onPublis
       title,
       description,
       acessLink,
-      initialDate: new Date(initialDate).toISOString().split("T")[0],
-      finalDate: new Date(finalDate).toISOString().split("T")[0],
-      createdDate,
+      initialDate,
+      finalDate,
+      idUser: user.idUser, 
     };
 
     console.log("Dados enviados:", publishData);
 
     try {
       setIsLoading(true);
-      await createPublish(publishData, imageFile);
+      await createPublish(publishData); 
       showSuccess("Publicação Criada com Sucesso!");
       onClose();
-      onPublishCreated(); // 🚀 Atualiza a lista de publicações
+      onPublishCreated();
     } catch (error) {
       console.error(error);
       setErrorMessage("Erro ao criar publicação. Tente novamente.");
@@ -89,17 +91,6 @@ const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose, onPublis
               className="w-full p-2 border rounded"
               value={acessLink}
               onChange={(e) => setAcessLink(e.target.value)}
-            />
-          </div>
-
-          {/* Upload de Imagem */}
-          <div>
-            <label className="block text-sm font-medium">Escolher Imagem</label>
-            <input
-              type="file"
-              onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
-              className="w-full p-2 border rounded"
-              accept="image/*"
             />
           </div>
 
@@ -149,4 +140,4 @@ const CreatePublishForm: React.FC<CreatePublishFormProps> = ({ onClose, onPublis
   );
 };
 
-export default CreatePublishForm;
+export default PublishForm;

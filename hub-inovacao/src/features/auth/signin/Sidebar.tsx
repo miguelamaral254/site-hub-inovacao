@@ -22,9 +22,7 @@ interface SidebarProps {
 export default function Sidebar({ setSelectedPage, userData, errorMessage }: SidebarProps) {
   const { user, logoutUser } = useAuth();
   const router = useRouter();
-
-  // Verifique se userData foi carregado corretamente antes de acessar o role
-  const role = userData?.role;
+  const role = userData?.role
 
   const handleLogout = () => {
     logoutUser();
@@ -49,6 +47,8 @@ export default function Sidebar({ setSelectedPage, userData, errorMessage }: Sid
             Página Inicial
           </button>
           <hr className="py-2" />
+          {role === "PROFESSOR" || role === "STUDENT"  && (
+
         <button 
           className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
           onClick={() => setSelectedPage("page1")}
@@ -57,24 +57,42 @@ export default function Sidebar({ setSelectedPage, userData, errorMessage }: Sid
           <RiMailFill className="text-xl hidden group-hover:block text-blue-900" />
           Caixa de Entrada
         </button>
-        
-        {role === "MANAGER" && (
-          <button 
-            className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
-            onClick={() => setSelectedPage("page2")}
-          >
-            Gerenciar Instituição
-          </button>
-        )}
-
+          )}
+        {role === "PROFESSOR" || role === "STUDENT"  && (
         <button 
           className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
-          onClick={() => setSelectedPage("page3")}
+          onClick={() => setSelectedPage("page2")}
         >
           <RiFolderUploadLine className="text-xl block group-hover:hidden" />
           <RiFolderUploadFill className="text-xl hidden group-hover:block text-blue-900" />
           Submeter Projeto
         </button>
+          )}
+        {role === "MANAGER" && (
+          <button 
+            className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
+            onClick={() => setSelectedPage("page3")}
+          >
+            Meus tickets atribuidos
+          </button>
+        )}
+        {role === "MANAGER" && (
+          <button 
+            className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
+            onClick={() => setSelectedPage("page4")}
+          >
+            Gerenciar tickets
+          </button>
+        )}
+          {role === "MANAGER" && (
+          <button 
+            className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
+            onClick={() => setSelectedPage("page5")}
+          >
+            Gerenciar Editais
+          </button>
+        )}
+
 
         <hr />
         <button

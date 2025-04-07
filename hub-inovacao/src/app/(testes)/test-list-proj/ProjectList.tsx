@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import React, { useEffect, useState } from "react";
 import { Project } from "@/features/projects/project.interface";
-import ProjectCard from "./ProjectCard"; // Importando o ProjectCard
+import ProjectCard from "./ProjectCard";
 import { searchProjects } from "@/features/projects/project.service";
 
 interface ProjectListProps {
-  filterKey: string; // Chave do filtro a ser aplicado (ex: 'status', 'idManager', etc.)
-  filterValue: string | number | boolean; // Valor do filtro (ex: 'APROVADA', 1, etc.)
+  filters: Record<string, string | number | boolean>;
 }
 
-const ProjectList: React.FC<ProjectListProps> = ({ filterKey, filterValue }) => {
+const ProjectList: React.FC<ProjectListProps> = ({ filters }) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -18,23 +16,15 @@ const ProjectList: React.FC<ProjectListProps> = ({ filterKey, filterValue }) => 
     const fetchProjects = async () => {
       setLoading(true);
       try {
-        // Prepara o filtro
-        const filters = { [filterKey]: filterValue };
-
-        // Gera os parâmetros da URL
         const params = new URLSearchParams(filters as Record<string, string>).toString();
         const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects?${params}`;
-        
-        // Exibe no console a URL completa da requisição
         console.log("Requisição enviada: ", url);
 
-        // Faz a requisição para buscar os projetos
-        const response = await searchProjects(filters); // Chama a API com o filtro
+        const response = await searchProjects(filters);
         console.log("Projetos encontrados:", response);
 
-        // Acessa a chave "content" para obter os projetos
         const projectsData = response?.data?.content || [];
-        setProjects(projectsData); // Atualiza os projetos no estado
+        setProjects(projectsData);
       } catch (error) {
         console.error("Erro ao buscar projetos:", error);
       } finally {
@@ -43,7 +33,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ filterKey, filterValue }) => 
     };
 
     fetchProjects();
-  }, [filterKey, filterValue]); // Refaz a busca sempre que o filtro mudar
+  }, [filters]);
 
   return (
     <div className="w-full py-6">

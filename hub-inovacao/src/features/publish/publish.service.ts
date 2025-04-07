@@ -9,20 +9,16 @@ export interface Pageable {
 const API_URL = "http://localhost:8080/editals";
 
 
-export const createOpportunity = async (formData: FormData): Promise<Publish> => {
+export const createPublish = async (publishData: Publish): Promise<Publish> => {
   try {
-    const response = await axios.post<Publish>(API_URL, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axios.post<Publish>(API_URL, publishData);
     return response.data;
   } catch (error) {
-    console.error("Erro ao criar opportunity:", error);
-    throw new Error("Erro ao criar opportunity");
+    console.error("Erro ao criar publicação:", error);
+    throw new Error("Erro ao criar publicação");
   }
 };
-export const searchPublishs = async (
+export const searchPublishes = async (
   filters?: Record<string, any>,
   page: number = 0,
   size: number = 10,
