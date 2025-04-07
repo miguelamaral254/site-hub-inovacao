@@ -1,21 +1,25 @@
-"use client";
-
 import React from "react";
 import { Publish } from "./publish.interface";
 
-const PublishCard: React.FC<Publish> = ({
-  
+interface PublishCardProps extends Publish {
+  onClick: () => void; 
+}
+
+const PublishCard: React.FC<PublishCardProps> = ({
   title,
   description,
   acessLink,
-createdDate
+  createdDate,
+  onClick,
 }) => {
   const truncatedDescription = description && description.length > 600 ? `${description.slice(0, 600)}...` : description;
 
   return (
-    <div className="flex bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] mt-3
-            transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] rounded-lg flex-col lg:flex-row w-full md:w-[510px] h-auto py-3 px-3 items-center">
-      
+    <div
+      className="flex bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] mt-3
+      transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] rounded-lg flex-col lg:flex-row w-full md:w-[510px] h-auto py-3 px-3 items-center"
+      onClick={onClick} // Adiciona a ação de clique
+    >
       <div className="ml-5 w-full flex flex-col">
         <h2 className="text-2xl font-medium text-gray-950 truncate mb-4">{title}</h2>
         <p className="text-base text-blue-800 mb-4">Publicado em: {createdDate}</p>
