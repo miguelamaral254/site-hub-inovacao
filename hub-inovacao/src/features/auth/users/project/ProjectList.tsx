@@ -1,98 +1,57 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
-import ProjectCard from "./ProjectCard";
-import ProjectCardSkeleton from "./ProjectCardSkeleton"; // Importando o Skeleton
-import { getProjectsByUserEmail } from "@/services/projectService";
-import { AcademicProjectResponseProfessorDTO, AcademicProjectResponseStudentDTO } from "../../../interfaces/projectInterfaces";
+"use client"
+import React, { useEffect, useState } from "react";
+import { Project } from "@/features/projects/project.interface";
+import ProjectCard from "../../../../app/(testes)/test-list-proj/ProjectCard";
+import { searchProjects } from "@/features/projects/project.service";
 
 interface ProjectListProps {
-  statusFilter: string;
+  filters: Record<string, string | number | boolean>;
 }
 
-export default function ProjectList({ statusFilter }: ProjectListProps) {
-  const [projects, setProjects] = useState<(AcademicProjectResponseProfessorDTO | AcademicProjectResponseStudentDTO)[]>([]);
-  const [error, setError] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
-  const [totalPages, setTotalPages] = useState<number>(1); // Total de páginas
+const ProjectList: React.FC<ProjectListProps> = ({ filters }) => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const fetchProjects = async () => {
-    setLoading(true);
-    try {
-        const email = localStorage.getItem("email");
-        if (!email) {
-            setError("Email não encontrado.");
-            setLoading(false);
-            return;
-        }
-
-        const fetchedProjects = await getProjectsByUserEmail(email, currentPage - 1, itemsPerPage); 
-
-        // Loga os dados retornados da API
-        console.log("Projetos retornados: ", fetchedProjects);
-
-        setProjects(fetchedProjects.content);
-        setTotalPages(fetchedProjects.totalPages); 
-    } catch (error) {
-        console.error("Erro ao carregar projetos: ", error);
-        setError("Erro ao carregar projetos.");
-    } finally {
-        setLoading(false);
-    }
-};
   useEffect(() => {
-    fetchProjects();
-  }, [statusFilter, currentPage]); 
+    const fetchProjects = async () => {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams(filters as Record<string, string>).toString();
+        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects?${params}`;
+        console.log("Requisição enviada: ", url);
 
-  if (loading) {
-    return (
-      <div className="p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {[...Array(3)].map((_, index) => (
-            <ProjectCardSkeleton key={index} />
-          ))}
-        </div>
-      </div>
-    );
-  }
+        const response = await searchProjects(filters);
+        console.log("Projetos encontrados:", response);
+
+        const projectsData = response?.data?.content || [];
+        setProjects(projectsData);
+      } catch (error) {
+        console.error("Erro ao buscar projetos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, [filters]);
 
   return (
-    <div className="px-6">
-      {error && <p className="text-red-500">{error}</p>}
-      {projects.length === 0 && !error && <p className="text-gray-500"></p>}
-
-      
-      <div className="grid grid-cols-1 gap-6">
-        <ul className="flex flex-col">
-        {projects.map((project) => (
-          <li key={project.id}>
-            <ProjectCard project={project} fetchProjects={fetchProjects} />
-          </li>
-        ))}
-        </ul>
-      </div>
-
-      <div className="flex justify-between items-center mt-4">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md disabled:opacity-50"
-        >
-          Voltar
-        </button>
-        <p className="text-gray-600 text-sm">
-          Página {currentPage} de {totalPages}
-        </p>
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md disabled:opacity-50"
-        >
-          Avançar
-        </button>
-      </div>
+    <div className="w-full py-6">
+      {loading ? (
+        <div className="text-center text-xl text-gray-600">Carregando projetos...</div>
+      ) : (
+        <div className="flex flex-wrap gap-6 justify-center">
+          {projects.length > 0 ? (
+            projects.map((project, index) => (
+              <ProjectCard key={index} project={project} />
+            ))
+          ) : (
+            <div className="text-center text-xl text-gray-600">Nenhum projeto encontrado</div>
+          )}
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default ProjectList;

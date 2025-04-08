@@ -1,14 +1,14 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import { Project } from "@/features/projects/project.interface";
-import ProjectCard from "./ProjectCard";
 import { searchProjects } from "@/features/projects/project.service";
+import ProjectTicketCard from "./TicketCard";
 
 interface ProjectListProps {
   filters: Record<string, string | number | boolean>;
 }
 
-const ProjectList: React.FC<ProjectListProps> = ({ filters }) => {
+const ProjectTicketList: React.FC<ProjectListProps> = ({ filters }) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -40,10 +40,12 @@ const ProjectList: React.FC<ProjectListProps> = ({ filters }) => {
       {loading ? (
         <div className="text-center text-xl text-gray-600">Carregando projetos...</div>
       ) : (
-        <div className="flex flex-wrap gap-6 justify-center">
+        <div className="flex flex-col gap-4">
           {projects.length > 0 ? (
             projects.map((project, index) => (
-              <ProjectCard key={index} project={project} />
+              <div key={index} className="hover:bg-gray-100 p-4 rounded-lg shadow-sm border-b">
+                <ProjectTicketCard project={project} />
+              </div>
             ))
           ) : (
             <div className="text-center text-xl text-gray-600">Nenhum projeto encontrado</div>
@@ -54,4 +56,4 @@ const ProjectList: React.FC<ProjectListProps> = ({ filters }) => {
   );
 };
 
-export default ProjectList;
+export default ProjectTicketList;
