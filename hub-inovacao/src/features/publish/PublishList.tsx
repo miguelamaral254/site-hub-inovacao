@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import PublishCard from "./PublishCard";
 import { Publish } from "./publish.interface";

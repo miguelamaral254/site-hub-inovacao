@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import { Project } from "@/features/projects/project.interface";
-import ProjectCard from "../../../../app/(testes)/test-list-proj/ProjectCard";
+import ProjectCard from "../../app/(testes)/test-list-proj/ProjectCard";
 import { searchProjects } from "@/features/projects/project.service";
 
 interface ProjectListProps {

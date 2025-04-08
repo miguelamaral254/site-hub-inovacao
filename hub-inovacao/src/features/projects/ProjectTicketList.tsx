@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Project } from "@/features/projects/project.interface";
 import { searchProjects } from "@/features/projects/project.service";
-import ProjectTicketCard from "./TicketCard";
+import ProjectTicketCard from "./ProjectTicketCard";
 
 interface ProjectListProps {
   filters: Record<string, string | number | boolean>;

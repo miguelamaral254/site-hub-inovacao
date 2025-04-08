@@ -1,25 +1,26 @@
 "use client";
-import ProjectList from "../users/project/ProjectList";
-import ProjectTicketList from "../users/project/TicketList";
 import { User } from "../users/user.interface";
+import TicketTypeSelector from "./TicketTypeSelector";
+import ProjectTicketList from "@/features/projects/ProjectTicketList";
 import PublishList from "@/features/publish/PublishList";
 
 interface PageContentProps {
   selectedPage: string | null;
   userData: User | null;
 }
+
 export default function PageContent({
   selectedPage,
   userData,
 }: PageContentProps) {
   const role = userData?.role;
   const userId = userData?.id;
-  const user = {
-    status: "aprovada",
+
+  const managerProjectTicket = {
+    status: "pendente",
     enabled: true,
   };
-
-  const managerTicket = {
+  const managerOpportunityTicket = {
     status: "pendente",
     enabled: true,
   };
@@ -28,6 +29,7 @@ export default function PageContent({
     idmanager: userId ?? 0,
     enabled: true,
   };
+
   return (
     <div className="flex justify-center items-start">
       <div className="w-full max-w-7xl px-6 py-8">
@@ -40,45 +42,26 @@ export default function PageContent({
               Aqui você pode ver os projetos acadêmicos aprovados pela sua
               instituição.
             </p>
-            <div className="grid grid-cols-6 font-bold bg-gray-100 px-6 gap-6 border-gray-300 text-left mt-20 mb-2">
-              <span className="col-span-2">Título</span>
-              <span>Data</span>
-              <span>Tipo</span>
-              <span>Status</span>
-            </div>
-            <ProjectList filters={user} />
-          </div>
-        )}
-
-        {(selectedPage === "page2" && role === "PROFESSOR") ||
-          (role === "STUDENT" && (
-            <div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">
-                Submeter Projeto Acadêmico
-              </h3>
-              <p className="text-lg text-gray-600 mb-6">
-                Preencha os campos abaixo para criar um novo projeto acadêmico.
-                Certifique-se de fornecer informações precisas e completas.
-              </p>
-            </div>
-          ))}
-
-        {selectedPage === "page3" && role === "MANAGER" && (
-          <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6">
-              Meus tickets atribuidos
-            </h3>
-            <p className="text-lg text-gray-600 mb-4">
-              Verifique os projetos pendentes ou reprovados para poder
-              acompanhar seu progresso e melhorias necessárias.
-            </p>
-            <div className="space-y-4">
-              <ProjectList filters={managerList} />
-            </div>
+            <ProjectTicketList filters={managerList} />
           </div>
         )}
 
         {selectedPage === "page4" && role === "MANAGER" && (
+          <div>
+            <h3 className="text-2xl font-semibold text-gray-900 mb-6">
+              Selecione o tipo de Ticket
+            </h3>
+            <p className="text-lg text-gray-600 mb-4">
+              Escolha entre visualizar os Projetos ou Oportunidades Pendentes.
+            </p>
+            <TicketTypeSelector
+              managerProjectTicket={managerProjectTicket}
+              managerOpportunityTicket={managerOpportunityTicket}
+            />
+          </div>
+        )}
+
+        {selectedPage === "page5" && role === "MANAGER" && (
           <div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">
               Projetos Pendentes e Reprovados
@@ -88,14 +71,8 @@ export default function PageContent({
               acompanhar seu progresso e melhorias necessárias.
             </p>
             <div className="space-y-4">
-              <ProjectTicketList filters={managerTicket} />
+              <PublishList />
             </div>
-          </div>
-        )}
-
-        {selectedPage === "page5" && role === "MANAGER" && (
-          <div>
-            <PublishList />
           </div>
         )}
       </div>

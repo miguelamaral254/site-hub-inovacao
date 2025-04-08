@@ -7,8 +7,8 @@ import { Dropdown } from "@/components/Dropdown";
 import bannerprojetos from "@/assets/BannerProjetos.svg";
 import construcao from "@/assets/ProjetoConstrução.svg";
 import senac from "@/assets/ImagensProjetos/SENAC.png";
-import AllProjectsList from "@/features/projects/ProjectsList";
 import { ButtonOutline } from "@/components/Button";
+import ProjectList from "@/features/projects/ProjectList";
 const projectTypes = ["Projeto de Inovação", "Projeto de Integração", "Projeto de Extensão"];
 
 const Projetos = () => {
@@ -16,7 +16,10 @@ const Projetos = () => {
   //const [selectedType, setSelectedType] = useState<string | null>(null);
   //const [totalProjects, setTotalProjects] = useState(0);
 
-
+  const projectPublicFilter = {
+    status: "aprovada",
+    enabled: true,
+  };
 
   return (
     <div className="flex flex-col bg-[#F9F9F9] min-h-screen">
@@ -62,7 +65,7 @@ const Projetos = () => {
           */}
         </div>
 
-        <AllProjectsList />
+        <ProjectList filters={projectPublicFilter} />
 
         {/* Exibe o botão "Carregar Mais" apenas se houver mais projetos a serem exibidos
         {totalProjects > 0 && visibleProjects < totalProjects && (
