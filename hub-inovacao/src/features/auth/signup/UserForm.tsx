@@ -144,159 +144,194 @@ export default function UserForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+          Nome Completo *
+        </label>
         <input
           type="text"
+          id="name"
           name="name"
-          placeholder="Nome Completo"
           value={formData.name}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.name ? "border-red-500" : ""}`}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.name ? "border-red-500" : "border-gray-300"}`}
         />
-        {errors.name && <p className="text-red-500 text-sm">Campo obrigatório</p>}
+        {errors.name && <p className="text-red-500 text-sm mt-1">Campo obrigatório</p>}
       </div>
 
       <div>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          E-mail Institucional *
+        </label>
         <input
           type="email"
+          id="email"
           name="email"
-          placeholder="E-mail"
           value={formData.email}
           onChange={handleEmailChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.email ? "border-red-500" : ""}`}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.email ? "border-red-500" : "border-gray-300"}`}
         />
-        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
       </div>
 
       <div>
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          Senha *
+        </label>
         <input
           type="password"
+          id="password"
           name="password"
-          placeholder="Senha (mínimo 8 caracteres)"
           value={formData.password}
           onChange={handlePasswordChange}
           onBlur={handlePasswordBlur}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.password ? "border-red-500" : ""}`}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.password ? "border-red-500" : "border-gray-300"}`}
         />
         {passwordTouched && formData.password.length < 8 && (
-          <p className="text-red-500 text-sm">A senha deve ter pelo menos 8 caracteres.</p>
+          <p className="text-red-500 text-sm mt-1">A senha deve ter pelo menos 8 caracteres.</p>
         )}
-        <p className="text-sm mt-1">
-          Força da senha:{" "}
-          <span
-            className={`font-bold ${
-              passwordStrength === "Forte"
-                ? "text-green-600"
-                : passwordStrength === "Média"
-                ? "text-yellow-500"
-                : "text-red-500"
-            }`}
-          >
+        <div className="flex items-center mt-1">
+          <span className="text-sm text-gray-600 mr-2">Força da senha:</span>
+          <span className={`text-sm font-bold ${
+            passwordStrength === "Forte" ? "text-green-600" :
+            passwordStrength === "Média" ? "text-yellow-500" :
+            "text-red-500"
+          }`}>
             {passwordStrength}
           </span>
-        </p>
+        </div>
       </div>
 
+      {/* Confirmar Senha */}
       <div>
+        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+          Confirmar Senha *
+        </label>
         <input
           type="password"
+          id="confirmPassword"
           name="confirmPassword"
-          placeholder="Confirmar Senha"
           value={confirmPassword}
           onChange={handleConfirmPasswordChange}
           onBlur={handleConfirmPasswordBlur}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.confirmPassword ? "border-red-500" : ""}`}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.confirmPassword ? "border-red-500" : "border-gray-300"}`}
         />
         {confirmPasswordTouched && formData.password !== confirmPassword && (
-          <p className="text-red-500 text-sm">As senhas não coincidem</p>
+          <p className="text-red-500 text-sm mt-1">As senhas não coincidem</p>
         )}
       </div>
 
+      {/* CPF */}
       <div>
+        <label htmlFor="cpf" className="block text-sm font-medium text-gray-700 mb-1">
+          CPF *
+        </label>
         <MaskedInput
           mask={[/\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "-", /\d/, /\d/]}
+          id="cpf"
           name="cpf"
-          placeholder="CPF"
           value={formData.cpf}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.cpf ? "border-red-500" : ""}`}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.cpf ? "border-red-500" : "border-gray-300"}`}
         />
-        {errors.cpf && <p className="text-red-500 text-sm">CPF inválido</p>}
+        {errors.cpf && <p className="text-red-500 text-sm mt-1">CPF inválido</p>}
       </div>
 
       <div>
+        <label htmlFor="registration" className="block text-sm font-medium text-gray-700 mb-1">
+          Matrícula *
+        </label>
         <input
           type="text"
+          id="registration"
           name="registration"
-          placeholder="Matrícula"
           value={formData.registration}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.registration ? "border-red-500" : ""}`}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.registration ? "border-red-500" : "border-gray-300"}`}
         />
-        {errors.registration && <p className="text-red-500 text-sm">Campo obrigatório</p>}
+        {errors.registration && <p className="text-red-500 text-sm mt-1">Campo obrigatório</p>}
       </div>
 
       <div>
+        <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+          Tipo de Usuário *
+        </label>
         <select
+          id="role"
           name="role"
           value={formData.role}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg ${errors.role ? "border-red-500" : ""}`}
+          className={`w-full px-4 py-2 border rounded-lg ${errors.role ? "border-red-500" : "border-gray-300"}`}
         >
           <option value={Role.STUDENT}>Estudante</option>
           <option value={Role.PROFESSOR}>Professor</option>
           <option value={Role.ENTERPRISE}>Empresa</option>
           <option value={Role.MANAGER}>Gestor</option>
         </select>
-        {errors.role && <p className="text-red-500 text-sm">Campo obrigatório</p>}
+        {errors.role && <p className="text-red-500 text-sm mt-1">Campo obrigatório</p>}
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-3">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Telefones *
+        </label>
         {formData.phones.map((phone, index) => (
-          <div key={index} className="flex items-center space-x-2">
+          <div key={index} className="flex items-center gap-2">
+            <div className="flex-1 min-w-0">
+              <label htmlFor={`phone-${index}`} className="sr-only">Número de telefone</label>
+              
+            </div>
+            <div className="w-32">
+              <label htmlFor={`countryCode-${index}`} className="sr-only">Código do país</label>
+              <select
+                id={`countryCode-${index}`}
+                name="countryCode"
+                value={phone.countryCode}
+                onChange={(e) => handlePhoneChange(index, e)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              >
+                <option value="55">BR (+55)</option>
+                <option value="1">EUA (+1)</option>
+                <option value="44">UK (+44)</option>
+              </select>
+            </div>
+            {formData.phones.length > 1 && (
+              <button
+                type="button"
+                onClick={() => handleRemovePhone(index)}
+                className="p-2 text-red-500 hover:text-red-700 transition-colors"
+                aria-label="Remover telefone"
+              >
+                <FaTrash />
+              </button>
+            )}
+
             <MaskedInput
-              mask={["(", /\d/, /\d/, ")", " ", /\d/, " ", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
-              name="number"
-              placeholder="Número de telefone"
-              value={phone.number}
-              onChange={(e) => handlePhoneChange(index, e)}
-              className={`w-full px-4 py-2 border rounded-lg ${
-                errors.phones?.[index]?.number ? "border-red-500" : ""
-              }`}
-            />
-            <select
-              name="countryCode"
-              value={phone.countryCode}
-              onChange={(e) => handlePhoneChange(index, e)}
-              className={`w-full px-4 py-2 border rounded-lg ${
-                errors.phones?.[index]?.countryCode ? "border-red-500" : ""
-              }`}
-            >
-              <option value="55">Brasil (+55)</option>
-              <option value="1">EUA (+1)</option>
-              <option value="44">Reino Unido (+44)</option>
-              <option value="33">França (+33)</option>
-              <option value="34">Espanha (+34)</option>
-            </select>
-            <button
-              type="button"
-              onClick={() => handleRemovePhone(index)}
-              className="text-red-500 hover:text-red-700"
-            >
-              <FaTrash />
-            </button>
+                id={`phone-${index}`}
+                mask={["(", /\d/, /\d/, ")", " ", /\d/, " ", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
+                name="number"
+                value={phone.number}
+                onChange={(e) => handlePhoneChange(index, e)}
+                className={`w-full px-4 py-2 border rounded-lg ${
+                  errors.phones?.[index]?.number ? "border-red-500" : "border-gray-300"
+                }`}
+              />
           </div>
         ))}
         <button
           type="button"
           onClick={handleAddPhone}
-          className="text-blue-600 hover:underline"
+          className="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center mt-2"
         >
-          Adicionar outro telefone
+          <span>+ Adicionar outro telefone</span>
         </button>
       </div>
 
-      <div className="flex flex-row justify-center items-center gap-4">
-        <ButtonGrande type="submit" text="Cadastrar" disabled={!isFormValid} />
+      <div className="pt-4">
+        <ButtonGrande 
+          type="submit" 
+          text="Cadastrar" 
+          disabled={!isFormValid}
+        />
       </div>
     </form>
   );
