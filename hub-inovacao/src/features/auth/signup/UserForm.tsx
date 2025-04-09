@@ -143,7 +143,6 @@ export default function UserForm({
         </label>
         <input
           type="text"
-          id="name"
           name="name"
           value={formData.name}
           onChange={handleChange}
@@ -158,7 +157,6 @@ export default function UserForm({
         </label>
         <input
           type="email"
-          id="email"
           name="email"
           value={formData.email}
           onChange={handleEmailChange}
@@ -173,7 +171,6 @@ export default function UserForm({
         </label>
         <input
           type="password"
-          id="password"
           name="password"
           value={formData.password}
           onChange={handlePasswordChange}
@@ -200,7 +197,6 @@ export default function UserForm({
         </label>
         <input
           type="password"
-          id="confirmPassword"
           name="confirmPassword"
           value={confirmPassword}
           onChange={handleConfirmPasswordChange}
@@ -218,7 +214,6 @@ export default function UserForm({
         </label>
         <MaskedInput
           mask={[/\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "-", /\d/, /\d/]}
-          id="cpf"
           name="cpf"
           value={formData.cpf}
           onChange={handleChange}
@@ -233,7 +228,6 @@ export default function UserForm({
         </label>
         <input
           type="text"
-          id="registration"
           name="registration"
           value={formData.registration}
           onChange={handleChange}
@@ -247,7 +241,6 @@ export default function UserForm({
           Tipo de Usuário *
         </label>
         <select
-          id="role"
           name="role"
           value={formData.role}
           onChange={handleChange}
@@ -270,7 +263,6 @@ export default function UserForm({
             <div className="w-40">
               <label htmlFor={`countryCode-${index}`} className="sr-only">Código do país</label>
               <select
-                id={`countryCode-${index}`}
                 name="countryCode"
                 value={phone.countryCode}
                 onChange={(e) => handlePhoneChange(index, e)}
@@ -288,7 +280,6 @@ export default function UserForm({
             <div className="flex-1 min-w-0">
               <label htmlFor={`phone-${index}`} className="sr-only">Número de telefone</label>
               <MaskedInput
-                id={`phone-${index}`}
                 mask={["(", /\d/, /\d/, ")", " ", /\d/, " ", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
                 name="number"
                 value={phone.number}
