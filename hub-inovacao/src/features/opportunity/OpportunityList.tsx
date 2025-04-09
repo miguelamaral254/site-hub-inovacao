@@ -7,16 +7,22 @@ const OpportunityList: React.FC = () => {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);  
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  
+  const filters = {
+    page: 0,
+    size: 1,
+    status:"APROVADA"    
+  };
 
   useEffect(() => {
     const fetchOpportunities = async () => {
       setLoading(true); 
       setError('');  
-
+  
       try {
-        const response = await searchOpportunities({}, 0, 10); 
-        if (response.data && Array.isArray(response.data.content)) {
-          setOpportunities(response.data.content);  
+        const response = await searchOpportunities(filters); 
+        if (response && Array.isArray(response.content)) {
+          setOpportunities(response.content);  
         } else {
           setError('Resposta da API não contém um array válido de oportunidades');
         }
@@ -27,10 +33,9 @@ const OpportunityList: React.FC = () => {
         setLoading(false);  
       }
     };
-
+  
     fetchOpportunities();
   }, []);
-
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold text-center mb-8">Lista de Oportunidades</h1>
