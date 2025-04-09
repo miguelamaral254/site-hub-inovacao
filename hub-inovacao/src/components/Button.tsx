@@ -13,7 +13,7 @@ const ButtonGrande = ({ text, onClick, type = "button", disabled = false, outlin
         type={type}
         onClick={onClick}
         disabled={disabled}
-        className={`w-auto md:w-[160px] h-auto font-medium text-base md:text-lg flex justify-center items-center rounded-lg py-2 px-4 transition-all duration-300 active:rounded-3xl ${
+        className={`min-w-[120px] h-auto font-medium text-base md:text-lg flex justify-center items-center rounded-lg py-2 px-6 transition-all duration-300 active:rounded-3xl ${
           disabled
           ? "bg-gray-200 text-gray-500 cursor-not-allowed border border-gray-300"
           : outline
