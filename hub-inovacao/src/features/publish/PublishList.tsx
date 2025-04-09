@@ -1,16 +1,20 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import PublishCard from "./PublishCard";
 import { Publish } from "./publish.interface";
 import { searchPublishes } from "./publish.service";
 import PublishForm from "./PublishForm";
 import { useAuth } from "@/context/useContext";
-import PublishCardSkeleton from "./PublishCardSkeleton"; 
+import PublishCardSkeleton from "./PublishCardSkeleton";
+import PublishModal from "./PublishModal"; 
 
 const PublishList: React.FC = () => {
   const [publications, setPublications] = useState<Publish[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedPublication, setSelectedPublication] =
+    useState<Publish | null>(null);
   const { user } = useAuth();
   const role = user?.role;
 
@@ -20,7 +24,8 @@ const PublishList: React.FC = () => {
       setError("");
 
       try {
-        const response = await searchPublishes({}, 0, 10);
+        const pageable = { page: 0, size: 10 }; 
+        const response = await searchPublishes({}, pageable);
         if (response.data && Array.isArray(response.data.content)) {
           setPublications(response.data.content);
         } else {
@@ -40,6 +45,14 @@ const PublishList: React.FC = () => {
   const openForm = () => setIsFormOpen(true);
   const closeForm = () => setIsFormOpen(false);
 
+  const openModal = (publication: Publish) => {
+    setSelectedPublication(publication);
+  };
+
+  const closeModal = () => {
+    setSelectedPublication(null); 
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold text-center mb-8">Lista de Publicações</h1>
@@ -58,7 +71,6 @@ const PublishList: React.FC = () => {
 
       {loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {/* Renderiza 6 skeletons enquanto os dados estão carregando */}
           {Array.from({ length: 6 }).map((_, index) => (
             <PublishCardSkeleton key={index} />
           ))}
@@ -76,7 +88,8 @@ const PublishList: React.FC = () => {
               title={publication.title}
               description={publication.description}
               acessLink={publication.acessLink}
-              createdDate={publication.createdDate} 
+              createdDate={publication.createdDate}
+              onClick={() => openModal(publication)}
             />
           ))
         ) : (
@@ -88,7 +101,20 @@ const PublishList: React.FC = () => {
         <PublishForm
           onClose={closeForm}
           onPublishCreated={() => {
-            closeForm(); 
+            closeForm();
+          }}
+        />
+      )}
+
+      {selectedPublication && (
+        <PublishModal
+          publish={selectedPublication}
+          onClose={closeModal}
+          onPublishUpdated={() => {
+            setPublications(publications.map((p) =>
+              p.id === selectedPublication.id ? selectedPublication : p
+            ));
+            closeModal();
           }}
         />
       )}

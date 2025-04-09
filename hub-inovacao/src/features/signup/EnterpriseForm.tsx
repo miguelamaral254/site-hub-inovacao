@@ -110,7 +110,7 @@ export default function EnterpriseForm() {
 
   const handleCEPChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const cep = e.target.value.replace(/\D/g, "");
-    if (cep.length === 9) {
+    if (cep.length === 8) {
       await getCEPData(cep);
     } else {
       setFormData((prevState) => ({

@@ -1,5 +1,5 @@
 
-import ProjectList from "./ProjectList";
+import ProjectList from "../../../features/projects/ProjectList";
 
 const ProjectPage: React.FC = () => {
   const filters = {

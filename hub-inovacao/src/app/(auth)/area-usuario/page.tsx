@@ -5,7 +5,7 @@ import { User } from "@/features/auth/users/user.interface";
 import { getUserById } from "@/features/auth/users/user.service";
 import Sidebar from "@/features/auth/signin/Sidebar";
 import PageContent from "@/features/auth/signin/PageContent";
-import { useAuth } from "@/context/useContext";  // Importando o hook useAuth
+import { useAuth } from "@/context/useContext"; 
 
 export default function DashboardPage() {
   const [userData, setUserData] = useState<User | null>(null);
