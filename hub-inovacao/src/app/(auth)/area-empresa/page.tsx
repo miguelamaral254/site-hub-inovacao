@@ -1,16 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+
 import { useRouter } from "next/navigation";
 import { Enterprise } from "@/features/auth/users/enterprise.interface";
 import { getEnterpriseById } from "@/features/auth/users/enterprise.service";
 
-
 export default function DashboardCompanyPage() {
   const [userData, setUserData] = useState<Enterprise | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState("");
+
   //const [selectedPage, setSelectedPage] = useState<string | null>(null);
   const router = useRouter();
+
 
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -33,6 +35,7 @@ export default function DashboardCompanyPage() {
       setErrorMessage("ID não encontrado.");
     }
   }, []);
+
 
   useEffect(() => {
     if (userData && userData.cnpj && userData.role !== "ENTERPRISE") {
