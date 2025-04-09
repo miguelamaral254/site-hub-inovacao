@@ -40,3 +40,31 @@ export const createOpportunity = async (formData: FormData): Promise<Project> =>
     throw new Error("Erro ao criar opportunity");
   }
 };
+export const updateProject = async (id: number, projectData: any): Promise<Project> => {
+  try {
+    const response = await axios.put<Project>(`${API_URL}/${id}`, projectData);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar projeto:", error);
+    throw new Error("Erro ao atualizar projeto");
+  }
+};
+export const updateProjectStatus = async (id: number, status: string): Promise<string> => {
+  try {
+    const response = await axios.patch<string>(`${API_URL}/${id}/status`, null, {
+      params: { status }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar status do projeto:", error);
+    throw new Error("Erro ao atualizar status do projeto");
+  }
+};
+export const deleteProject = async (id: number): Promise<void> => {
+  try {
+    await axios.delete(`${API_URL}/${id}`);
+  } catch (error) {
+    console.error("Erro ao deletar projeto:", error);
+    throw new Error("Erro ao deletar projeto");
+  }
+};
