@@ -5,14 +5,8 @@ import React, { useState, useEffect } from "react";
 import MaskedInput from "react-text-mask";
 import { ButtonGrande } from "@/components/Button";
 import { FaTrash } from "react-icons/fa";
-import { Role } from "../users/users/user.interface";
+import { Phone, Role } from "../users/users/user.interface";
 import { createUser } from "../users/users/user.service";
-
-interface Phone {
-  id?: number;
-  number: string;
-  countryCode: string;
-}
 
 interface UserFormProps {
   formData: {
@@ -190,7 +184,6 @@ export default function UserForm({
           <p className="text-red-500 text-sm mt-1">A senha deve ter pelo menos 8 caracteres.</p>
         )}
         <div className="flex items-center mt-1">
-          <span className="text-sm text-gray-600 mr-2">Força da senha:</span>
           <span className={`text-sm font-bold ${
             passwordStrength === "Forte" ? "text-green-600" :
             passwordStrength === "Média" ? "text-yellow-500" :
@@ -201,7 +194,6 @@ export default function UserForm({
         </div>
       </div>
 
-      {/* Confirmar Senha */}
       <div>
         <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
           Confirmar Senha *
@@ -220,7 +212,6 @@ export default function UserForm({
         )}
       </div>
 
-      {/* CPF */}
       <div>
         <label htmlFor="cpf" className="block text-sm font-medium text-gray-700 mb-1">
           CPF *
@@ -276,24 +267,38 @@ export default function UserForm({
         </label>
         {formData.phones.map((phone, index) => (
           <div key={index} className="flex items-center gap-2">
-            <div className="flex-1 min-w-0">
-              <label htmlFor={`phone-${index}`} className="sr-only">Número de telefone</label>
-              
-            </div>
-            <div className="w-32">
+            <div className="w-40">
               <label htmlFor={`countryCode-${index}`} className="sr-only">Código do país</label>
               <select
                 id={`countryCode-${index}`}
                 name="countryCode"
                 value={phone.countryCode}
                 onChange={(e) => handlePhoneChange(index, e)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm md:text-base"
               >
-                <option value="55">BR (+55)</option>
-                <option value="1">EUA (+1)</option>
-                <option value="44">UK (+44)</option>
+                <option value="55">Brasil (+55)</option>
+                <option value="1">Estados Unidos (+1)</option>
+                <option value="44">Reino Unido (+44)</option>
+                <option value="33">França (+33)</option>
+                <option value="34">Espanha (+34)</option>
+                <option value="49">Alemanha (+49)</option>
               </select>
             </div>
+            
+            <div className="flex-1 min-w-0">
+              <label htmlFor={`phone-${index}`} className="sr-only">Número de telefone</label>
+              <MaskedInput
+                id={`phone-${index}`}
+                mask={["(", /\d/, /\d/, ")", " ", /\d/, " ", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
+                name="number"
+                value={phone.number}
+                onChange={(e) => handlePhoneChange(index, e)}
+                className={`w-full px-4 py-2 border rounded-lg ${
+                  errors.phones?.[index]?.number ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+            </div>
+
             {formData.phones.length > 1 && (
               <button
                 type="button"
@@ -304,17 +309,6 @@ export default function UserForm({
                 <FaTrash />
               </button>
             )}
-
-            <MaskedInput
-                id={`phone-${index}`}
-                mask={["(", /\d/, /\d/, ")", " ", /\d/, " ", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
-                name="number"
-                value={phone.number}
-                onChange={(e) => handlePhoneChange(index, e)}
-                className={`w-full px-4 py-2 border rounded-lg ${
-                  errors.phones?.[index]?.number ? "border-red-500" : "border-gray-300"
-                }`}
-              />
           </div>
         ))}
         <button
@@ -326,7 +320,14 @@ export default function UserForm({
         </button>
       </div>
 
-      <div className="pt-4">
+      <div className="flex justify-between gap-4 pt-6">
+        <ButtonGrande 
+          type="button" 
+          text="Voltar" 
+          onClick={() => window.history.back()}
+          outline={true}
+        />
+
         <ButtonGrande 
           type="submit" 
           text="Cadastrar" 

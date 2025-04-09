@@ -3,19 +3,22 @@ interface ButtonProps {
   onClick?: () => void; 
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
+  outline?: boolean; 
 }
 
-const ButtonGrande = ({ text, onClick, type = "button", disabled = false }: ButtonProps) => {
+const ButtonGrande = ({ text, onClick, type = "button", disabled = false, outline = false }: ButtonProps) => {
   return (
     <div className="flex items-center justify-center">
       <button
         type={type}
         onClick={onClick}
         disabled={disabled}
-        className={`w-auto md:w-[160px] h-auto text-white font-medium text-base md:text-lg flex justify-center items-center rounded-lg py-2 px-4 transition-all duration-300 active:rounded-3xl ${
+        className={`w-auto md:w-[160px] h-auto font-medium text-base md:text-lg flex justify-center items-center rounded-lg py-2 px-4 transition-all duration-300 active:rounded-3xl ${
           disabled
-            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-            : "bg-blue-500 hover:bg-blue-300"
+          ? "bg-gray-200 text-gray-500 cursor-not-allowed border border-gray-300"
+          : outline
+            ? "bg-transparent text-blue-500 border-2 border-blue-500 hover:bg-blue-50"
+            : "bg-blue-500 text-white hover:bg-blue-300"
         }`}
       >
         {text}
