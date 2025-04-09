@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/context/useContext";
 import Navbar from "@/components/Navbar";
-
 import Footer from "@/components/Footer"; 
+import StepContext from "@/features/projects/cadastro_projeto/StepContext";
 
 
 export const metadata: Metadata = {
@@ -17,15 +17,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <body className="min-h-screen flex flex-col">
+      
         <AuthProvider>
 
-          <Navbar />
-          <main className="flex-grow">{children}</main>
-          <Footer /> 
-
+          <StepContext>
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+            <Footer /> 
+          </StepContext>
+          
         </AuthProvider>
+        
       </body>
     </html>
   );

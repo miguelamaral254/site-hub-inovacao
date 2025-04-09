@@ -1,59 +1,59 @@
-"use client";
-
+"use client"; 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { UserResponseCnpjDTO, UserResponseCpfDTO } from "@/interfaces/userInterface";
-import { getUserByEmail } from "@/services/userService";
-import Sidebar from "@/features/auth-components/users/userscpf/dashboard-users/Sidebar";
-import PageContent from "@/features/auth-components/users/userscpf/dashboard-users/PageContent";
+import { User } from "@/features/auth/users/user.interface";
+import { getUserById } from "@/features/auth/users/user.service";
+import Sidebar from "@/features/auth/signin/Sidebar";
+import PageContent from "@/features/auth/signin/PageContent";
+import { useAuth } from "@/context/useContext";  // Importando o hook useAuth
 
 export default function DashboardPage() {
-  const [userData, setUserData] = useState<UserResponseCnpjDTO | UserResponseCpfDTO | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true); 
-  const router = useRouter(); 
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const { user } = useAuth();  
 
   useEffect(() => {
-    const email = localStorage.getItem("email");
-
-    if (!email) {
-      router.push("/login");
+    if (!user) {
+      setLoading(false); 
       return;
     }
 
     const fetchUserData = async () => {
       try {
-        const data = await getUserByEmail(email);
-        setUserData(data);
-
-        // Verifica se o 'role' é diferente de 'STUDENT' ou 'PROFESSOR'
-        if (data.role !== "STUDENT" && data.role !== "PROFESSOR") {
-          router.push("/"); // Redireciona para a página inicial
+        const response = await getUserById(user.idUser);
+        const data = response.data.data; 
+    
+        setUserData(data); 
+        //console.log("Dados do usuário:", data); 
+    
+        if (
+          data.role !== "STUDENT" &&
+          data.role !== "PROFESSOR" &&
+          data.role !== "MANAGER" 
+        ) {
+          router.push("/"); 
           return;
         }
-
-        localStorage.setItem("userData", JSON.stringify(data));
-
-        console.log("Dados armazenados no localStorage:", localStorage.getItem("userData"));
       } catch (error) {
         console.log(error)
-
         setErrorMessage("Erro ao buscar os dados.");
+        
       } finally {
         setLoading(false);
       }
     };
-
     fetchUserData();
-  }, [router]);
+  }, [router, user]); 
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   if (errorMessage) {
-    return <div>{errorMessage}</div>; 
+    return <div>{errorMessage}</div>;
   }
 
   return (

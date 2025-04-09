@@ -1,11 +1,20 @@
-"use client";
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { login } from "@/services/authService";
-import { LoginRequestDTO, LoginResponseDTO } from "@/interfaces/loginInterface";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client"; 
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { login } from "@/features/auth/signin/auth.service";
+import { LoginRequest, LoginResponse } from "@/features/auth/signin/login.interface";
+import { jwtDecode } from "jwt-decode";
+
+interface JwtPayload {
+  idUser: number;
+  role: string;
+  email: string;
+  [key: string]: any;
+}
 
 interface AuthContextData {
-  user: LoginResponseDTO | null;
-  loginUser: (credentials: LoginRequestDTO) => Promise<void>;
+  user: { role: string, email: string, idUser: number } | null;
+  loginUser: (credentials: LoginRequest) => Promise<void>;
   logoutUser: () => void;
 }
 
@@ -15,32 +24,54 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<LoginResponseDTO | null>(null);
+const useAuthToken = () => {
+  const [user, setUser] = useState<JwtPayload | null>(null);
 
   useEffect(() => {
-    const storedUserEmail = localStorage.getItem("email");
-    const storedRole = localStorage.getItem("role");
-    const storedToken = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-    if (storedUserEmail && storedRole && storedToken) {
-      // Se os dados estiverem no localStorage, restaurar o estado, incluindo a propriedade `message`
-      setUser({
-        email: storedUserEmail,
-        role: storedRole,
-        token: storedToken,
-        message: "Usuário restaurado com sucesso", 
-      });
+    if (token) {
+      try {
+        const decodedToken: JwtPayload = jwtDecode(token);
+        setUser(decodedToken);
+      } catch (error) {
+        console.error("Erro ao decodificar token", error);
+        setUser(null);
+      }
     }
   }, []);
 
-  const loginUser = async (credentials: LoginRequestDTO) => {
+  return user;
+};
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<{ role: string, email: string, idUser: number } | null>(null);
+
+  const userFromToken = useAuthToken(); 
+
+  useEffect(() => {
+    if (userFromToken) {
+      setUser({
+        role: userFromToken.role,
+        email: userFromToken.email,
+        idUser: userFromToken.idUser,
+      });
+    }
+  }, [userFromToken]);
+
+  const loginUser = async (credentials: LoginRequest) => {
     try {
       const response = await login(credentials);
-      setUser(response);  
-      localStorage.setItem("token", response.token);
-      localStorage.setItem("email", response.email);
-      localStorage.setItem("role", response.role);
+      const { token } = response;
+
+      localStorage.setItem("token", token);
+
+      const decodedToken: LoginResponse = jwtDecode(token);
+      setUser({
+        role: decodedToken.role,
+        email: decodedToken.email,
+        idUser: decodedToken.idUser,
+      });
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -50,10 +81,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logoutUser = () => {
-    setUser(null); 
+    setUser(null);
     localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    localStorage.removeItem("role");
   };
 
   return (
