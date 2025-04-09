@@ -6,6 +6,7 @@ import { RiCloseLine } from "react-icons/ri";
 import { Project } from "@/features/projects/project.interface";
 import { updateProject } from "@/features/projects/project.service"; // <-- importa aqui
 import { useAuth } from "@/context/useContext";
+import { StatusSolicitation } from "../core/status.interface";
 
 interface ProjectModalProps {
   project: Project;
@@ -99,27 +100,27 @@ const ProjectTicketModal: React.FC<ProjectModalProps> = ({ project, handleClose 
           <h3 className="text-lg font-semibold mb-2 text-gray-700">Avaliação do Projeto</h3>
          
           <div className="flex gap-6 mb-4">
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="evaluation"
-                value="APROVADO"
-                checked={evaluation === "APROVADA"}
-                onChange={() => setEvaluation("APROVADA")}
-              />
-              Aprovar
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="evaluation"
-                value="REPROVADO"
-                checked={evaluation === "REPROVADA"}
-                onChange={() => setEvaluation("REPROVADA")}
-              />
-              Reprovar
-            </label>
-          </div>
+  <label className="flex items-center gap-2">
+    <input
+      type="radio"
+      name="evaluation"
+      value={StatusSolicitation.APROVADA}
+      checked={evaluation === StatusSolicitation.APROVADA}
+      onChange={() => setEvaluation(StatusSolicitation.APROVADA)}
+    />
+    Aprovar
+  </label>
+  <label className="flex items-center gap-2">
+    <input
+      type="radio"
+      name="evaluation"
+      value={StatusSolicitation.REPROVADA}
+      checked={evaluation === StatusSolicitation.REPROVADA}
+      onChange={() => setEvaluation(StatusSolicitation.REPROVADA)}
+    />
+    Reprovar
+  </label>
+</div>
 
           <div className="mb-3">
             <label className="text-sm font-medium text-gray-700">Feedback (opcional)</label>
