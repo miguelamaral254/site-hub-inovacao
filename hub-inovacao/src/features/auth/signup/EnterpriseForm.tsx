@@ -110,17 +110,29 @@ export default function EnterpriseForm() {
   };
 
   const handleCEPChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const cep = e.target.value.replace(/\D/g, "");
-    if (cep.length === 9) {
-      await getCEPData(cep);
-    } else {
-      setFormData((prevState) => ({
-        ...prevState,
-        address: { ...prevState.address, zipCode: cep },
-      }));
+    let cep = e.target.value.replace(/\D/g, ""); 
+  
+    // Limita a 8 dígitos (formato 99999-999)
+    if (cep.length > 8) {
+      cep = cep.slice(0, 8);
+    }
+  
+    // Aplica máscara: 99999-999
+    if (cep.length > 5) {
+      cep = cep.replace(/^(\d{5})(\d{1,3})/, "$1-$2");
+    }
+  
+    setFormData((prevState) => ({
+      ...prevState,
+      address: { ...prevState.address, zipCode: cep },
+    }));
+  
+    const cepSemMascara = cep.replace("-", "");
+  
+    if (cepSemMascara.length === 8) {
+      await getCEPData(cepSemMascara);
     }
   };
-
   useEffect(() => {
     if (address) {
       setFormData((prevState) => ({
@@ -152,7 +164,7 @@ export default function EnterpriseForm() {
       formData.reprentantEmail.includes("@") &&
       formData.reprentantEmail.includes(".") &&
       formData.reprentantPhone.replace(/\D/g, '').length >= 10 &&
-      formData.address.zipCode.replace(/\D/g, '').length === 8 &&
+      formData.address.zipCode.replace(/\D/g, '').length === 9 &&
       formData.address.street &&
       formData.address.number &&
       formData.address.city &&
