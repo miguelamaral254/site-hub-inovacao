@@ -65,6 +65,7 @@ export default function RegisterForm() {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
+
   const handlePhoneChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -96,56 +97,85 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-end min-h-screen pt-5 bg-gray-100 px-[140px]">
-      <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md">
-        <div className="flex justify-center items-center mb-4">
-          <Image src={logo} alt="Logo HUBI" className="h-auto w-auto"/>
-        </div>
-        <h2 className="text-2xl font-medium text-blue-600 text-center mb-4">Cadastre-se</h2>
-        <p className="text-base font-medium text-blue-800 text-center mb-4">
-          Compartilhe seus projetos, ideias e muito mais!
-        </p>
+    <div className="flex flex-col lg:flex-row items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 py-8">
+      <div className="flex flex-col lg:flex-row w-full max-w-7xl gap-8">
+        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full lg:max-w-2xl order-2 lg:order-1">
+          <div className="flex justify-center items-center mb-6">
+            <Image 
+              src={logo} 
+              alt="Logo HUBI" 
+              className="h-auto w-auto max-h-16"
+              priority
+            />
+          </div>
+          
+          <h2 className="text-2xl sm:text-3xl font-semibold text-blue-600 text-center mb-2">
+            Cadastre-se
+          </h2>
+          
+          <p className="text-base sm:text-lg text-blue-800 text-center mb-6">
+            Compartilhe seus projetos, ideias e muito mais!
+          </p>
 
-        <div className="flex justify-around mb-4">
-          <div 
-            className={`flex items-center space-x-2 cursor-pointer ${!isPartnerCompany ? 'text-blue-600' : 'text-gray-400'}`}
-            onClick={() => {
-              setIsPartnerCompany(false);
-              setFormData(prev => ({ ...prev, role: Role.STUDENT }));
-            }}
-          >
-            <FaUser size={30} />
-            <span>Usuário</span>
+          <div className="flex justify-around mb-6 sm:mb-8 bg-gray-50 p-2 rounded-lg">
+            <button
+              type="button"
+              className={`flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-2 rounded-lg w-full transition-colors ${
+                !isPartnerCompany 
+                  ? 'bg-blue-100 text-blue-600 shadow-inner' 
+                  : 'text-gray-500 hover:bg-gray-100'
+              }`}
+              onClick={() => {
+                setIsPartnerCompany(false);
+                setFormData(prev => ({ ...prev, role: Role.STUDENT }));
+              }}
+            >
+              <FaUser size={24} />
+              <span className="text-sm sm:text-base font-medium">Usuário</span>
+            </button>
+
+            <button
+              type="button"
+              className={`flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-2 rounded-lg w-full transition-colors ${
+                isPartnerCompany 
+                  ? 'bg-blue-100 text-blue-600 shadow-inner' 
+                  : 'text-gray-500 hover:bg-gray-100'
+              }`}
+              onClick={() => {
+                setIsPartnerCompany(true);
+                setFormData(prev => ({ ...prev, role: Role.ENTERPRISE }));
+              }}
+            >
+              <FaBuilding size={24} />
+              <span className="text-sm sm:text-base font-medium">Empresa Parceira</span>
+            </button>
           </div>
 
-          <div 
-            className={`flex items-center space-x-2 cursor-pointer ${isPartnerCompany ? 'text-blue-600' : 'text-gray-400'}`}
-            onClick={() => {
-              setIsPartnerCompany(true);
-              setFormData(prev => ({ ...prev, role: Role.ENTERPRISE }));
-            }}
-          >
-            <FaBuilding size={30} />
-            <span>Empresa Parceira</span>
+          <div className="mt-4">
+            {isPartnerCompany ? (
+              <EnterpriseForm/>
+            ) : (
+              <UserForm
+                formData={formData}
+                handleChange={handleChange}
+                handleAddPhone={handleAddPhone}
+                handleRemovePhone={handleRemovePhone}
+                errors={errors}
+                showSuccess={showSuccess}
+                showError={showError}
+              />
+            )}
           </div>
         </div>
 
-        {isPartnerCompany ? (
-          <EnterpriseForm/>
-        ) : (
-          <UserForm
-            formData={formData}
-            handleChange={handleChange}
-            handleAddPhone={handleAddPhone}
-            handleRemovePhone={handleRemovePhone}
-            errors={errors}
-            showSuccess={showSuccess}
-            showError={showError}
+        <div className="flex justify-center items-center w-full lg:w-auto order-1 lg:order-2 mb-6 lg:mb-0">
+          <Image 
+            src={cadastro} 
+            alt="Imagem de Cadastro" 
+            className="h-auto w-full max-w-md lg:max-w-lg xl:max-w-xl"
+            priority
           />
-        )}
-      </div>
-      <div className="w-auto flex justify-end items-end">
-        <Image src={cadastro} alt="imagem Cadastro" className="h-auto w-[300px] md:w-[600px]" />
+        </div>
       </div>
     </div>
   );
