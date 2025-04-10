@@ -4,6 +4,9 @@ import TicketTypeSelector from "./TicketTypeSelector";
 import ProjectTicketList from "@/features/projects/ProjectTicketList";
 import PublishList from "@/features/publish/PublishList";
 import ProjectList from "@/features/projects/ProjectList";
+import { ProjectForm } from "@/components/Form/ProjectForm";
+import { useContext } from "react";
+import { multiStepContext } from "@/features/projects/cadastro_projeto/StepContext";
 
 interface PageContentProps {
   selectedPage: string | null;
@@ -14,11 +17,11 @@ export default function PageContent({
   selectedPage,
   userData,
 }: PageContentProps) {
+  const { step, setStep } = useContext(multiStepContext);
   const role = userData?.role;
   const userId = userData?.id;
-
   const regularUser = {
-    userId: userId ?? 0,    
+    userId: userId ?? 0,
   };
 
   const managerProjectTicket = {
@@ -37,21 +40,31 @@ export default function PageContent({
   return (
     <div className="flex justify-center items-start">
       <div className="w-full max-w-7xl px-6 py-8">
-
         {selectedPage === "page1" &&
-         role === "STUDENT" ||
-          role ==="PROFESSOR" && (
-          <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6">
-              Projetos Aprovados
-            </h3>
-            <p className="text-lg text-gray-600 mb-4">
-              Aqui você pode ver os projetos acadêmicos aprovados pela sua
-              instituição.
-            </p>
-            <ProjectList filters={regularUser} />
-          </div>
-        )}
+          (role === "PROFESSOR" || role === "STUDENT") && (
+            <div>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">
+                Projetos Aprovados
+              </h3>
+              <p className="text-lg text-gray-600 mb-4">
+                Aqui você pode ver os projetos acadêmicos aprovados pela sua
+                instituição.
+              </p>
+              <ProjectList filters={regularUser} />
+            </div>
+          )}
+        {selectedPage === "page2" &&
+          (role === "PROFESSOR" || role === "STUDENT") && (
+            <div>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">
+                Submeter Projeto{" "}
+              </h3>
+              <p className="text-lg text-gray-600 mb-4">
+                Aqui você pode submeter projetos acadêmicos.
+              </p>
+              <ProjectForm step={step} setStep={setStep} />
+            </div>
+          )}
 
         {selectedPage === "page3" && (
           <div>
@@ -59,7 +72,8 @@ export default function PageContent({
               Meus Tickets atribuidos
             </h3>
             <p className="text-lg text-gray-600 mb-4">
-              Aqui você pode ver os projetos acadêmicos e oportunidades atribuidos a você.
+              Aqui você pode ver os projetos acadêmicos e oportunidades
+              atribuidos a você.
             </p>
             <ProjectTicketList filters={managerList} />
           </div>

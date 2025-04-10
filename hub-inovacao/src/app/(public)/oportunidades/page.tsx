@@ -18,7 +18,9 @@ export default function Oportunidades() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [totalOpportunities, setTotalOpportunities] = useState(0);
 
-
+  const filters = {
+   status:"aprovada"  
+  };
 
   return (
     <div className="flex flex-col bg-[#f9f9f9] min-h-screen">
@@ -70,7 +72,7 @@ export default function Oportunidades() {
         </div>
 
         <div>
-        <OpportunityList />
+        <OpportunityList filters={filters} />
 
         </div>
 
