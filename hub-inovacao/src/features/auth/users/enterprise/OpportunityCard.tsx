@@ -31,7 +31,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, fetchOpp
         return 'text-green-500';
       case 'PENDENTE':
         return 'text-orange-500';
-      case 'INDEFERIDO':
+      case 'REPROVADA':
         return 'text-red-600';
       default:
         return 'bg-gray-100 text-gray-800';

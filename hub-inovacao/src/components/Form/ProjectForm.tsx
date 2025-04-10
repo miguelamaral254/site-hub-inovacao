@@ -1,7 +1,7 @@
-import { AddTeam } from "@/features/projects/cadastro_projeto/steps/AddTeam"
-import { Finalizado } from "@/features/projects/cadastro_projeto/steps/Finalizado"
-import { ProjectDetails } from "@/features/projects/cadastro_projeto/steps/ProjectDetails"
-import { ProjectIdentify } from "@/features/projects/cadastro_projeto/steps/ProjectIdentify"
+import { AddTeam } from "@/features/projects/project-form/steps/AddTeam"
+import { Finalizado } from "@/features/projects/project-form/steps/Finalizado"
+import { ProjectDetails } from "@/features/projects/project-form/steps/ProjectDetails"
+import { ProjectIdentify } from "@/features/projects/project-form/steps/ProjectIdentify"
 import { CheckMark } from "./CheckMark"
 
 

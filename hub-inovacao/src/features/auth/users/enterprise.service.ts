@@ -27,26 +27,6 @@ export const searchEnterprise = async (
     sort, 
   };
 
-  if (filters?.tituloDesafio) {
-    params.tituloDesafio = filters.tituloDesafio;
-  }
-
-  if (filters?.status) {
-    params.status = filters.status.toLowerCase();
-  }
-
-  if (filters?.enabled !== undefined) {
-    params.enabled = filters.enabled;
-  }
-
-  if (filters?.idManager) {
-    params.idManager = filters.idManager;
-  }
-
-  if (filters?.enterpriseId) {
-    params.enterpriseId = filters.enterpriseId;
-  }
-
   console.log("Parametros enviados para API:", params);
 
   try {

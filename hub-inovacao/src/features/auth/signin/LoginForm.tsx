@@ -15,7 +15,7 @@ const LoginForm: React.FC = () => {
   const router = useRouter();
   useEffect(() => {
     if (user) {
-      const destination = user.role === "ENTERPRISE" ? "/area-empresa" : "/area-usuario";
+      const destination = user.role === "ROLE_ENTERPRISE" ? "/area-empresa" : "/area-usuario";
       router.push(destination);
     }
   }, [user, router]);
