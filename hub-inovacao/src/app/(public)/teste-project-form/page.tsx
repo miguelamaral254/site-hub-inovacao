@@ -1,6 +1,6 @@
 "use client"
 
-import { Form } from "@/components/Form/Form";
+import { Form } from "@/components/Form/ProjectForm";
 import { multiStepContext } from "@/features/projects/cadastro_projeto/StepContext";
 import { useContext } from "react";
 

@@ -10,7 +10,7 @@ type Props = {
   setStep: (step: number) => void
 }
 
-export const Form = ({ step, setStep }: Props) => {
+export const ProjectForm = ({ step, setStep }: Props) => {
 
   const showStep = (step: number) => {
     switch(step){

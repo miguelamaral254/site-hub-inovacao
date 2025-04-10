@@ -1,55 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import OpportunityCard from './OpportunityCard';
-import { Opportunity } from './opportunity.interface';
-import { searchOpportunities } from './opportunity.service'; 
+"use client";
+import React, { useEffect, useState } from "react";
+import OpportunityCard from "./OpportunityCard";
+import { Opportunity } from "./opportunity.interface";
+import { searchOpportunities } from "./opportunity.service";
 
-const OpportunityList: React.FC = () => {
-  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);  
+interface OpportunityListProps {
+  filters: Record<string, string | number | boolean>;
+}
+
+const OpportunityList: React.FC<OpportunityListProps> = ({ filters }) => {
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-  
-  const filters = {
-    page: 0,
-    size: 1,
-    status:"APROVADA"    
-  };
 
   useEffect(() => {
     const fetchOpportunities = async () => {
-      setLoading(true); 
-      setError('');  
-  
+      setLoading(true);
       try {
-        const response = await searchOpportunities(filters); 
-        if (response && Array.isArray(response.content)) {
-          setOpportunities(response.content);  
-        } else {
-          setError('Resposta da API não contém um array válido de oportunidades');
-        }
-      } catch (err) {
-        setError('Erro ao buscar oportunidades');
-        console.error(err);
+        const params = new URLSearchParams(filters as Record<string, string>).toString();
+        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/opportunities?${params}`;
+        console.log("Requisição enviada:", url);
+
+        const response = await searchOpportunities(filters);
+        console.log("Oportunidades encontradas:", response);
+
+        const opportunitiesData = response?.data?.content || [];
+        setOpportunities(opportunitiesData);
+      } catch (error) {
+        console.error("Erro ao buscar oportunidades:", error);
       } finally {
-        setLoading(false);  
+        setLoading(false);
       }
     };
-  
+
     fetchOpportunities();
-  }, []);
+  }, [filters]);
+
   return (
-    <div className="p-6">
+    <div className="w-full py-6">
       <h1 className="text-3xl font-bold text-center mb-8">Lista de Oportunidades</h1>
-      {loading && <p className="text-center">Carregando...</p>}
-      {error && <p className="text-red-500 text-center">{error}</p>}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {Array.isArray(opportunities) && opportunities.length > 0 ? (
-          opportunities.map((opportunity) => (
-            <OpportunityCard key={opportunity.id} opportunity={opportunity} />
-          ))
-        ) : (
-          <p className="text-center">Nenhuma oportunidade encontrada.</p>
-        )}
-      </div>
+      {loading ? (
+        <div className="text-center text-xl text-gray-600">Carregando oportunidades...</div>
+      ) : (
+        <div className="flex flex-wrap gap-6 justify-center">
+          {opportunities.length > 0 ? (
+            opportunities.map((opportunity) => (
+              <OpportunityCard key={opportunity.id} opportunity={opportunity} />
+            ))
+          ) : (
+            <div className="text-center text-xl text-gray-600">Nenhuma oportunidade encontrada</div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
