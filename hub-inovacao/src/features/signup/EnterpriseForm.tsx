@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from "react";
 import MaskedInput from "react-text-mask";
 import useSwal from "@/hooks/useSwal";
@@ -458,7 +459,7 @@ export default function EnterpriseForm() {
         <ButtonGrande 
           type="submit" 
           text={loading ? "Processando..." : "Cadastrar Empresa"} 
-          disabled={!isFormValid || loading}
+          disabled={ loading}
         />
       </div>
     </form>

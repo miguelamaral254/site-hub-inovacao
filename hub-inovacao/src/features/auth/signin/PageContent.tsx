@@ -6,7 +6,9 @@ import PublishList from "@/features/publish/PublishList";
 import ProjectList from "@/features/projects/ProjectList";
 import { ProjectForm } from "@/components/Form/ProjectForm";
 import { useContext } from "react";
-import { multiStepContext } from "@/features/projects/cadastro_projeto/StepContext";
+import { multiStepContext } from "@/features/projects/project-form/StepContext";
+import OpportunityList from "@/features/opportunity/OpportunityList";
+import CreateOpportunityForm from "@/features/opportunity/OpportunityForms";
 
 interface PageContentProps {
   selectedPage: string | null;
@@ -35,6 +37,9 @@ export default function PageContent({
 
   const managerList = {
     idmanager: userId ?? 0,
+  };
+  const opportunityFilterList = {
+    enterprise:userId ?? 0
   };
 
   return (
@@ -107,7 +112,35 @@ export default function PageContent({
             </div>
           </div>
         )}
+
+      {selectedPage === "page6" && role === "ENTERPRISE" && (
+          <div>
+            <h3 className="text-2xl font-semibold text-gray-900 mb-6">
+              Gerenciar Oportunidades
+            </h3>
+            <p className="text-lg text-gray-600 mb-4">
+              Crie e acompanhar seu progresso e melhorias necessárias.
+            </p>
+            <div className="space-y-4">
+              <OpportunityList filters={opportunityFilterList} />
+            </div>
+          </div>
+        )}
+        {selectedPage === "page7" && role === "ENTERPRISE" && (
+          <div>
+            <h3 className="text-2xl font-semibold text-gray-900 mb-6">
+            Submeter Oportunidades
+            </h3>
+            <p className="text-lg text-gray-600 mb-4">
+              Crie e acompanhar seu progresso e melhorias necessárias.
+            </p>
+            <div className="space-y-4">
+             <CreateOpportunityForm/>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
-}
+}            
+

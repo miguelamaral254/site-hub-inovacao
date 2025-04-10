@@ -2,9 +2,11 @@
 
 import React, { useState } from "react";
 import useSwal from "@/hooks/useSwal";
-import { Opportunity, OpportunityType } from "./Opportunity";
-import { StatusSolicitation } from "../cadastro_projeto/ProjectInterface";
+
 import { createOpportunity } from "./OpportunityService";
+import { Opportunity, OpportunityType } from "./opportunity.interface";
+import { StatusSolicitation } from "../core/status.interface";
+import { useAuth } from "@/context/useContext";
 
 const CreateOpportunityForm: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -21,7 +23,8 @@ const CreateOpportunityForm: React.FC = () => {
   const [mentoriaSuporte, setMentoriaSuporte] = useState<boolean | null>(null);
   const [visitatecnica, setVisitaTecnica] = useState<boolean | null>(null);
   const [recursosDisponiveis, setRecursosDisponiveis] = useState<string[]>([]);  
-
+  const {user} = useAuth();
+  const currentUser = user?.idUser;
   const { showSuccess, showError } = useSwal();
 
   const opportunityData: Opportunity = {
@@ -40,8 +43,8 @@ const CreateOpportunityForm: React.FC = () => {
     recursosDisponiveis: ["Materiais", "Infraestrutura", "Banco de dados"],
     autorizacao: true,
     opportunityType: OpportunityType.BANCO_DE_PROBLEMA,
-    enterpriseId: 1,
-    status: StatusSolicitation.APROVADA,
+    enterpriseId: currentUser,
+    status: StatusSolicitation.PENDENTE,
   };
 
   const handleSubmit = async () => {
@@ -49,15 +52,12 @@ const CreateOpportunityForm: React.FC = () => {
       setErrorMessage("A imagem da oportunidade é obrigatória");
       return;
     }
-
-    // Criando o FormData para enviar os dados
     const formData = new FormData();
     formData.append("dto", new Blob([JSON.stringify(opportunityData)], { type: "application/json" }));
     formData.append("file", imageFile);
 
     try {
       setIsLoading(true);
-      // Chamada para criar a oportunidade
       await createOpportunity(formData);
       
       showSuccess("Oportunidade criada com sucesso!");
@@ -71,6 +71,7 @@ const CreateOpportunityForm: React.FC = () => {
       setExpectativa("");
       setRestricoes("");
       setDisponibilidadeDados("");
+      
     } catch (error) {
       console.error(error);
       showError("Erro ao criar oportunidade.");

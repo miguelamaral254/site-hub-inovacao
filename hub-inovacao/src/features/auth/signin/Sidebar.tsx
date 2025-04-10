@@ -15,6 +15,7 @@ import { useAuth } from "@/context/useContext";
 import { useRouter } from "next/navigation";
 import { User } from "../users/user.interface";
 import DashboardHeader from "./DashboardHeader";
+import Oportunidades from '../../../app/(public)/oportunidades/page';
 
 interface SidebarProps {
   setSelectedPage: (page: string) => void;
@@ -98,6 +99,24 @@ export default function Sidebar({
             onClick={() => setSelectedPage("page5")}
           >
             Gerenciar Editais
+          </button>
+        )}
+
+        {role === "ENTERPRISE" && (
+          <button
+            className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
+            onClick={() => setSelectedPage("page6")}
+          >
+            Gerenciar Oportunidades
+          </button>
+        )}
+
+{role === "ENTERPRISE" && (
+          <button
+            className="group w-full flex flex-row justify-start items-center gap-4 text-blue-500 font-normal text-base py-4 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-800"
+            onClick={() => setSelectedPage("page7")}
+          >
+            Submeter Oportunidades
           </button>
         )}
 
