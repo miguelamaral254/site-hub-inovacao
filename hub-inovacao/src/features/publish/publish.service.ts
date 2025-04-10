@@ -6,54 +6,30 @@ export interface Pageable {
   page: number;
   size: number;
 }
-const API_URL = "http://localhost:8080/editals";
+const API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/editals`;
 
 
-export const createOpportunity = async (formData: FormData): Promise<Publish> => {
+export const createPublish = async (publishData: Publish): Promise<Publish> => {
   try {
-    const response = await axios.post<Publish>(API_URL, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axios.post<Publish>(API_URL, publishData);
     return response.data;
   } catch (error) {
-    console.error("Erro ao criar opportunity:", error);
-    throw new Error("Erro ao criar opportunity");
+    console.error("Erro ao criar publicação:", error);
+    throw new Error("Erro ao criar publicação");
   }
 };
-export const searchPublishs = async (
+
+export const searchPublishes = async (
   filters?: Record<string, any>,
-  page: number = 0,
-  size: number = 10,
+  pageable: Pageable = { page: 0, size: 10 }, 
   sort?: string
 ) => {
   const params: Record<string, any> = {
     ...filters,
-    page, 
-    size, 
+    page: pageable.page, 
+    size: pageable.size, 
     sort, 
   };
-
-  if (filters?.tituloDesafio) {
-    params.tituloDesafio = filters.tituloDesafio;
-  }
-
-  if (filters?.status) {
-    params.status = filters.status.toLowerCase();
-  }
-
-  if (filters?.enabled !== undefined) {
-    params.enabled = filters.enabled;
-  }
-
-  if (filters?.idManager) {
-    params.idManager = filters.idManager;
-  }
-
-  if (filters?.enterpriseId) {
-    params.enterpriseId = filters.enterpriseId;
-  }
 
   console.log("Parametros enviados para API:", params);
 
@@ -62,6 +38,19 @@ export const searchPublishs = async (
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar projetos:", error);
+    throw error;
+  }
+};
+
+export const updatePublishStatus = async (id: number, enabled: boolean) => {
+  const url = `${API_URL}/${id}/enabled?enabled=${enabled.toString()}`;
+  console.log("URL da requisição:", url); 
+  try {
+    const response = await axios.put(url, null);
+    console.log("Resposta da API:", response); 
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar o status da publicação", error);
     throw error;
   }
 };

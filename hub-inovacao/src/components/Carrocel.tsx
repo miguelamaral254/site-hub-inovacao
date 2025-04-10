@@ -17,7 +17,7 @@ export default function Carrossel() {
         modules={[Navigation, Pagination, Autoplay, EffectFade]}
         loop={true}
         speed={500}
-        spaceBetween={20} // Espaço entre os slides
+        spaceBetween={20} 
         slidesPerView={1}
         navigation={{ prevEl: ".prev-btn", nextEl: ".next-btn" }}
         autoplay={{ delay: 2000, disableOnInteraction: false }}

@@ -32,7 +32,7 @@ const CardStartup = ({ image, alt, titulo, texto , autor, segmento, textoLongo, 
     }, [isOpen]);
   
     return (
-      <div className="flex flex-col w-full max-w-[390px] min-h-[420px] md:min-h-[450px] bg-white shadow-lg rounded-lg px-3 py-6 ml-8 transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)]">
+      <div className="flex flex-col justify-center items-center text-center w-full  bg-white shadow-lg rounded-lg px-2 py-6  transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)]">
         
             <div className="flex justify-center items-center w-full">
                 <Image className="w-[318px] h-auto md:max-h-[380px]" src={image} alt={alt} />
@@ -113,7 +113,7 @@ const CardServico = ({image, alt, titulo, texto, link}: CardProps) => {
     return(
 <a href={link}>
         <div className="flex flex-col w-full bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] 
-        rounded-lg px-6 py-4 transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] flex-grow cursor-pointer">
+        rounded-lg px-6 py-4 transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] flex-grow cursor-pointer h-full">
         
         <div className="flex justify-center w-full">
             <Image className="w-[200px] md:w-[366px] h-auto md:h-[190px]" src={image} alt={alt} width={366} height={190}

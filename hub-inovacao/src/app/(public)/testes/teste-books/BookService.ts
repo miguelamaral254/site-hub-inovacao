@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Book } from "./Book";  // Ajuste o caminho conforme necessário
-import { Page } from "@/interfaces/PaginationInterface";  // Ajuste o caminho conforme necessário
+
 import api from "@/features/core/api";  // Importe o api configurado
+import { Page } from "@/features/core/page.interface";
 import axios, { AxiosError } from "axios";
 
 // Função para criar um livro

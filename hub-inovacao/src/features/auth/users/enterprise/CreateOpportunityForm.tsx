@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /*
 import React, { useState } from 'react';
 
@@ -7,7 +7,17 @@ import { StatusSolicitation } from '@/features/core/status.interface';
 
 const CreateOpportunityForm: React.FC = () => {
   const [title, setTitle] = useState('');
+  const [areaProblema, setAreaProblema] = useState('');
   const [description, setDescription] = useState('');
+  const [impactoProblema, setImpactoProblema] = useState('');
+  const [solucoesTestadas, setSolucoesTestadas] = useState('');
+  const [expectativa, setExpectativa] = useState('');
+  const [restricoes, setRestricoes] = useState('');
+  const [restricoesDetalhes, setRestricoesDetalhes] = useState('');
+  const [disponibilidadeDados, setDisponibilidadeDados] = useState('');
+  const [mentoriaSuporte, setMentoriaSuporte] = useState('');
+  const [visitatecnica, setVisitaTecnica] = useState('');
+  const [recursosDisponiveis, setRecursosDisponiveis] = useState('');
   const [urlPhoto, setUrlPhoto] = useState<File | null>(null); 
   const [pdfLink, setPdfLink] = useState('');
   const [siteLink, setSiteLink] = useState('');
@@ -69,7 +79,17 @@ const CreateOpportunityForm: React.FC = () => {
       showSuccess("Oportunidade Criada com Sucesso!");
   
       setTitle("");
+      setAreaProblema("");
       setDescription("");
+      setImpactoProblema("");
+      setSolucoesTestadas("");
+      setExpectativa("");
+      setRestricoes("");
+      setRestricoesDetalhes("");
+      setDisponibilidadeDados("");
+      setMentoriaSuporte("");
+      setVisitaTecnica("");
+      setRecursosDisponiveis("");
       setUrlPhoto(null);
       setPdfLink("");
       setSiteLink("");
@@ -98,6 +118,18 @@ const CreateOpportunityForm: React.FC = () => {
             onChange={(e) => setTitle(e.target.value)}
             className="w-full p-3 border border-gray-300 rounded-md"
             placeholder="Digite o título da oportunidade"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="areaproblema" className="block text-sm font-medium mb-2">Área do Problema</label>
+          <input
+            type="text"
+            id="areaproblema"
+            value={areaProblema}
+            onChange={(e) => setAreaProblema(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-md"
+            placeholder="Digite a área do problema a ser resolvido."
           />
         </div>
 
