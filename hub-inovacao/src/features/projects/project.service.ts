@@ -27,8 +27,8 @@ export const searchProjects = async (
     throw error;
   }
 };
-export const createOpportunity = async (formData: FormData): Promise<Project> => {
-  try {
+export const createProject = async (formData: FormData): Promise<Project> => {
+    try {
     const response = await axios.post<Project>(API_URL, formData, {
       headers: {
         "Content-Type": "multipart/form-data",

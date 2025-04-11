@@ -27,7 +27,7 @@ const ProjectCard: React.FC<CardServicoProps> = ({
     title, description, urlPhoto, projectType, createdDate, 
     coauthors, thematicArea, course, problem, generalObjective, 
     specificObjective, expectedResults, status, idUser, idManager, 
-    feedback, justification, enabled, pdfLink, siteLink 
+    feedback, justification, enabled, siteLink 
   } = project;
 
   const { bgColor, icon, label } = typeMap[projectType];

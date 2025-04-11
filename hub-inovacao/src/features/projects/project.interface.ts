@@ -1,7 +1,7 @@
 import { StatusSolicitation } from "../core/status.interface";
 
 export enum ProjectType {
-    PROJETO_INTEGRADOR = "PROJETO_INTEGRADOR",
+    PROJETO_INTEGRADOR = "Projeto Integrador",
     PROJETO_EXTENSAO = "PROJETO_EXTENSAO",
     PROJETO_INOVACAO = "PROJETO_INOVACAO",
 }
@@ -23,7 +23,6 @@ export enum ProjectType {
       title: string;
       description: string;
       urlPhoto: string;
-      pdfLink: string;
       siteLink: string;
       thematicArea: string;
       course: string;
