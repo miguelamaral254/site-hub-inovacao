@@ -15,7 +15,7 @@ export const Finalizado = ({ setStep }: Props) => {
     const { user } = useAuth(); 
 
     const handleSubmit = async () => {
-        const updatedFormData = { ...formData, idUser: user?.idUser as number, status: "PENDENTE" };
+        const updatedFormData = { ...formData, idUser: user?.idUser as number, status: "PENDENTE", description: 'teste', course: 'Sistema de Internet', projectType: 'PROJETO_INOVACAO', thematicArea: 'Vivência' };
       
         const formDataToSend = new FormData();
         formDataToSend.append(
