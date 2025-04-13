@@ -22,14 +22,16 @@ export const Select = ({ options, label, value, onChange }: Props) => {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full p-2 py-4 border rounded-md"
+        className="w-full py-4 px-2 border rounded-md"
       >
+        <option value=''>Selecione</option>
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
           </option>
         ))}
       </select>
+
     </div>
   );
 };

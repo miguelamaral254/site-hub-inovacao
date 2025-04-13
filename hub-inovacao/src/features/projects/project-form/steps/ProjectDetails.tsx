@@ -51,6 +51,7 @@ export const ProjectDetails = ({ setStep }: Props) => {
           <Input
             label="Problema"
             value={formData.problem}
+            isRequired
             onChange={(e) =>
               setFormData({ ...formData, problem: e.target.value })
             }
@@ -59,6 +60,7 @@ export const ProjectDetails = ({ setStep }: Props) => {
           <Input
             label="Objetivos Gerais"
             value={formData.generalObjective}
+            isRequired
             onChange={(e) =>
               setFormData({ ...formData, generalObjective: e.target.value })
             }
@@ -67,6 +69,7 @@ export const ProjectDetails = ({ setStep }: Props) => {
           <Input
             label="Objetivos Específicos"
             value={formData.specificObjective}
+            isRequired
             onChange={(e) =>
               setFormData({ ...formData, specificObjective: e.target.value })
             }
@@ -77,6 +80,7 @@ export const ProjectDetails = ({ setStep }: Props) => {
           <Input
             label="Resultados Esperados"
             value={formData.expectedResults}
+            isRequired
             onChange={(e) =>
               setFormData({ ...formData, expectedResults: e.target.value })
             }

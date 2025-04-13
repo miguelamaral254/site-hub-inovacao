@@ -23,7 +23,7 @@ export enum ProjectType {
       title: string;
       description: string;
       urlPhoto: string;
-      siteLink: string;
+      siteLink?: string;
       thematicArea: string;
       course: string;
       problem: string;

@@ -33,7 +33,7 @@ export const ProjectIdentify = ({ setStep }: Props) => {
     const [error, setError] = useState(false)
     
         const handleNext = () => {
-            if(formData.title || formData.projectType || formData.thematicArea || formData.justification || formData.course){
+            if(formData.title && formData.projectType && formData.thematicArea && formData.justification && formData.course && formData.description){
                 setError(false)
                 setStep(2)
             } else{
@@ -64,6 +64,13 @@ export const ProjectIdentify = ({ setStep }: Props) => {
                         value={formData.thematicArea}
                         onChange={(value) => setFormData({ ...formData, thematicArea: value })}
                     />
+
+                    <Input
+                        label="Descrição do projeto"
+                        value={formData.description}
+                        isRequired
+                        onChange={(e) => setFormData({...formData, description: e.target.value })}
+                    />
                 </div>
                 <div className="w-full flex flex-col gap-6">
                     <Input
@@ -80,7 +87,7 @@ export const ProjectIdentify = ({ setStep }: Props) => {
                     />
                     <Input
                         label="Link do site"
-                        value={formData.siteLink}
+                        value={formData.siteLink as string}
                         onChange={(e) => setFormData({...formData, siteLink: e.target.value })}
                     />
                     
