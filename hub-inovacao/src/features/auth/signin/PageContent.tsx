@@ -4,11 +4,12 @@ import TicketTypeSelector from "./TicketTypeSelector";
 import ProjectTicketList from "@/features/projects/ProjectTicketList";
 import PublishList from "@/features/publish/PublishList";
 import ProjectList from "@/features/projects/ProjectList";
-import { ProjectForm } from "@/components/Form/ProjectForm";
+// import { ProjectForm } from "@/features/projects/cadastro_projeto";
 import { useContext } from "react";
 import { multiStepContext } from "@/features/projects/project-form/StepContext";
 import OpportunityList from "@/features/opportunity/OpportunityList";
 import CreateOpportunityForm from "@/features/opportunity/OpportunityForms";
+import { ProjectForm } from "@/components/Form/ProjectForm";
 
 interface PageContentProps {
   selectedPage: string | null;

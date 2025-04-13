@@ -38,12 +38,6 @@ export const ConfireAnswer = () => {
                         {formData.justification}
                     </div>
                 </div>
-                <div>
-                    <h4>Autor do Projeto</h4>
-                    <div className="border p-2 opacity-50">
-                        {formData.idUser}
-                    </div>
-                </div>
             </div>
 
             <div className="w-full flex flex-col gap-4">

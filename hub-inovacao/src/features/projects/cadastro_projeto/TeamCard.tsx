@@ -12,6 +12,7 @@ export const TeamCard = ({data}: {data: Coauthor}) => {
             <p>{data.email}</p>
             <p>{data.phone}</p>
             <p className="capitalize">{data.position}</p>
+            <h4>fodssssssssssssss</h4>
         </div>
     )
 }

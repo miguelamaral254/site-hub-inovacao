@@ -11,9 +11,23 @@ type Props = {
 }
 
 export const ProjectIdentify = ({ setStep }: Props) => {
-    const typeOption = ['EXTENSÃO', "INTEGRADOR"];
-    const themeOption = ["Educação", "Saúde", "Administração", "Logística"];
-    const cursoOption = ["Análise e Sistemas de computação", "Sistema de Internet", "Técnico em Servidor"];
+    const typeOption = [
+        { value: "PROJETO_EXTENSAO", label: "Projeto de Extensão" },
+        { value: "PROJETO_INTEGRADOR", label: "Projeto Integrador" },
+        { value: "PROJETO_INOVACAO", label: "Projeto de Inovação" },
+    ];
+    const themeOption = [
+        { value: "Educação", label: "Educação" },
+        { value: "Saúde", label: "Saúde" },
+        { value: "Administração", label: "Administração" },
+        { value: "Logística", label: "Logística" },
+      ];
+      
+      const cursoOption = [
+        { value: "Análise e Sistemas de computação", label: "Análise e Sistemas de computação" },
+        { value: "Sistema de Internet", label: "Sistema de Internet" },
+        { value: "Técnico em Servidor", label: "Técnico em Servidor" },
+      ];
 
     const {formData, setFormData} = useContext(multiStepContext)
     const [error, setError] = useState(false)
@@ -34,6 +48,7 @@ export const ProjectIdentify = ({ setStep }: Props) => {
                     <Input
                         label="Título do projeto"
                         value={formData.title}
+                        isRequired
                         onChange={(e) => setFormData({...formData, title: e.target.value })}
                     />
                 
@@ -54,6 +69,7 @@ export const ProjectIdentify = ({ setStep }: Props) => {
                     <Input
                         label="Justificativa"
                         value={formData.justification as string}
+                        isRequired
                         onChange={(e) => setFormData({...formData, justification: e.target.value })}
                     />
                     <Select
@@ -61,6 +77,11 @@ export const ProjectIdentify = ({ setStep }: Props) => {
                         label="Curso"
                         value={formData.course}
                         onChange={(value) => setFormData({ ...formData, course: value })}
+                    />
+                    <Input
+                        label="Link do site"
+                        value={formData.siteLink}
+                        onChange={(e) => setFormData({...formData, siteLink: e.target.value })}
                     />
                     
                 </div>

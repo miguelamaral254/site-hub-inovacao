@@ -100,6 +100,16 @@ export const ProjectDetails = ({ setStep }: Props) => {
               Imagem da Logo ou imagem do projeto
             </div>
           </div>
+
+          {formData.urlPhoto && (
+              <div className="flex justify-center">
+                <img
+                  src={formData.urlPhoto}
+                  alt="Pré-visualização da imagem"
+                  className="mt-4 w-full max-w-xs h-auto object-cover rounded-lg shadow-md"
+                />
+              </div>
+            )}
         </div>
       </div>
 

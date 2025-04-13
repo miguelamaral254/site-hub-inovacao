@@ -15,7 +15,7 @@ export const Finalizado = ({ setStep }: Props) => {
     const { user } = useAuth(); 
 
     const handleSubmit = async () => {
-        const updatedFormData = { ...formData, idUser: user?.idUser as number, status: "PENDENTE", siteLink:"wwww" };
+        const updatedFormData = { ...formData, idUser: user?.idUser as number, status: "PENDENTE" };
       
         const formDataToSend = new FormData();
         formDataToSend.append(
@@ -48,6 +48,7 @@ export const Finalizado = ({ setStep }: Props) => {
           console.log(response);
         } catch (error) {
           console.error("Erro ao enviar projeto:", error);
+          console.log('foi nao pai')
         }
       };
     const {formData, setFormData} = useContext(multiStepContext)
@@ -55,6 +56,7 @@ export const Finalizado = ({ setStep }: Props) => {
     return (
         <div className="flex flex-col gap-6 px-10 mt-12">
             <ConfireAnswer />
+            <h2>Ulquiorra</h2>
 
             <div className="flex w-full justify-end mt-10 gap-6">
                 <ButtonGrandeSeg text="Voltar" onClick={() => setStep(3)}/>
