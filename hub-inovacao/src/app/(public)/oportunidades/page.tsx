@@ -10,13 +10,22 @@ import ImagemBOS from "@/assets/ImagemBOS.svg";
 import banneroportunidades from "@/assets/BannerOportunidades.svg";
 import { ButtonOutline } from "@/components/Button";
 import OpportunityList from "@/features/opportunity/OpportunityList";
+import { OpportunityType } from "@/features/opportunity/opportunity.interface";
 
 const opportunityTypes = ["Oportunidades", "Problemas", "Ideias"];
 
 export default function Oportunidades() {
   const [visibleOpportunities, setVisibleOpportunities] = useState(6);
-  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<OpportunityType | null>(null);
   const [totalOpportunities, setTotalOpportunities] = useState(0);
+  
+  
+  const opportunityTypeOptions = Object.keys(OpportunityType)
+  .filter((key) => isNaN(Number(key))) // Filtrando para não pegar números do enum
+  .map((key) => ({
+    label: key,
+    value: OpportunityType[key as keyof typeof OpportunityType],  // Valor do tipo
+  }));
 
   const filters = {
    status:"aprovada"  
@@ -66,11 +75,6 @@ export default function Oportunidades() {
             Conectamos empresas, estudantes e pesquisadores para transformar desafios reais em inovação. Aqui, você pode desenvolver soluções, criar tecnologias e gerar impacto. Seja parte dessa rede que impulsiona talentos e acelera o futuro. Venha inovar com a gente!
           </p>
         </div>
-
-        <div className="flex flex-wrap justify-center md:justify-end gap-4 mt-6">
-          <Dropdown options={opportunityTypes} onSelect={setSelectedType} defaultText="Filtrar por Tipo" />
-        </div>
-
         <div>
         <OpportunityList filters={filters} />
 

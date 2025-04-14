@@ -18,6 +18,19 @@ const OpportunityModal: React.FC<OpportunityModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
+  function getFormattedOpportunityType(value: number | string ): string {
+    let key: string | undefined;
+    if (typeof value === "number") {
+      key = OpportunityType[value];
+    } else if (typeof value === "string") {
+      key = value;
+    }
+    if (!key || typeof key !== "string") return "Não especificado";
+    return key
+      .replace(/_/g, " ")
+      .toUpperCase()
+  }
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
@@ -50,14 +63,15 @@ const OpportunityModal: React.FC<OpportunityModalProps> = ({
           </p>
         )}
 
-        {opportunity.opportunityType && (
-          <p className={`text-start flex items-center mb-4 px-3 py-2 bg-[#3355A5] text-base rounded-3xl text-white w-auto`}>
-          <strong>Tipo:</strong> {opportunity.opportunityType ? OpportunityType[opportunity.opportunityType as unknown as keyof typeof OpportunityType] : 'Não especificado'}
+        {opportunity.opportunityType !== undefined && (
+          <p className="text-start flex items-center mb-4 px-3 py-2 bg-[#3355A5] text-base rounded-3xl text-white w-auto">
+             <strong className="mr-1">Tipo:</strong>
+             {getFormattedOpportunityType(opportunity.opportunityType)}
           </p>
         )}
 
         {opportunity.descricaoProblema && (
-          <p className="mb-4">{opportunity.descricaoProblema}</p>
+          <p className="mb-4 text-xl text-[#3355a5]"><strong>Descrição:</strong> <span>{opportunity.descricaoProblema}</span></p>
         )}
 
         {opportunity.areaProblema && (

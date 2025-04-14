@@ -1,18 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { OpportunityType } from "@/features/opportunity/opportunity.interface";
 
+export interface DropdownOption<T = any>{
+  label: string;
+  value: T;
+}
 interface DropdownProps {
-  options: string[];
+  options: { label: string; value: OpportunityType }[];
   defaultText?: string;
-  onSelect: (selectedOption: string | null) => void;
+  onSelect: (selectedOption: OpportunityType | null) => void;
+  value?: OpportunityType | null;
 }
 
-const Dropdown = ({ options, defaultText = "Selecione uma opção", onSelect }: DropdownProps) => {
+const Dropdown = ({ options, defaultText = "Selecione uma opção", onSelect, value }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<OpportunityType | null>(null);
 
-  const handleSelect = (option: string) => {
+  const handleSelect = (option: OpportunityType) => {
     setSelectedOption(option);
     setIsOpen(false);
     onSelect(option);
@@ -24,7 +30,7 @@ const Dropdown = ({ options, defaultText = "Selecione uma opção", onSelect }: 
     onSelect(null);
     console.log("❌ Filtros limpos");
   };
-
+  
   return (
     <div className="relative flex items-center space-x-2">
       {/* Botão do Dropdown */}
@@ -33,7 +39,10 @@ const Dropdown = ({ options, defaultText = "Selecione uma opção", onSelect }: 
           onClick={() => setIsOpen(!isOpen)}
           className="px-4 py-2 bg-white border border-gray-300 text-blue-500 rounded-lg shadow-md flex items-center"
         >
-          {selectedOption || defaultText}
+          {(() => {
+            const selected = options.find((opt) => opt.value === value);
+            return selected ? selected.label : defaultText;
+          })()}
         </button>
         {isOpen && (
           <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-300 shadow-lg z-50">
@@ -42,9 +51,9 @@ const Dropdown = ({ options, defaultText = "Selecione uma opção", onSelect }: 
                 <li
                   key={index}
                   className="group flex items-center px-4 py-2 cursor-pointer transition-all duration-300 hover:bg-blue-100"
-                  onClick={() => handleSelect(option)}
+                  onClick={() => handleSelect(option.value)}
                 >
-                  {option}
+                  {option.label}
                 </li>
               ))}
             </ul>
@@ -53,7 +62,7 @@ const Dropdown = ({ options, defaultText = "Selecione uma opção", onSelect }: 
       </div>
 
       {/* Botão "❌" para limpar o filtro */}
-      {selectedOption && (
+      {selectedOption !== null && (
         <button
           onClick={handleClear}
           className="text-red-500 text-lg hover:text-red-700 transition-all duration-300"
