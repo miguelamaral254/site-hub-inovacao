@@ -8,9 +8,10 @@ type Props = {
   label?: string;
   value: string;
   onChange: (value: string) => void;
+  selectText: string
 };
 
-export const Select = ({ options, label, value, onChange }: Props) => {
+export const Select = ({ options, label, value, onChange, selectText }: Props) => {
   return (
     <div className="w-full flex flex-col gap-1">
       {label && (
@@ -24,7 +25,7 @@ export const Select = ({ options, label, value, onChange }: Props) => {
         onChange={(e) => onChange(e.target.value)}
         className="w-full py-4 px-2 border rounded-md"
       >
-        <option value=''>Selecione</option>
+        <option value=''>{selectText}</option>
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}

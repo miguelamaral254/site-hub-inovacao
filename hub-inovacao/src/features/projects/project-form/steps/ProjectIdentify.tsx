@@ -70,12 +70,14 @@ export const ProjectIdentify = ({ setStep }: Props) => {
                         label="Tipo de Projeto"
                         value={safeFormData.projectType}
                         onChange={(value) => setFormData({ ...safeFormData, projectType: value as ProjectType })}
+                        selectText="Selecione"
                     />
                     <Select
                         options={themeOption}
                         label="Área temática"
                         value={safeFormData.thematicArea}
                         onChange={(value) => setFormData({ ...safeFormData, thematicArea: value })}
+                        selectText="Selecione"
                     />
 
                    
@@ -87,6 +89,7 @@ export const ProjectIdentify = ({ setStep }: Props) => {
                         label="Curso"
                         value={safeFormData.course}
                         onChange={(value) => setFormData({ ...safeFormData, course: value })}
+                        selectText="Selecione"
                     />
                     <Input
                         label="Link do site"
