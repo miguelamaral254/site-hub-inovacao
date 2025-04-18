@@ -34,14 +34,13 @@ export const ProjectIdentify = ({ setStep }: Props) => {
         title: '',
         projectType: '',
         thematicArea: '',
-        justification: '',
         course: '',
         description: '',
         siteLink: ''
     };
     const safeFormData = { ...defaultFormData, ...formData };
     const handleNext = () => {
-        if (safeFormData.title && safeFormData.projectType && safeFormData.thematicArea && safeFormData.justification && safeFormData.course && safeFormData.description) {
+        if (safeFormData.title && safeFormData.projectType && safeFormData.thematicArea && safeFormData.course && safeFormData.description) {
             setError(false);
             setStep(2);
         } else {
@@ -59,6 +58,12 @@ export const ProjectIdentify = ({ setStep }: Props) => {
                         isRequired
                         onChange={(e) => setFormData({ ...safeFormData, title: e.target.value })}
                     />
+                     <Input
+                        label="Descrição do projeto"
+                        value={safeFormData.description}
+                        isRequired
+                        onChange={(e) => setFormData({ ...safeFormData, description: e.target.value })}
+                    />
                 
                     <Select
                         options={typeOption}
@@ -73,20 +78,10 @@ export const ProjectIdentify = ({ setStep }: Props) => {
                         onChange={(value) => setFormData({ ...safeFormData, thematicArea: value })}
                     />
 
-                    <Input
-                        label="Descrição do projeto"
-                        value={safeFormData.description}
-                        isRequired
-                        onChange={(e) => setFormData({ ...safeFormData, description: e.target.value })}
-                    />
+                   
                 </div>
                 <div className="w-full flex flex-col gap-6">
-                    <Input
-                        label="Justificativa"
-                        value={safeFormData.justification}
-                        isRequired
-                        onChange={(e) => setFormData({ ...safeFormData, justification: e.target.value })}
-                    />
+                    
                     <Select
                         options={cursoOption}
                         label="Curso"

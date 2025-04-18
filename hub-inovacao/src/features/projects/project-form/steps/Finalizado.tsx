@@ -19,7 +19,7 @@ export const Finalizado = ({ setStep }: Props) => {
 
 
     const handleSubmit = async () => {
-        const updatedFormData = { ...formData, idUser: user?.idUser as number, status: "PENDENTE", description: 'jogar na base do tik-taka', pdfLink: 'ds' };
+        const updatedFormData = { ...formData, idUser: user?.idUser as number, status: "PENDENTE"};
       
         const formDataToSend = new FormData();
         formDataToSend.append(
