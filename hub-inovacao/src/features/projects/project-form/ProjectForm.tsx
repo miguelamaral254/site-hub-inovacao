@@ -2,7 +2,7 @@ import { AddTeam } from "@/features/projects/project-form/steps/AddTeam"
 import { Finalizado } from "@/features/projects/project-form/steps/Finalizado"
 import { ProjectDetails } from "@/features/projects/project-form/steps/ProjectDetails"
 import { ProjectIdentify } from "@/features/projects/project-form/steps/ProjectIdentify"
-import { CheckMark } from "./CheckMark"
+import { CheckMark } from "../../../components/Form/CheckMark"
 
 
 type Props = {

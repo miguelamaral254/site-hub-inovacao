@@ -9,7 +9,7 @@ import { useContext } from "react";
 import { multiStepContext } from "@/features/projects/project-form/StepContext";
 import OpportunityList from "@/features/opportunity/OpportunityList";
 import CreateOpportunityForm from "@/features/opportunity/OpportunityForms";
-import { ProjectForm } from "@/components/Form/ProjectForm";
+import { ProjectForm } from "@/features/projects/project-form/ProjectForm";
 
 interface PageContentProps {
   selectedPage: string | null;
