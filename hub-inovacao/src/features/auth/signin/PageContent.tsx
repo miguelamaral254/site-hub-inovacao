@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { User } from "../users/user.interface";
 import TicketTypeSelector from "./TicketTypeSelector";
 import ProjectTicketList from "@/features/projects/ProjectTicketList";

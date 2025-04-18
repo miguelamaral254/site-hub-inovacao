@@ -14,12 +14,12 @@ const OpportunityList: React.FC<OpportunityListProps> = ({ filters }) => {
   const [loading, setLoading] = useState<boolean>(false);
  
 const opportunityTypeOptions = Object.entries(OpportunityType)
-  .filter(([key]) => isNaN(Number(key))) // pega só as chaves string
+  .filter(([key]) => isNaN(Number(key))) 
   .map(([key, value]) => ({
     label: key
       .toLowerCase()
       .replace(/_/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase()), // ex: "BANCO_DE_OPORTUNIDADE" → "Banco De Oportunidade"
+      .replace(/\b\w/g, (char) => char.toUpperCase()), 
     value: value as OpportunityType,
   }));
 
@@ -31,22 +31,9 @@ const opportunityTypeOptions = Object.entries(OpportunityType)
       try {
         const composedFilters = {
           ...filters,
-          ...(selectedType !== null && { opportunityType: selectedType }), // adiciona `type` somente se selecionado
+          ...(selectedType !== null && { opportunityType: selectedType }), 
         };
-      
-        const params = new URLSearchParams(
-          Object.entries(composedFilters).reduce((acc, [key, value]) => {
-            acc[key] = String(value); // garante que o value é string
-            return acc;
-          }, {} as Record<string, string>)
-        ).toString();
-
-        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/opportunities?${params}`;
-        console.log("Requisição enviada:", url);
-
         const response = await searchOpportunities(composedFilters);
-        console.log("Oportunidades encontradas:", response);
-
         const opportunitiesData = (response?.data?.content || []).filter((opp: Opportunity) => {
           if (selectedType === null) return true;
         

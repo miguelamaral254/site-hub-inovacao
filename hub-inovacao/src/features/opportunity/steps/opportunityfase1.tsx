@@ -10,14 +10,7 @@ interface StepOneProps {
   description: string;
   setDescription: (value: string) => void;
 }
-/*
-const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
-  };
- */
 
-  
 export const StepOne: React.FC<StepOneProps> = ({
   title,
   setTitle,
@@ -29,7 +22,7 @@ export const StepOne: React.FC<StepOneProps> = ({
   setDescription,
 }) => {
   
-    return (
+  return (
     <>
       <div className="flex flex-col gap-6">
         <div className="flex flex-col md:flex-row gap-4">
@@ -51,45 +44,48 @@ export const StepOne: React.FC<StepOneProps> = ({
             <select 
               id="typeopportunity"
               value={typeopportunity}
-              onChange={(e) => { const selected = e.target.value; setTypeopportunity(selected === "" ? "": Number(selected))}}
-              className="border border-gray-300 rounded px-2 py-2 w-full">
-                <option value={undefined}>Selecione o tipo</option>
-                {Object.keys(OpportunityType)
-                .filter((key) => isNaN(Number(key)))
+              onChange={(e) => {
+                const selected = e.target.value;
+                setTypeopportunity(selected === "" ? "" : Number(selected));
+              }}
+              className="border border-gray-300 rounded px-2 py-2 w-full"
+            >
+              <option value="">Selecione o tipo</option>
+              {Object.keys(OpportunityType)
+                .filter((key) => isNaN(Number(key))) // Filtro para pegar as chaves que não são números
                 .map((key) => (
-                <option
-                key={key}
-                value={OpportunityType[key as keyof typeof OpportunityType]}
-                >
-                {key.replace(/_/g, " ")}
-              </option>
-            ))}
+                  <option
+                    key={key}
+                    value={OpportunityType[key as keyof typeof OpportunityType]}
+                  >
+                    {key.replace(/_/g, " ")}  {/* Exibe a string com espaços */}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
-          <div>
-            <label htmlFor="restricoes" className="block text-base font-medium mb-2">Restrições</label>
-            <input
-              type="text"
-              id="restricoes"
-              value={restricoes}
-              onChange={(e) => setRestricoes(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              placeholder="Digite qual as restrições que há no projeto"
-            />
-          </div>
-          <div>
-            <label htmlFor="description" className="block text-base font-medium mb-2">Descrição</label>
-            <textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              placeholder="Descreva a oportunidade"
-            />
-          </div>
+        <div>
+          <label htmlFor="restricoes" className="block text-base font-medium mb-2">Restrições</label>
+          <input
+            type="text"
+            id="restricoes"
+            value={restricoes}
+            onChange={(e) => setRestricoes(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-md"
+            placeholder="Digite qual as restrições que há no projeto"
+          />
         </div>
-
+        <div>
+          <label htmlFor="description" className="block text-base font-medium mb-2">Descrição</label>
+          <textarea
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-md"
+            placeholder="Descreva a oportunidade"
+          />
+        </div>
+      </div>
     </>
-    )
+  );
 };

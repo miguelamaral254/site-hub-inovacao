@@ -7,8 +7,8 @@ import { createOpportunity } from "./OpportunityService";
 import { Opportunity, OpportunityType } from "./opportunity.interface";
 import { StatusSolicitation } from "../core/status.interface";
 import { useAuth } from "@/context/useContext";
-import {StepTwo} from "./steps/opportunityfase2";
-import {StepThree} from "./steps/opportunityfase3";
+import { StepTwo } from "./steps/opportunityfase2";
+import { StepThree } from "./steps/opportunityfase3";
 import { StepOne } from "./steps/opportunityfase1";
 import { Resume } from "./steps/resume";
 
@@ -23,7 +23,7 @@ const CreateOpportunityForm: React.FC = () => {
   const [solucoesTestadas, setSolucoesTestadas] = useState('');
   const [expectativa, setExpectativa] = useState('');
   const [restricoes, setRestricoes] = useState('');
-  const [typeopportunity, setTypeopportunity] = useState<number | "">("");
+  const [typeopportunity, setTypeopportunity] = useState<number | "">(""); // Aqui
   const [disponibilidadeDados, setDisponibilidadeDados] = useState('');
   const [mentoriaSuporte, setMentoriaSuporte] = useState<boolean | null>(null);
   const [visitatecnica, setVisitaTecnica] = useState<boolean | null>(null);
@@ -48,7 +48,7 @@ const CreateOpportunityForm: React.FC = () => {
     visitasTecnicas: visitatecnica ?? undefined,
     recursosDisponiveis: ["Materiais", "Infraestrutura", "Banco de dados"],
     autorizacao: true,
-    opportunityType: OpportunityType.BANCO_DE_PROBLEMA,
+    opportunityType: typeopportunity || OpportunityType.BANCO_DE_PROBLEMA, // Aqui usamos o valor de typeopportunity
     enterpriseId: currentUser,
     status: StatusSolicitation.PENDENTE,
   };
@@ -58,8 +58,7 @@ const CreateOpportunityForm: React.FC = () => {
       {title: "2º Etapa", Subtitle: "Identificar o problema"},
       {title: "3º Etapa", Subtitle: "Identificar o suporte"},
       {title: "4º Etapa", Subtitle: "Resumo da oportunidade"},
-
-    ]
+    ];
 
     const steps = [
      () => <StepOne
@@ -139,27 +138,22 @@ const CreateOpportunityForm: React.FC = () => {
 
           return (
             <div key={index} className="flex-1 flex flex-col items-center relative z-10">
-              {/* Linha de conexão à direita */}
               {index < stepLabels.length - 1 && (
                 <div className="absolute top-6 left-1/2 w-full h-0.5 bg-gray-300 z-0"></div>
               )}
-
-              {/* Bolinha sempre com check */}
               <div
                 className={`w-12 h-12 rounded-full flex items-center justify-center text-white text-xl font-bold z-10
                   ${isCompleted ? "bg-green-500" : isActive ? "bg-orange-500" : "bg-gray-300"}`}
               >
                 ✓
               </div>
-
-              {/* Títulos */}
               <div className={`mt-2 text-center px-4 py-2 rounded-xs transition-all duration-300 ${isActive
                 ? "bg-orange-600" : "bg-orange-50 opacity-60"
               }`}>
                 <p className={`text-base font-light ${isActive ? "text-white" : "text-gray-500"}`}>{step.title}</p>
                 <p
                   className={`text-base ${
-                    isActive ? "text-orange-600 text-white font-xs" : "text-gray-500"
+                    isActive ? "text-orange-600 font-xs" : "text-gray-500"
                   }`}
                 >
                   {step.Subtitle}
