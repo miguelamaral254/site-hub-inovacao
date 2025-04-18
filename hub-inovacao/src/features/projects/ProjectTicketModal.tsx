@@ -17,7 +17,7 @@ const ProjectTicketModal: React.FC<ProjectModalProps> = ({ project, handleClose 
   const {
     id, title, description, urlPhoto, createdDate,
     coauthors, thematicArea, course, problem, generalObjective,
-    specificObjective, expectedResults, status, pdfLink, siteLink,
+    specificObjective, expectedResults, status, siteLink,
     feedback: initialFeedback, justification: initialJustification
   } = project;
 
@@ -90,7 +90,6 @@ const ProjectTicketModal: React.FC<ProjectModalProps> = ({ project, handleClose 
             <p className="text-sm text-gray-600 mt-2"><strong>Problema:</strong> {problem || "Não especificado"}</p>
             <p className="text-sm text-gray-600 mt-2"><strong>Área Temática:</strong> {thematicArea || "Não especificada"}</p>
             <p className="text-sm text-gray-600 mt-2"><strong>Link do Projeto:</strong> <a href={siteLink} className="text-blue-600" target="_blank">{siteLink || "Não disponível"}</a></p>
-            <p className="text-sm text-gray-600 mt-2"><strong>PDF do Projeto:</strong> <a href={pdfLink} className="text-blue-600" target="_blank">{pdfLink || "Não disponível"}</a></p>
             <p className="text-sm text-gray-600 mt-2"><strong>Status atual:</strong> {status || "Não especificado"}</p>
           </div>
         </div>
