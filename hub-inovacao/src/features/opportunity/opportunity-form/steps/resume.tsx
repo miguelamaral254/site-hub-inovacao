@@ -1,5 +1,5 @@
+import { Opportunity, OpportunityType } from "../../opportunity.interface";
 
-import { Opportunity, OpportunityType } from "../opportunity.interface";
 
 interface ResumeProps {
     opportunityData: Opportunity

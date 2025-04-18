@@ -1,4 +1,4 @@
-import { OpportunityType } from "../opportunity.interface";
+import { OpportunityType } from "../../opportunity.interface";
 
 interface StepOneProps {
   title: string;
@@ -52,13 +52,13 @@ export const StepOne: React.FC<StepOneProps> = ({
             >
               <option value="">Selecione o tipo</option>
               {Object.keys(OpportunityType)
-                .filter((key) => isNaN(Number(key))) // Filtro para pegar as chaves que não são números
+                .filter((key) => isNaN(Number(key)))
                 .map((key) => (
                   <option
                     key={key}
                     value={OpportunityType[key as keyof typeof OpportunityType]}
                   >
-                    {key.replace(/_/g, " ")}  {/* Exibe a string com espaços */}
+                    {key.replace(/_/g, " ")}  
                   </option>
                 ))}
             </select>
