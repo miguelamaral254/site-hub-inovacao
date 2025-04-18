@@ -7,6 +7,10 @@ import { createOpportunity } from "./OpportunityService";
 import { Opportunity, OpportunityType } from "./opportunity.interface";
 import { StatusSolicitation } from "../core/status.interface";
 import { useAuth } from "@/context/useContext";
+import {StepTwo} from "./steps/opportunityfase2";
+import {StepThree} from "./steps/opportunityfase3";
+import { StepOne } from "./steps/opportunityfase1";
+import { Resume } from "./steps/resume";
 
 const CreateOpportunityForm: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -19,10 +23,12 @@ const CreateOpportunityForm: React.FC = () => {
   const [solucoesTestadas, setSolucoesTestadas] = useState('');
   const [expectativa, setExpectativa] = useState('');
   const [restricoes, setRestricoes] = useState('');
+  const [typeopportunity, setTypeopportunity] = useState<number | "">("");
   const [disponibilidadeDados, setDisponibilidadeDados] = useState('');
   const [mentoriaSuporte, setMentoriaSuporte] = useState<boolean | null>(null);
   const [visitatecnica, setVisitaTecnica] = useState<boolean | null>(null);
   const [recursosDisponiveis, setRecursosDisponiveis] = useState<string[]>([]);  
+  const [currentStep, setCurrentStep] = useState(0);
   const {user} = useAuth();
   const currentUser = user?.idUser;
   const { showSuccess, showError } = useSwal();
@@ -46,6 +52,47 @@ const CreateOpportunityForm: React.FC = () => {
     enterpriseId: currentUser,
     status: StatusSolicitation.PENDENTE,
   };
+
+    const stepLabels = [
+      {title: "1º Etapa", Subtitle: "Identificar a oportunidade"},
+      {title: "2º Etapa", Subtitle: "Identificar o problema"},
+      {title: "3º Etapa", Subtitle: "Identificar o suporte"},
+      {title: "4º Etapa", Subtitle: "Resumo da oportunidade"},
+
+    ]
+
+    const steps = [
+     () => <StepOne
+      title={title}
+      setTitle={setTitle}
+      typeopportunity={typeopportunity}
+      setTypeopportunity={setTypeopportunity}
+      restricoes={restricoes}
+      setRestricoes={setRestricoes}
+      description={description}
+      setDescription={setDescription}/>,
+     () => <StepTwo 
+      areaProblema={areaProblema}
+      setAreaProblema={setAreaProblema}
+      impactoProblema={impactoProblema}
+      setImpactoProblema={setImpactoProblema}
+      expectativa={expectativa}
+      setExpectativa={setExpectativa}
+      solucoesTestadas={solucoesTestadas}
+      setSolucoesTestadas={setSolucoesTestadas}/>,
+     () => <StepThree 
+      disponibilidadeDados={disponibilidadeDados}
+      setDisponibilidadeDados={setDisponibilidadeDados}
+      mentoriaSuporte={mentoriaSuporte}
+      setMentoriaSuporte={setMentoriaSuporte}
+      visitatecnica={visitatecnica}
+      setVisitaTecnica={setVisitaTecnica}
+      recursosDisponiveis={recursosDisponiveis}
+      setRecursosDisponiveis={setRecursosDisponiveis}
+      imageFile={imageFile}
+      setImageFile={setImageFile}/>,
+      () => <Resume opportunityData={opportunityData}/>
+    ];
 
   const handleSubmit = async () => {
     if (!imageFile) {
@@ -82,190 +129,77 @@ const CreateOpportunityForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-semibold mb-4">Criar Oportunidade</h2>
-
+    <div className="mx-auto p-6">
       {errorMessage && <p className="text-red-600 mb-4">{errorMessage}</p>}
 
-      <form onSubmit={(e) => e.preventDefault()}>
-        <div className="mb-4">
-          <label htmlFor="title" className="block text-sm font-medium mb-2">
-            Título da Oportunidade
-          </label>
-          <input
-            type="text"
-            id="title"
-            value={title}  
-            onChange={(e) => setTitle(e.target.value)} 
-            placeholder="Digite o título da oportunidade"
-            className="w-full p-3 border border-gray-300 rounded-md"
-          />
-        </div>
+      <div className="flex items-center justify-between mb-8 relative">
+        {stepLabels.map((step, index) => {
+          const isCompleted = index < currentStep;
+          const isActive = index === currentStep;
 
-        <div className="mb-4">
-          <label htmlFor="areaproblema" className="block text-sm font-medium mb-2">Área do Problema</label>
-          <input
-            type="text"
-            id="areaproblema"
-            value={areaProblema}
-            onChange={(e) => setAreaProblema(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Digite a área do problema a ser resolvido."
-          />
-        </div>
+          return (
+            <div key={index} className="flex-1 flex flex-col items-center relative z-10">
+              {/* Linha de conexão à direita */}
+              {index < stepLabels.length - 1 && (
+                <div className="absolute top-6 left-1/2 w-full h-0.5 bg-gray-300 z-0"></div>
+              )}
 
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-sm font-medium mb-2">Descrição</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Descreva a oportunidade"
-          />
-        </div>
+              {/* Bolinha sempre com check */}
+              <div
+                className={`w-12 h-12 rounded-full flex items-center justify-center text-white text-xl font-bold z-10
+                  ${isCompleted ? "bg-green-500" : isActive ? "bg-orange-500" : "bg-gray-300"}`}
+              >
+                ✓
+              </div>
 
-        <div className="mb-4">
-          <label htmlFor="impactoproblema" className="block text-sm font-medium mb-2">Impacto do Problema</label>
-          <input
-            type="text"
-            id="impactoProblema"
-            value={impactoProblema}
-            onChange={(e) => setImpactoProblema(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Digite o impacto do problema"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="solucoestestadas" className="block text-sm font-medium mb-2">Soluções Testadas</label>
-          <input
-            type="text"
-            id="solucoestestadas"
-            value={solucoesTestadas}
-            onChange={(e) => setSolucoesTestadas(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Digite a solução que fooi realizada o teste"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="expectativas" className="block text-sm font-medium mb-2">Expectativas</label>
-          <input
-            type="text"
-            id="expectativas"
-            value={expectativa}
-            onChange={(e) => setExpectativa(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Digite qual sua expectativa com o projeto"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="restricoes" className="block text-sm font-medium mb-2">Restrições</label>
-          <input
-            type="text"
-            id="restricoes"
-            value={restricoes}
-            onChange={(e) => setRestricoes(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Digite qual as restrições que há no projeto"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Disponibilidade de Dados</label>
-          <div className="flex gap-4">
-            {["Sim", "Não"].map((opcao) => (
-              <label key={opcao} className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  id={`disponibilidade-${opcao}`}
-                  name="disponibilidadeDados"
-                  value={opcao}
-                  checked={disponibilidadeDados === opcao}
-                  onChange={(e) => setDisponibilidadeDados(e.target.value)}
-                  className="cursor-pointer"
-                />
-                {opcao}
-              </label>
-            ))}
-          </div>
-        </div>
-
-        {[
-          { label: "Mentoria e Suporte", name: "mentoriaSuporte", value: mentoriaSuporte, setter: setMentoriaSuporte },
-          { label: "Visita Técnica", name: "visitaTecnica", value: visitatecnica, setter: setVisitaTecnica },
-        ].map(({ label, name, value, setter }) => (
-          <div key={name} className="mb-4">
-            <label className="block text-sm font-medium mb-2">{label}</label>
-            <div className="flex gap-4">
-              {[
-                { text: "Sim", boolValue: true },
-                { text: "Não", boolValue: false },
-              ].map(({ text, boolValue }) => (
-                <label key={text}>
-                  <input
-                    type="radio"
-                    name={name}
-                    value={String(boolValue)}
-                    checked={value === boolValue}
-                    onChange={() => setter(boolValue)}
-                  />{" "}
-                  {text}
-                </label>
-              ))}
+              {/* Títulos */}
+              <div className={`mt-2 text-center px-4 py-2 rounded-xs transition-all duration-300 ${isActive
+                ? "bg-orange-600" : "bg-orange-50 opacity-60"
+              }`}>
+                <p className={`text-base font-light ${isActive ? "text-white" : "text-gray-500"}`}>{step.title}</p>
+                <p
+                  className={`text-base ${
+                    isActive ? "text-orange-600 text-white font-xs" : "text-gray-500"
+                  }`}
+                >
+                  {step.Subtitle}
+                </p>
+              </div>
             </div>
+          );
+        })}
+      </div>
+      <form onSubmit={(e) => e.preventDefault()}>
+          <div>
+            {steps[currentStep]()}
           </div>
-        ))}
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Recursos Disponíveis</label>
-          <div className="flex flex-col gap-2">
-            {["Materiais", "Infraestrutura", "Banco de Dados"].map((recurso) => (
-              <label key={recurso}>
-                <input
-                  type="checkbox"
-                  value={recurso}
-                  checked={recursosDisponiveis.includes(recurso)}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setRecursosDisponiveis([...recursosDisponiveis, recurso]);
-                    } else {
-                      setRecursosDisponiveis(recursosDisponiveis.filter((r) => r !== recurso));
-                    }
-                  }}
-                />{" "}
-                {recurso}
-              </label>
-            ))}
+          <div className="flex justify-between mt-6">
+            <button
+              onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 0))}
+              disabled={currentStep === 0}
+              className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
+            >
+              Anterior
+            </button>
+            <button
+              onClick={() => setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1))}
+              disabled={currentStep === steps.length - 1}
+              className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
+            >
+              Próximo
+            </button>
           </div>
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="imageFile" className="block text-sm font-medium mb-2">
-            Escolher Imagem
-          </label>
-          <input
-            type="file"
-            id="imageFile"
-            accept="image/*"
-            onChange={(e) =>
-              setImageFile(e.target.files ? e.target.files[0] : null)
-            }
-            className="w-full p-3 border border-gray-300 rounded-md"
-          />
-        </div>
-
-        <div className="flex justify-between mt-4">
-          <button
-            onClick={handleSubmit}
-            disabled={isLoading}
-            className="bg-blue-600 text-white px-6 py-3 rounded-md w-full hover:bg-blue-700 transition"
-          >
-            {isLoading ? "Enviando..." : "Criar Oportunidade"}
-          </button>
-        </div>
+        {currentStep === steps.length -1 && (
+          <div className="flex justify-between mt-4">
+            <button
+              onClick={handleSubmit}
+              disabled={isLoading}
+              className="bg-blue-600 text-white px-6 py-3 rounded-md w-full hover:bg-blue-700 transition"
+            >
+              {isLoading ? "Enviando..." : "Criar Oportunidade"}
+            </button>
+          </div>
+        )}
       </form>
     </div>
   );

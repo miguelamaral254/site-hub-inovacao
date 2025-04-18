@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { User } from "../users/user.interface";
 import TicketTypeSelector from "./TicketTypeSelector";
 import ProjectTicketList from "@/features/projects/ProjectTicketList";
@@ -26,6 +27,7 @@ export default function PageContent({
   const regularUser = {
     userId: userId ?? 0,
   };
+
 
   const managerProjectTicket = {
     status: "pendente",
@@ -129,12 +131,9 @@ export default function PageContent({
         )}
         {selectedPage === "page7" && role === "ENTERPRISE" && (
           <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6">
-            Submeter Oportunidades
+            <h3 className="text-2xl font-semibold text-blue-500 mb-20">
+              Nova Submissão
             </h3>
-            <p className="text-lg text-gray-600 mb-4">
-              Crie e acompanhar seu progresso e melhorias necessárias.
-            </p>
             <div className="space-y-4">
              <CreateOpportunityForm/>
             </div>
