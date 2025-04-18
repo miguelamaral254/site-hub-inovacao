@@ -51,6 +51,7 @@ const opportunityTypeOptions = Object.entries(OpportunityType)
     const matchesType = selectedType ? opportunity.opportunityType === selectedType : true;
     return matchesTitle && matchesType;
   });
+
   return (
     <div className="w-full py-6">
         <div className="flex gap-4 mb-6">

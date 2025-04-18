@@ -5,11 +5,9 @@ import ideias from "@/assets/ImagensIncubadora/LogoIdeias.png";
 import mentorias from "@/assets/ImagensIncubadora/MentoriasPersonalizadas.png";
 import ecosistema from "@/assets/ImagensIncubadora/Ecossistema.png"
 import desafios from "@/assets/ImagensIncubadora/Desafios.png";
-import { Dropdown } from "@/components/Dropdown";
 import { CardStartup, CardServico } from "@/components/Card";
 import { ButtonOutline } from "@/components/Button";
 import ImageProjeto from "@/assets/ImagemBOS.svg"
-
 import { ButtonGrandeSeg } from "@/components/Button";
 import bannerincubadora from "@/assets/BannerIncubadora.svg"
 import PassouEncontrou from "@/assets/Startups/PassouEncontrou.png"
@@ -18,11 +16,6 @@ import Elementum from "@/assets/Startups/Elementum.png"
 import NOOK from "@/assets/Startups/NOOK.png"
 
 export default function Incubadora() {
-  const options = ["Opção 1", "Opção 2", "Opção 3"];
-
-  const handleSelect = (selectedOption: string | null) => {
-    console.log("Opção selecionada:", selectedOption);
-  };
 
   return (
     <div className="bg-[#F9F9F9]">
@@ -60,9 +53,7 @@ export default function Incubadora() {
             Venha descobrir o futuro da inovação e do empreendedorismo no SENAC PE!   
           </p>      
         </div>
-        <div className="flex justify-end mt-4">
-          <Dropdown options={options} onSelect={handleSelect} />
-        </div>
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6  mt-6">
           <CardStartup 
             image={PassouEncontrou} 

@@ -18,9 +18,11 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity }) => {
     setIsModalOpen(false);
   };
 
-  function getFormattedOpportunityType(value: string | OpportunityType | undefined): string {
-    if (value === undefined) return "Não especificado"; 
-    
+  function getFormattedOpportunityType(
+    value: string | OpportunityType | undefined
+  ): string {
+    if (value === undefined) return "Não especificado";
+
     const typeMap: Record<OpportunityType, string> = {
       [OpportunityType.BANCO_DE_OPORTUNIDADE]: "Banco de Oportunidades",
       [OpportunityType.BANCO_DE_PROBLEMA]: "Banco de Problemas",
@@ -28,12 +30,12 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity }) => {
       [OpportunityType.DESAFIO]: "Desafio",
     };
     if (typeof value === "string") {
-      const opportunityTypeEnum = OpportunityType[value as keyof typeof OpportunityType];
+      const opportunityTypeEnum =
+        OpportunityType[value as keyof typeof OpportunityType];
       return typeMap[opportunityTypeEnum] || "Não especificado";
     }
     return typeMap[value] || "Não especificado";
   }
-
 
   return (
     <div className="flex flex-col w-full max-w-[350px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg px-3 py-4 ml-[32px] transition-shadow duration-300 relative">
@@ -63,15 +65,11 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity }) => {
         <p className="text-gray-600 mt-4">
           <strong>Expectativas:</strong> {opportunity.expectativas}
         </p>
-        <p>
 
-       
-          <p className="text-start flex items-center mb-4 px-3 py-2 bg-[#3355A5] text-base rounded-3xl text-white w-auto">
-                <strong className="mr-1">Tipo:</strong>
-                {getFormattedOpportunityType(opportunity.opportunityType)}
-              </p>
-            
-            </p>
+        <p className="text-start flex items-center mb-4 px-3 py-2 bg-[#3355A5] text-base rounded-3xl text-white w-auto">
+          <strong className="mr-1">Tipo:</strong>
+          {getFormattedOpportunityType(opportunity.opportunityType)}
+        </p>
 
         {opportunity.mentoriaSuporte && (
           <p className="text-green-500 mt-4">Mentoria e Suporte disponível</p>
@@ -83,7 +81,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity }) => {
 
       <div className="absolute bottom-4 right-4 flex flex-col gap-2">
         <button
-          onClick={openModal} 
+          onClick={openModal}
           className="text-sm text-center py-1.5 px-3 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition duration-200"
         >
           Conheça mais a oportunidade
