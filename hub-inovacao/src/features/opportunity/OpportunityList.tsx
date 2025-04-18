@@ -50,7 +50,6 @@ const opportunityTypeOptions = Object.entries(OpportunityType)
 
     fetchOpportunities();
   }, [filters, selectedType]);
-  console.log("📦 Oportunidades carregadas:", opportunities);
   return (
     <div className="w-full py-6">
         <div className="flex flex-wrap justify-center md:justify-end gap-4 mt-6">
