@@ -26,7 +26,6 @@ export const Finalizado = ({ setStep }: Props) => {
         );
         console.log("DTO enviado:", updatedFormData);
 
-        // Se você estiver salvando a imagem como base64 (urlPhoto), você precisa converter isso em um arquivo.
         if (formData.urlPhoto) {
           const byteString = atob(formData.urlPhoto.split(",")[1]);
           const mimeString = formData.urlPhoto.split(",")[0].split(":")[1].split(";")[0];
