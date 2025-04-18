@@ -106,7 +106,7 @@ const PublishList: React.FC = () => {
         />
       )}
 
-      {selectedPublication && (
+      {selectedPublication && role === "ROLE_MANAGER" && (
         <PublishModal
           publish={selectedPublication}
           onClose={closeModal}

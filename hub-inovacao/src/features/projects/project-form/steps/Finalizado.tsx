@@ -5,6 +5,8 @@ import { ConfireAnswer } from "../ConfireAnswer";
 import { ButtonGrande, ButtonGrandeSeg } from "@/components/Button";
 import { useAuth } from "@/context/useContext";
 import { createProject } from "../../project.service";
+import { Project } from "../../project.interface";
+import useSwal from "@/hooks/useSwal";
 
 type Props = {
     setStep: (step: number) => void
@@ -12,10 +14,12 @@ type Props = {
 
 export const Finalizado = ({ setStep }: Props) => {
 
-    const { user } = useAuth(); 
+    const { user } = useAuth();
+    const { showSuccess, showError } = useSwal();
+
 
     const handleSubmit = async () => {
-        const updatedFormData = { ...formData, idUser: user?.idUser as number, status: "PENDENTE" };
+        const updatedFormData = { ...formData, idUser: user?.idUser as number, status: "PENDENTE"};
       
         const formDataToSend = new FormData();
         formDataToSend.append(
@@ -46,9 +50,13 @@ export const Finalizado = ({ setStep }: Props) => {
         try {
           const response = await createProject(formDataToSend);
           console.log(response);
+          setFormData({} as Project)
+          showSuccess("Projeto cadastrado com sucesso!", "mandou bem demais");
+          setStep(1)
         } catch (error) {
           console.error("Erro ao enviar projeto:", error);
           console.log('foi nao pai')
+          showError('Erro ao cadastrar projeto!', 'verifique os campos corretamente')
         }
       };
     const {formData, setFormData} = useContext(multiStepContext)

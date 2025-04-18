@@ -35,24 +35,15 @@ const OpportunityTicketCard: React.FC<CardServicoProps> = ({ opportunity }) => {
       className="p-4 border-b bg-white rounded-lg shadow-md hover:shadow-xl mb-6 cursor-pointer"
       onClick={() => setIsModalOpen(true)}
     >
-      {/* Título do Desafio */}
       <p className="text-sm text-gray-700 font-semibold">{tituloDesafio || "Título do Desafio Indefinido"}</p>
 
-      {/* Informações complementares
-     
-      <p className="text-xs text-gray-500">{formatDate(createdDate)}</p>
-      <p className="text-xs text-gray-500">{coauthors?.join(", ") || "Autor(es) Indefinido(s)"}</p>
-  */}
-  
-      {/* Tipo da Oportunidade */}
+    
       <p className={`mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-3xl text-white ${bgColor}`}>
         {label}
       </p>
 
-      {/* Descrição resumida */}
       <p className="text-sm text-gray-600 mt-2 max-h-16 overflow-hidden">{descricaoProblema || "Sem descrição disponível"}</p>
 
-      {/* Modal da Oportunidade */}
       {isModalOpen && (
         <OpportunityTicketModal opportunity={opportunity} handleClose={() => setIsModalOpen(false)} />
       )}

@@ -19,7 +19,6 @@ const initialProject: Project = {
     title: '',
     description: '',
     urlPhoto: '',
-    pdfLink: '',
     siteLink: '',
     thematicArea: '',
     course: '',

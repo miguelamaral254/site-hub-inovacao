@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { ButtonGrande, ButtonGrandeSeg } from "@/components/Button";
 import { Input } from "@/components/Form/Input";
 import { useContext, useRef, useState } from "react";
@@ -14,13 +15,21 @@ export const ProjectDetails = ({ setStep }: Props) => {
   const [error, setError] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const defaultFormData = {
+    problem: '',
+    specificObjective: '',
+    generalObjective: '',
+    expectedResults: '',
+    urlPhoto: '', 
+  };
+  const safeFormData = { ...defaultFormData, ...formData };
 
   const handleNext = () => {
     if (
-      formData.problem ||
-      formData.specificObjective ||
-      formData.generalObjective ||
-      formData.expectedResults
+      safeFormData.problem ||
+      safeFormData.specificObjective ||
+      safeFormData.generalObjective ||
+      safeFormData.expectedResults
     ) {
       setError(false);
       setStep(4);
@@ -38,7 +47,7 @@ export const ProjectDetails = ({ setStep }: Props) => {
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData({ ...formData, urlPhoto: reader.result as string });
+        setFormData({ ...safeFormData, urlPhoto: reader.result as string });
       };
       reader.readAsDataURL(file);
     }
@@ -50,25 +59,28 @@ export const ProjectDetails = ({ setStep }: Props) => {
         <div className="w-full flex flex-col gap-4">
           <Input
             label="Problema"
-            value={formData.problem}
+            value={safeFormData.problem}
+            isRequired
             onChange={(e) =>
-              setFormData({ ...formData, problem: e.target.value })
+              setFormData({ ...safeFormData, problem: e.target.value })
             }
             isBig={true}
           />
           <Input
             label="Objetivos Gerais"
-            value={formData.generalObjective}
+            value={safeFormData.generalObjective}
+            isRequired
             onChange={(e) =>
-              setFormData({ ...formData, generalObjective: e.target.value })
+              setFormData({ ...safeFormData, generalObjective: e.target.value })
             }
             isBig={true}
           />
           <Input
             label="Objetivos Específicos"
-            value={formData.specificObjective}
+            value={safeFormData.specificObjective}
+            isRequired
             onChange={(e) =>
-              setFormData({ ...formData, specificObjective: e.target.value })
+              setFormData({ ...safeFormData, specificObjective: e.target.value })
             }
             isBig={true}
           />
@@ -76,9 +88,10 @@ export const ProjectDetails = ({ setStep }: Props) => {
         <div className="w-full flex flex-col gap-4">
           <Input
             label="Resultados Esperados"
-            value={formData.expectedResults}
+            value={safeFormData.expectedResults}
+            isRequired
             onChange={(e) =>
-              setFormData({ ...formData, expectedResults: e.target.value })
+              setFormData({ ...safeFormData, expectedResults: e.target.value })
             }
             isBig={true}
           />
@@ -101,15 +114,15 @@ export const ProjectDetails = ({ setStep }: Props) => {
             </div>
           </div>
 
-          {formData.urlPhoto && (
-              <div className="flex justify-center">
-                <img
-                  src={formData.urlPhoto}
-                  alt="Pré-visualização da imagem"
-                  className="mt-4 w-full max-w-xs h-auto object-cover rounded-lg shadow-md"
-                />
-              </div>
-            )}
+          {safeFormData.urlPhoto && (
+            <div className="flex justify-center">
+              <img
+                src={safeFormData.urlPhoto}
+                alt="Pré-visualização da imagem"
+                className="mt-4 w-full max-w-xs h-auto object-cover rounded-lg shadow-md"
+              />
+            </div>
+          )}
         </div>
       </div>
 
