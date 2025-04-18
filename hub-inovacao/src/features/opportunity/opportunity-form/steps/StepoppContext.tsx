@@ -1,7 +1,7 @@
 'use client'
 
 import {  createContext, ReactNode, useState } from "react"
-import { Opportunity, OpportunityType } from "../opportunity.interface"
+import { Opportunity, OpportunityType } from "../../opportunity.interface"
 import { StatusSolicitation } from "@/features/core/status.interface"
 
 type ContextType = {

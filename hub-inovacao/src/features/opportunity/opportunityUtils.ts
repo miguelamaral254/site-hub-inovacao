@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { OpportunityType } from "@/features/opportunity/opportunity.interface";
 
 export const formatLabel = (value: string) =>
@@ -9,8 +10,10 @@ export const formatLabel = (value: string) =>
 
 export const getOpportunityOptions = () => [
   { value: "", label: "Todos" },
-  ...Object.entries(OpportunityType).map(([_, value]) => ({
-    value,
-    label: formatLabel(value),
-  })),
+  ...Object.entries(OpportunityType)
+    .filter(([key, value]) => isNaN(Number(key))) 
+    .map(([_, value]) => ({
+      value,
+      label: formatLabel(value as string), 
+    })),
 ];
