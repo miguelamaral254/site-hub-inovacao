@@ -107,7 +107,7 @@ export default function PageContent({
               Gerenciar Editais
             </h3>
             <p className="text-lg text-gray-600 mb-4">
-              Crie e acompanhar seu progresso e melhorias necessárias.
+              Crie e acompanhe seu progresso e melhorias necessárias.
             </p>
             <div className="space-y-4">
               <PublishList />
@@ -121,7 +121,7 @@ export default function PageContent({
               Gerenciar Oportunidades
             </h3>
             <p className="text-lg text-gray-600 mb-4">
-              Crie e acompanhar seu progresso e melhorias necessárias.
+              Crie e acompanhe seu progresso e melhorias necessárias.
             </p>
             <div className="space-y-4">
               <OpportunityList filters={opportunityFilterList} />

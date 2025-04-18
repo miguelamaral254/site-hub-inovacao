@@ -18,6 +18,8 @@ const PublishList: React.FC = () => {
   const { user } = useAuth();
   const role = user?.role;
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     const fetchPublications = async () => {
       setLoading(true);
@@ -53,6 +55,11 @@ const PublishList: React.FC = () => {
     setSelectedPublication(null); 
   };
 
+  const filteredProjects = publications.filter((publications) => {
+    const matchesTitle = publications.title?.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesTitle;
+  });
+
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold text-center mb-8">Lista de Publicações</h1>
@@ -69,6 +76,14 @@ const PublishList: React.FC = () => {
         )}
       </div>
 
+      <input
+        type="text"
+        placeholder="Buscar por título..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="w-full px-4 py-2 border rounded-md"
+      />
+
       {loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {Array.from({ length: 6 }).map((_, index) => (
@@ -79,9 +94,9 @@ const PublishList: React.FC = () => {
 
       {error && <p className="text-red-500 text-center">{error}</p>}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {!loading && Array.isArray(publications) && publications.length > 0 ? (
-          publications.map((publication) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        {!loading && Array.isArray(publications) && filteredProjects.length > 0 ? (
+          filteredProjects.map((publication) => (
             <PublishCard
               key={publication.id}
               id={publication.id}

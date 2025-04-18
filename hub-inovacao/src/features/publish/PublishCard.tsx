@@ -17,10 +17,10 @@ const PublishCard: React.FC<PublishCardProps> = ({
   return (
     <div
       className="flex bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] mt-3
-      transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] rounded-lg flex-col lg:flex-row w-full md:w-[510px] h-auto py-3 px-3 items-center"
+      transition-shadow duration-300 hover:shadow-[0_0px_30px_rgba(78,95,181,0.44)] rounded-lg flex-col lg:flex-row w-full py-3 px-3 items-center cursor-pointer"
       onClick={onClick}
     >
-      <div className="ml-5 w-full flex flex-col">
+      <div className="w-full flex flex-col">
         <h2 className="text-2xl font-medium text-gray-950 truncate mb-4">{title}</h2>
         <p className="text-base text-blue-800 mb-4">Publicado em: {createdDate}</p>
 
