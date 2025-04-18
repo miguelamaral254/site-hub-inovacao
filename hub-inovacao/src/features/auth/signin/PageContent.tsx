@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { User } from "../users/user.interface";
 import TicketTypeSelector from "./TicketTypeSelector";
 import ProjectTicketList from "@/features/projects/ProjectTicketList";
@@ -9,7 +8,7 @@ import ProjectList from "@/features/projects/ProjectList";
 import { useContext } from "react";
 import { multiStepContext } from "@/features/projects/project-form/StepContext";
 import OpportunityList from "@/features/opportunity/OpportunityList";
-import CreateOpportunityForm from "@/features/opportunity/OpportunityForms";
+import CreateOpportunityForm from "@/features/opportunity/opportunity-form/OpportunityForms";
 import { ProjectForm } from "@/components/Form/ProjectForm";
 
 interface PageContentProps {

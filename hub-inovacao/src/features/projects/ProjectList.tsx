@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Project } from "@/features/projects/project.interface";
 import { searchProjects } from "@/features/projects/project.service";
-import ModalProject from "./ModalProject";
+import ModalProject from "./ProjectModal";
 import ProjectCard from "./ProjectCard";
 import { Select } from "@/components/Form/Select";
 
