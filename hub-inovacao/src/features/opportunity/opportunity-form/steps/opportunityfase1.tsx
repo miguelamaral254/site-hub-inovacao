@@ -1,4 +1,4 @@
-import { OpportunityType } from "../opportunity.interface";
+import { OpportunityType } from "../../opportunity.interface";
 
 interface StepOneProps {
   title: string;
