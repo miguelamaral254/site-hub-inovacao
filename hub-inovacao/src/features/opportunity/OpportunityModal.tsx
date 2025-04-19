@@ -43,17 +43,23 @@ const OpportunityModal: React.FC<OpportunityModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg w-[90%] max-w-[1200px] relative">
-        <button onClick={onClose} className="absolute top-2 right-2 text-2xl text-blue-500 hover:text-blue-700">
-          <FaTimes />
-        </button>
+    <div className="fixed top-0 left-0 right-0 flex justify-center items-center bg-black bg-opacity-50 z-50 h-[100vh] px-4 py-6">
+      <div className="bg-white p-6 py-10 rounded-lg w-full max-w-[1200px] h-full relative overflow-y-auto">
 
-        <div className="flex space-x-8">
-          <div className="flex flex-col w-1/3">
+        <div className="flex justify-end">
+          <button
+            onClick={onClose}
+            className="text-2xl text-blue-500 hover:text-blue-700"
+          >
+            <FaTimes />
+          </button>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-8">
+          <div className="flex flex-col w-full md:w-1/3">
             <div className="flex justify-center mb-4 mt-2">
               {opportunity.urlPhoto && (
-                <img src={opportunity.urlPhoto} alt={opportunity.tituloDesafio} className="w-full h-48 object-cover rounded-md" />
+                <img src={opportunity.urlPhoto} alt={opportunity.tituloDesafio} className="w-full h-auto object-cover rounded-md" />
               )}
             </div>
             <h3 className="text-2xl text-[#002B8F] font-bold mb-4">{opportunity.tituloDesafio}</h3>
@@ -73,7 +79,7 @@ const OpportunityModal: React.FC<OpportunityModalProps> = ({
             )}
           </div>
 
-          <div className="flex flex-col w-1/3">
+          <div className="flex flex-col w-full md:w-1/3">
             {opportunity.areaProblema && (
               <p className="mb-4 text-xl text-[#3355A5]">
                 <strong>Área do Problema:</strong> <span className="text-black">{opportunity.areaProblema}</span>
@@ -101,7 +107,7 @@ const OpportunityModal: React.FC<OpportunityModalProps> = ({
             )}
           </div>
 
-          <div className="flex flex-col w-1/3">
+          <div className="flex flex-col w-full md:w-1/3">
             {opportunity.solucoesTestadas && (
               <p className="text-lg text-[#3355A5]">
                 <strong>Soluções Testadas:</strong> <span className="text-black">{opportunity.solucoesTestadas}</span>

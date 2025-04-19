@@ -38,14 +38,16 @@ const ModalProject: React.FC<ProjectModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50 overflow-y-auto px-4 py-6">
-      <div className="bg-white p-6 py-10 rounded-lg w-full max-w-[1200px] relative">
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-2xl text-blue-500 hover:text-blue-700"
-        >
-          <FaTimes />
-        </button>
+    <div className="fixed top-0 left-0 right-0 flex justify-center items-center bg-black bg-opacity-50 z-50 h-[100vh] px-4 py-6">
+      <div className="bg-white p-6 py-10 rounded-lg w-full max-w-[1200px] h-full relative overflow-y-auto">
+        <div className="flex justify-end">
+          <button
+            onClick={onClose}
+            className="text-2xl text-blue-500 hover:text-blue-700"
+          >
+            <FaTimes />
+          </button>
+        </div>
 
         {/* Conteúdo em colunas para desktop, empilhado no mobile */}
         <div className="flex flex-col md:flex-row gap-8">
@@ -53,7 +55,7 @@ const ModalProject: React.FC<ProjectModalProps> = ({
           {/* BLOCO 1 */}
           <div className="flex flex-col w-full md:w-1/3 ">
             <div className="flex justify-center mb-4 mt-2">
-              <img src={project.urlPhoto || "/default-image.jpg"} alt={project.title} className="w-full h-48 object-cover rounded-md" />
+              <img src={project.urlPhoto || "/default-image.jpg"} alt={project.title} className="w-full h-auto object-cover rounded-md" />
             </div>
             <h3 className="text-2xl text-[#002B8F] font-bold mb-4">{project.title}</h3>
             <p className="mb-4 text-xl text-[#3355A5]">Data de postagem: <span className="text-black">{formatDate(project.createdDate)}</span></p>
