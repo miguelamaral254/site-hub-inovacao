@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { Opportunity } from "./opportunity.interface";
-import { Pageable } from "../publish/publish.service";
+import { Page } from "../core/page.interface";
 
 const API_URL = "http://localhost:8080/opportunities";
 
@@ -21,9 +21,9 @@ export const createOpportunity = async (formData: FormData): Promise<Opportunity
 
 export const searchOpportunities = async (
   filters?: Record<string, any>,
-  pageable: Pageable = { page: 0, size: 10 }, 
+  pageable: { page: number; size: number } = { page: 0, size: 10 }, 
   sort?: string
-) => {
+):Promise<Page<Opportunity>>  => {
   const params: Record<string, any> = {
     ...filters,
     page: pageable.page, 

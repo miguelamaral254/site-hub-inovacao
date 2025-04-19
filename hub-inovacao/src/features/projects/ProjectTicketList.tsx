@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from "react";
 import { Project } from "@/features/projects/project.interface";
@@ -14,7 +15,6 @@ const ProjectTicketList: React.FC<ProjectListProps> = ({ filters }) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-
   const [currentPage, setCurrentPage] = useState(0); 
   const [totalPages, setTotalPages] = useState(1); 
   const pageSize = 10;
