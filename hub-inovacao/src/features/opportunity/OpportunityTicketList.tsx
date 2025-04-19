@@ -50,7 +50,7 @@ const OpportunityTicketList: React.FC<OpportunityListProps> = ({ filters }) => {
       {loading ? (
         <div className="text-center text-xl text-gray-600">Carregando oportunidades...</div>
       ) : (
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           {opportunities.length > 0 ? (
             opportunities.map((opportunity, index) => (
               <div key={index} className="hover:bg-gray-100 p-0 m-0 rounded-lg shadow-sm border-b">
@@ -63,19 +63,19 @@ const OpportunityTicketList: React.FC<OpportunityListProps> = ({ filters }) => {
         </div>
       )}
 
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center mt-4 gap-3">
         <button
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-2"
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-2 cursor-pointer"
           onClick={() => goToPage(currentPage - 1)}
           disabled={currentPage === 0}
         >
           Anterior
         </button>
-        <span className="text-sm text-gray-600">
+        <span className="text-sm text-gray-600 py-2">
           Página {currentPage + 1} de {totalPages}
         </span>
         <button
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md ml-2"
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md ml-2 cursor-pointer"
           onClick={() => goToPage(currentPage + 1)}
           disabled={currentPage === totalPages - 1}
         >

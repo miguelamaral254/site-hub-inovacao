@@ -44,7 +44,7 @@ export const AddTeam = ({ setStep }: Props) => {
 
     return (
         <div className="flex items-center flex-col justify-center my-10 px-10">
-            <div className="w-full grid grid-cols-3 gap-4 mb-3">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
                 {team.map((item, index) => (
                     <TeamCard key={index} data={item} setData={setTeam}/>
                 ))}

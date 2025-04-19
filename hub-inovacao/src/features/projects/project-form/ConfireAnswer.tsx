@@ -6,7 +6,7 @@ export const ConfireAnswer = () => {
     const {formData} = useContext(multiStepContext)
 
     return(
-        <div className="px-10 flex justify-between gap-6">
+        <div className="px-10 flex flex-col md:flex-row justify-between gap-6">
             <div className="w-full flex flex-col gap-4">
                 <div >
                     <h4>Título</h4>

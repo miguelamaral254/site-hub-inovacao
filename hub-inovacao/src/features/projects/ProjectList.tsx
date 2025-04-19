@@ -54,7 +54,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ filters }) => {
   return (
     <div className="w-full py-6">
 
-        <div className="flex gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
           <input
             type="text"
             placeholder="Buscar por título..."
@@ -79,7 +79,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ filters }) => {
         <div className="text-center text-xl text-gray-600">Carregando projetos...</div>
       ) : (
         <div 
-          className='grid grid-cols-3 gap-6'
+          className='list-cards'
           style={{ display: filteredProjects.length > 0 ? 'grid' : 'flex' }}
         >
           {filteredProjects.length > 0 ? (
@@ -87,7 +87,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ filters }) => {
               <ProjectCard key={index} project={project} onClick={() => openModal(project)} />
             ))
           ) : (
-            <div className="text-center text-xl text-gray-600 w-full mt-10">Nenhum projeto encontrado</div>
+            <div className="not-found-title">Nenhum projeto encontrado</div>
           )}
         </div>
       )}

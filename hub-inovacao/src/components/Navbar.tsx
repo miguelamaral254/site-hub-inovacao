@@ -58,6 +58,7 @@ const Navbar = () => {
             <Link
               key={link.href}
               href={link.href}
+              onClick={() => setOpenMenu(false)}
               className={`text-lg text-medium hover:text-blue-600 ${
                 pathname === link.href ? "text-blue-600 font-bold border-b-2 border-blue-600" : "text-blue-900"
               }`}

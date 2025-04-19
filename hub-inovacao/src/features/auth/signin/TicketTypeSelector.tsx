@@ -17,7 +17,7 @@ const TicketTypeSelector: React.FC<TicketTypeSelectorProps> = ({
 
   return (
     <div>
-      <div className="flex  mb-6">
+      <div className="flex gap-4">
         <button
           className={`px-4 py-2 rounded-md ${selectedTicketType === "project" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
           onClick={() => setSelectedTicketType("project")}

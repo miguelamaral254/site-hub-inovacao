@@ -84,7 +84,8 @@ export default function PageContent({
               <TicketTypeSelector
               managerProjectTicket={managerList}
               managerOpportunityTicket={managerList}
-            />          </div>
+            />          
+          </div>
 
           
         )}

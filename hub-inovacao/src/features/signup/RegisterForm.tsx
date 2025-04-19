@@ -66,24 +66,6 @@ export default function RegisterForm() {
     }
   };
 
-  const handlePhoneChange = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    if (!isPartnerCompany) {
-      const phones = [...formData.phones];
-      const { name, value } = e.target;
-      phones[index] = { ...phones[index], [name]: value };
-      setFormData(prev => ({ ...prev, phones }));
-    } else {
-      const { name, value } = e.target;
-      setFormDataEnterprise(prev => ({
-        ...prev,
-        reprentantPhone: value, 
-      }));
-    }
-  };
-
   const handleAddPhone = () => {
     setFormData(prev => ({
       ...prev,
@@ -97,9 +79,9 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 py-8">
-      <div className="flex flex-col lg:flex-row w-full max-w-7xl gap-8">
-        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full lg:max-w-2xl order-2 lg:order-1">
+    <div className="bg-gray-100 w-full">
+      <div className="flex flex-col-reverse md:flex-row gap-8 section">
+        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full lg:max-w-2xl ">
           <div className="flex justify-center items-center mb-6">
             <Image 
               src={logo} 
@@ -117,7 +99,7 @@ export default function RegisterForm() {
             Compartilhe seus projetos, ideias e muito mais!
           </p>
 
-          <div className="flex justify-around mb-6 sm:mb-8 bg-gray-50 p-2 rounded-lg">
+          <div className="flex  justify-around mb-6 sm:mb-8 bg-gray-50 p-2 rounded-lg">
             <button
               type="button"
               className={`flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-2 rounded-lg w-full transition-colors ${
@@ -168,11 +150,11 @@ export default function RegisterForm() {
           </div>
         </div>
 
-        <div className="flex justify-center items-center w-full lg:w-auto order-1 lg:order-2 mb-6 lg:mb-0">
+        <div className="flex justify-center items-center w-full ">
           <Image 
             src={cadastro} 
             alt="Imagem de Cadastro" 
-            className="h-auto w-full max-w-md lg:max-w-lg xl:max-w-xl"
+            className="h-auto w-4/5 md:w-full"
             priority
           />
         </div>

@@ -1,4 +1,6 @@
+import { Input } from "@/components/Form/Input";
 import { OpportunityType } from "../../opportunity.interface";
+import { Select } from "@/components/Form/Select";
 
 interface StepOneProps {
   title: string;
@@ -21,70 +23,57 @@ export const StepOne: React.FC<StepOneProps> = ({
   description,
   setDescription,
 }) => {
+
+  const typeOption = [
+    { value: "BANCO_DE_OPORTUNIDADE", label: "Banco de Oportunidade" },
+    { value: "BANCO_DE_PROBLEMA", label: "Banco de Problema" },
+    { value: "BANCO_DE_IDEIA", label: "Bando de Ideia" },
+    { value: "DESAFIO", label: "Desafio" },
+];
+
+const opportunityTypeOptions = Object.keys(OpportunityType)
+  .filter((key) => isNaN(Number(key))) // filtra só as chaves (nomes)
+  .map((key) => ({
+    value: OpportunityType[key as keyof typeof OpportunityType].toString(),
+    label: key.replace(/_/g, " ").toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, l => l.toUpperCase()),
+  }));
   
   return (
     <>
       <div className="flex flex-col gap-6">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="md:w-2/3">
-            <label htmlFor="title" className="block text-base font-medium mb-1">
-              Título da Oportunidade
-            </label>
-            <input
-              type="text"
-              id="title"
-              value={title}  
-              onChange={(e) => setTitle(e.target.value)} 
-              placeholder="Digite o título da oportunidade"
-              className="w-full p-2 border border-gray-300 rounded-md text-sm"
-            />
-          </div>
-          <div className="md:w-1/3">
-            <label htmlFor="typeopportunity" className="block w-md text-base font-medium mb-1">Tipos de Oportunidades</label>
-            <select 
-              id="typeopportunity"
-              value={typeopportunity}
-              onChange={(e) => {
-                const selected = e.target.value;
-                setTypeopportunity(selected === "" ? "" : Number(selected));
-              }}
-              className="border border-gray-300 rounded px-2 py-2 w-full"
-            >
-              <option value="">Selecione o tipo</option>
-              {Object.keys(OpportunityType)
-                .filter((key) => isNaN(Number(key))) // Filtro para pegar as chaves que não são números
-                .map((key) => (
-                  <option
-                    key={key}
-                    value={OpportunityType[key as keyof typeof OpportunityType]}
-                  >
-                    {key.replace(/_/g, " ")}  {/* Exibe a string com espaços */}
-                  </option>
-                ))}
-            </select>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <Input 
+            onChange={(e) => setTitle(e.target.value)}
+            label="Título da Oportunidade"
+            value={title}
+            isRequired
+          />
+          
+          <Select
+            options={opportunityTypeOptions}
+            label="Tipo de Oportunidade"
+            value={typeopportunity.toString()}
+            onChange={(value) => setTypeopportunity(value === "" ? "" : Number(value))}
+            selectText="Selecione"
+          />
+
         </div>
-        <div>
-          <label htmlFor="restricoes" className="block text-base font-medium mb-2">Restrições</label>
-          <input
-            type="text"
-            id="restricoes"
-            value={restricoes}
+        
+        <Input 
             onChange={(e) => setRestricoes(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Digite qual as restrições que há no projeto"
+            label="Restrições"
+            value={restricoes}
+            isRequired
           />
-        </div>
-        <div>
-          <label htmlFor="description" className="block text-base font-medium mb-2">Descrição</label>
-          <textarea
-            id="description"
-            value={description}
+
+        <Input 
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Descreva a oportunidade"
+            label="Descrição"
+            value={description}
+            isRequired
+            isBig
           />
-        </div>
       </div>
     </>
   );

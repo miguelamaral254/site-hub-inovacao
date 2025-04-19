@@ -50,7 +50,7 @@ export const ProjectIdentify = ({ setStep }: Props) => {
 
     return (
         <form className="px-10 mt-12 relative">
-            <div className="flex justify-between gap-6">
+            <div className="flex flex-col md:flex-row justify-between items-start gap-6">
                 <div className="w-full flex flex-col gap-6">
                     <Input
                         label="Título do projeto"
@@ -79,8 +79,6 @@ export const ProjectIdentify = ({ setStep }: Props) => {
                         onChange={(value) => setFormData({ ...safeFormData, thematicArea: value })}
                         selectText="Selecione"
                     />
-
-                   
                 </div>
                 <div className="w-full flex flex-col gap-6">
                     

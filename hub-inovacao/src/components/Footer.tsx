@@ -5,14 +5,14 @@ import logo from "@/assets/Logo -- FOOTER.png";
 const Footer = () => {
   return (
     <>
-      <footer className="bg-blue-900 text-white px-6 py-10 mt-6 w-full">
+      <footer className="bg-blue-900 text-white px-6 py-10 w-full">
         <div className="section flex flex-col-reverse md:flex-row gap-6 ">
           <div className="flex flex-col items-center">
             <Image src={logo} alt="Logo HUBr" />
             <p className="text-orange-200 mt-2 font-semibold">Hub de Inovação</p>
           </div>
           
-          <div className='grid grid-cols-2 gap-8 md:flex md:justify-between md:flex-1'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 md:flex md:justify-between md:flex-1'>
               <div>
                 <h3 className="font-semibold mb-2 text-orange-200">Incubadora i.de.i.a.s</h3>
                 <ul className="space-y-1">
