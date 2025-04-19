@@ -15,17 +15,26 @@ const ProjectTicketList: React.FC<ProjectListProps> = ({ filters }) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [currentPage, setCurrentPage] = useState(0); 
+  const [totalPages, setTotalPages] = useState(1); 
+  const pageSize = 10;
 
   useEffect(() => {
     fetchProjects();  
-  }, [filters]);
+  }, [filters, currentPage]); 
 
   const fetchProjects = async () => {
     setLoading(true);
     try {
-      const response = await searchProjects(filters);
-      const projectsData = response?.data?.content || [];
-      setProjects(projectsData);
+      const response = await searchProjects({ ...filters }, { page: currentPage, size: pageSize });
+      if (response && response.data && response.data.content) {
+        const projectsData = response.data.content || [];
+        setProjects(projectsData);
+        const totalPages = response.data.page.totalPages || 1; 
+        setTotalPages(totalPages);
+      } else {
+        console.error("Resposta da API está faltando a estrutura esperada.");
+      }
     } catch (error) {
       console.error("Erro ao buscar projetos:", error);
     } finally {
@@ -47,15 +56,21 @@ const ProjectTicketList: React.FC<ProjectListProps> = ({ filters }) => {
     fetchProjects();  
   };
 
+  const goToPage = (page: number) => {
+    if (page >= 0 && page < totalPages) {
+      setCurrentPage(page); 
+    }
+  };
+
   return (
     <div className="w-full py-6">
       {loading ? (
         <div className="text-center text-xl text-gray-600">Carregando projetos...</div>
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col">
           {projects.length > 0 ? (
             projects.map((project, index) => (
-              <div key={index} className="hover:bg-gray-100 p-4 rounded-lg shadow-sm border-b">
+              <div key={index} className="hover:bg-gray-100 p-0 m-0 rounded-lg shadow-sm border-b">
                 <ProjectTicketCard project={project} onClick={() => openModal(project)} />
               </div>
             ))
@@ -65,11 +80,31 @@ const ProjectTicketList: React.FC<ProjectListProps> = ({ filters }) => {
         </div>
       )}
 
+      <div className="flex justify-center mt-4">
+        <button
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-2"
+          onClick={() => goToPage(currentPage - 1)} 
+          disabled={currentPage === 0} 
+        >
+          Anterior
+        </button>
+        <span className="text-sm text-gray-600">
+          Página {currentPage + 1} de {totalPages}  
+        </span>
+        <button
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md ml-2"
+          onClick={() => goToPage(currentPage + 1)} 
+          disabled={currentPage === totalPages - 1} 
+          >
+          Próxima
+        </button>
+      </div>
+
       {isModalOpen && selectedProject && (
         <ProjectTicketModal
           project={selectedProject}
           handleClose={closeModal}
-          updateProjects={updateProjects} 
+          updateProjects={updateProjects}
         />
       )}
     </div>

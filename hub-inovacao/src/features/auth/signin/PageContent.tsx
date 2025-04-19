@@ -1,7 +1,6 @@
 "use client";
 import { User } from "../users/user.interface";
 import TicketTypeSelector from "./TicketTypeSelector";
-import ProjectTicketList from "@/features/projects/ProjectTicketList";
 import PublishList from "@/features/publish/PublishList";
 import ProjectList from "@/features/projects/ProjectList";
 // import { ProjectForm } from "@/features/projects/cadastro_projeto";
@@ -82,8 +81,12 @@ export default function PageContent({
               Aqui você pode ver os projetos acadêmicos e oportunidades
               atribuidos a você.
             </p>
-            <ProjectTicketList filters={managerList} />
-          </div>
+              <TicketTypeSelector
+              managerProjectTicket={managerList}
+              managerOpportunityTicket={managerList}
+            />          </div>
+
+          
         )}
 
         {selectedPage === "page4" && role === "MANAGER" && (

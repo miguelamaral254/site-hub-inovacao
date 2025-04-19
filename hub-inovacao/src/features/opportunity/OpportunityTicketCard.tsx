@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useState } from "react";
 import OpportunityTicketModal from "./OpportunityTicketModal";
 import { Opportunity } from "./opportunity.interface";
 
-// Mapeamento para os tipos de oportunidade
 const typeMap: Record<string, { bgColor: string; label: string }> = {
   BANCO_DE_OPORTUNIDADE: { bgColor: "bg-purple-200", label: "#Banco de Oportunidade" },
   BANCO_DE_PROBLEMA: { bgColor: "bg-blue-200", label: "#Banco de Problema" },
@@ -32,12 +30,14 @@ const OpportunityTicketCard: React.FC<CardServicoProps> = ({ opportunity }) => {
 
   return (
     <div 
-      className="p-4 border-b bg-white rounded-lg shadow-md hover:shadow-xl mb-6 cursor-pointer"
+      className="p-4 border-b-0 bg-white rounded-lg shadow-md hover:shadow-xl mb-0 cursor-pointer"
       onClick={() => setIsModalOpen(true)}
     >
-      <p className="text-sm text-gray-700 font-semibold">{tituloDesafio || "Título do Desafio Indefinido"}</p>
+      <div className="flex justify-between items-center">
+        <p className="text-sm text-gray-700 font-semibold">{tituloDesafio || "Título do Desafio Indefinido"}</p>
+        <p className="text-xs text-gray-500">{formatDate(createdDate)}</p>
+      </div>
 
-    
       <p className={`mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-3xl text-white ${bgColor}`}>
         {label}
       </p>

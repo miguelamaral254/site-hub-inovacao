@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { Project } from './project.interface';
-import { Pageable } from '../publish/publish.service';
+import { Page } from '../core/page.interface';
 
 const API_URL = "http://localhost:8080/projects";
 
 export const searchProjects = async (
   filters?: Record<string, any>,
-  pageable: Pageable = { page: 0, size: 10 }, 
+  pageable: { page: number; size: number } = { page: 0, size: 10 }, 
   sort?: string
-) => {
+): Promise<Page<Project>> => { 
   const params: Record<string, any> = {
     ...filters,
     page: pageable.page, 
@@ -17,11 +17,9 @@ export const searchProjects = async (
     sort, 
   };
 
-  console.log("Parametros enviados para API:", params);
-
   try {
     const response = await axios.get(`${API_URL}`, { params });
-    return response.data;
+    return response.data; // Retorna um objeto do tipo Page<Project>
   } catch (error) {
     console.error("Erro ao buscar projetos:", error);
     throw error;

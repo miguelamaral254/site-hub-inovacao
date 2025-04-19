@@ -4,7 +4,6 @@ import OpportunityCard from "./OpportunityCard";
 import { Opportunity } from "./opportunity.interface";
 import { searchOpportunities } from "./opportunity.service";
 import { OpportunityType } from "./opportunity.interface";
-import { Dropdown } from "@/components/Dropdown";
 import { Select } from "@/components/Form/Select";
 interface OpportunityListProps {
   filters: Record<string, string | number | boolean>;
@@ -17,17 +16,6 @@ const OpportunityList: React.FC<OpportunityListProps> = ({ filters }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState<OpportunityType | string>("");
  
-const opportunityTypeOptions = Object.entries(OpportunityType)
-  .filter(([key]) => isNaN(Number(key))) 
-  .map(([key, value]) => ({
-    label: key
-      .toLowerCase()
-      .replace(/_/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase()), 
-    value: value as OpportunityType,
-  }));
-
-
   useEffect(() => {
     const fetchOpportunities = async () => {
       setLoading(true);
