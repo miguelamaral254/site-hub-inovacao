@@ -38,7 +38,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity }) => {
   }
 
   return (
-    <div className="flex flex-col w-full max-w-[350px] h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg px-3 py-4 ml-[32px] transition-shadow duration-300 relative">
+    <div className="flex flex-col w-full h-auto bg-white shadow-[0_0px_30px_rgba(162,166,188,0.25)] rounded-lg px-3 py-4">
       {opportunity.urlPhoto && (
         <div className="flex justify-center w-full">
           <div className="mb-4">
@@ -79,7 +79,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity }) => {
         )}
       </div>
 
-      <div className="absolute bottom-4 right-4 flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
         <button
           onClick={openModal}
           className="text-sm text-center py-1.5 px-3 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition duration-200"

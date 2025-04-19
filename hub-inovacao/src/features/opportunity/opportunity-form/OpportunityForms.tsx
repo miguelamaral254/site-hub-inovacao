@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import useSwal from "@/hooks/useSwal";
-
 import { createOpportunity } from "../OpportunityService";
 import { Opportunity, OpportunityType } from "../opportunity.interface";
 import { StatusSolicitation } from "../../core/status.interface";
@@ -23,7 +22,7 @@ const CreateOpportunityForm: React.FC = () => {
   const [solucoesTestadas, setSolucoesTestadas] = useState('');
   const [expectativa, setExpectativa] = useState('');
   const [restricoes, setRestricoes] = useState('');
-  const [typeopportunity, setTypeopportunity] = useState<number | "">(""); // Aqui
+  const [typeopportunity, setTypeopportunity] = useState<number | "">(""); 
   const [disponibilidadeDados, setDisponibilidadeDados] = useState('');
   const [mentoriaSuporte, setMentoriaSuporte] = useState<boolean | null>(null);
   const [visitatecnica, setVisitaTecnica] = useState<boolean | null>(null);
@@ -137,9 +136,13 @@ const CreateOpportunityForm: React.FC = () => {
           const isActive = index === currentStep;
 
           return (
-            <div key={index} className="flex-1 flex flex-col items-center relative z-10">
+            <div 
+              key={index} 
+              className={`flex-1  flex-col items-center relative z-10 ${isActive ? 'flex' : 'hidden'} md:flex`}
+              
+            >
               {index < stepLabels.length - 1 && (
-                <div className="absolute top-6 left-1/2 w-full h-0.5 bg-gray-300 z-0"></div>
+                <div className="hidden md:block absolute top-6 left-1/2 w-full h-0.5 bg-gray-300 z-0"></div>
               )}
               <div
                 className={`w-12 h-12 rounded-full flex items-center justify-center text-white text-xl font-bold z-10
@@ -153,7 +156,7 @@ const CreateOpportunityForm: React.FC = () => {
                 <p className={`text-base font-light ${isActive ? "text-white" : "text-gray-500"}`}>{step.title}</p>
                 <p
                   className={`text-base ${
-                    isActive ? "text-orange-600 font-xs" : "text-gray-500"
+                    isActive ? "text-white font-xs" : "text-gray-500"
                   }`}
                 >
                   {step.Subtitle}

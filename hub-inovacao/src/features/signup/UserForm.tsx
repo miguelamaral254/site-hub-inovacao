@@ -312,7 +312,7 @@ export default function UserForm({
         </button>
       </div>
 
-      <div className="flex justify-between gap-4 pt-6">
+      <div className="flex flex-col sm:flex-row justify-between gap-4 pt-6">
         <ButtonGrande 
           type="button" 
           text="Voltar" 

@@ -23,11 +23,11 @@ export const Select = ({ options, label, value, onChange, selectText }: Props) =
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full py-4 px-2 border rounded-md"
+        className="w-full pt-3 pb-4 px-2 border rounded-md text-[#084BA3]"
       >
         <option value=''>{selectText}</option>
         {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
+          <option key={opt.value} value={opt.value} className="text-[#084BA3]">
             {opt.label}
           </option>
         ))}

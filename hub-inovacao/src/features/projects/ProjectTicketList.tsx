@@ -67,10 +67,10 @@ const ProjectTicketList: React.FC<ProjectListProps> = ({ filters }) => {
       {loading ? (
         <div className="text-center text-xl text-gray-600">Carregando projetos...</div>
       ) : (
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-3">
           {projects.length > 0 ? (
             projects.map((project, index) => (
-              <div key={index} className="hover:bg-gray-100 p-0 m-0 rounded-lg shadow-sm border-b">
+              <div key={index} className="hover:bg-gray-100   rounded-lg shadow-sm border-b">
                 <ProjectTicketCard project={project} onClick={() => openModal(project)} />
               </div>
             ))
@@ -88,7 +88,7 @@ const ProjectTicketList: React.FC<ProjectListProps> = ({ filters }) => {
         >
           Anterior
         </button>
-        <span className="text-sm text-gray-600">
+        <span className="text-sm text-gray-600 py-2">
           Página {currentPage + 1} de {totalPages}  
         </span>
         <button

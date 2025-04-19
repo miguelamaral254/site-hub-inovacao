@@ -62,10 +62,10 @@ const PublishList: React.FC = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold text-center mb-8">Lista de Publicações</h1>
+      <h1 className="text-xl sm:text-3xl font-bold text-center mb-8">Lista de Publicações</h1>
 
-      <div className="flex justify-between mb-6">
-        <h3 className="text-2xl font-semibold text-gray-900">Publicações</h3>
+      <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
+        <h3 className="text-lg sm:text-2xl font-semibold text-gray-900 text-center">Publicações</h3>
         {role === "ROLE_MANAGER" && (
           <button
             onClick={openForm}
@@ -81,7 +81,7 @@ const PublishList: React.FC = () => {
         placeholder="Buscar por título..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full px-4 py-2 border rounded-md"
+        className="w-full px-4 py-2 border rounded-md "
       />
 
       {loading && (
@@ -94,7 +94,9 @@ const PublishList: React.FC = () => {
 
       {error && <p className="text-red-500 text-center">{error}</p>}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="list-cards mt-8"
+        style={{ display: filteredProjects.length > 0 ? 'grid' : 'flex' }}
+      >
         {!loading && Array.isArray(publications) && filteredProjects.length > 0 ? (
           filteredProjects.map((publication) => (
             <PublishCard
@@ -108,7 +110,7 @@ const PublishList: React.FC = () => {
             />
           ))
         ) : (
-          !loading && <p className="text-center">Nenhuma publicação encontrada.</p>
+          !loading && <p className="not-found-title">Nenhuma publicação encontrada.</p>
         )}
       </div>
 

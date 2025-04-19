@@ -38,8 +38,8 @@ const ModalProject: React.FC<ProjectModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg w-[90%] max-w-[1200px] relative">
+    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50 overflow-y-auto px-4 py-6">
+      <div className="bg-white p-6 py-10 rounded-lg w-full max-w-[1200px] relative">
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-2xl text-blue-500 hover:text-blue-700"
@@ -47,15 +47,17 @@ const ModalProject: React.FC<ProjectModalProps> = ({
           <FaTimes />
         </button>
 
-        <div className="flex space-x-8">
-          {/* Bloco 1: Imagem, Nome, Descrição e Link para Página Web */}
-          <div className="flex flex-col w-1/3">
+        {/* Conteúdo em colunas para desktop, empilhado no mobile */}
+        <div className="flex flex-col md:flex-row gap-8">
+          
+          {/* BLOCO 1 */}
+          <div className="flex flex-col w-full md:w-1/3 ">
             <div className="flex justify-center mb-4 mt-2">
               <img src={project.urlPhoto || "/default-image.jpg"} alt={project.title} className="w-full h-48 object-cover rounded-md" />
             </div>
             <h3 className="text-2xl text-[#002B8F] font-bold mb-4">{project.title}</h3>
             <p className="mb-4 text-xl text-[#3355A5]">Data de postagem: <span className="text-black">{formatDate(project.createdDate)}</span></p>
-            <p className={`text-start inline-flex items-center mb-4 px-3 py-2 bg-[#3355A5] text-base rounded-3xl text-white w-auto`}>
+            <p className="inline-flex items-center mb-4 px-3 py-2 bg-[#3355A5] text-base rounded-3xl text-white w-auto">
               <strong>#</strong> {getTypeText(project.projectType)}
             </p>
             <p className="">{project.description}</p>
@@ -74,36 +76,32 @@ const ModalProject: React.FC<ProjectModalProps> = ({
             )}
           </div>
 
-          {/* Bloco 2: Área Temática, Curso, Problema, Objetivos Gerais e Específicos */}
-          <div className="flex flex-col w-1/3">
+          {/* BLOCO 2 */}
+          <div className="flex flex-col w-full md:w-1/3">
             <div className="mt-4">
               <h4 className="font-semibold mb-2">Área Temática:</h4>
               <p>{project.thematicArea}</p>
             </div>
-
             <div className="mt-4">
               <h4 className="font-semibold mb-2">Curso:</h4>
               <p>{project.course}</p>
             </div>
-
             <div className="mt-4">
               <h4 className="font-semibold mb-2">Problema:</h4>
               <p>{project.problem}</p>
             </div>
-
             <div className="mt-4">
               <h4 className="font-semibold mb-2">Objetivos Gerais:</h4>
               <p>{project.generalObjective}</p>
             </div>
-
             <div className="mt-4">
               <h4 className="font-semibold mb-2">Objetivos Específicos:</h4>
               <p>{project.specificObjective}</p>
             </div>
           </div>
 
-          {/* Bloco 3: Coautores */}
-          <div className="flex flex-col w-1/3">
+          {/* BLOCO 3 */}
+          <div className="flex flex-col w-full md:w-1/3">
             {project.coauthors && project.coauthors.length > 0 && (
               <div className="mt-4">
                 <h4 className="font-semibold mb-2">Coautores:</h4>

@@ -55,7 +55,7 @@ export const ProjectDetails = ({ setStep }: Props) => {
 
   return (
     <form className="flex flex-col gap-6 text-left px-10 mt-12 relative">
-      <div className="flex justify-between gap-6">
+      <div className="flex flex-wrap justify-between gap-6">
         <div className="w-full flex flex-col gap-4">
           <Input
             label="Problema"

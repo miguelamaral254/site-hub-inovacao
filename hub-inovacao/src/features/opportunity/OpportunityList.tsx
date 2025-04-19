@@ -42,7 +42,7 @@ const OpportunityList: React.FC<OpportunityListProps> = ({ filters }) => {
 
   return (
     <div className="w-full py-6">
-        <div className="flex gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
           <input
             type="text"
             placeholder="Buscar por título..."
@@ -68,13 +68,15 @@ const OpportunityList: React.FC<OpportunityListProps> = ({ filters }) => {
       {loading ? (
         <div className="text-center text-xl text-gray-600">Carregando oportunidades...</div>
       ) : (
-        <div className="flex flex-wrap gap-6 justify-center">
+        <div className="list-cards"
+        style={{ display: filteredOpportunities.length > 0 ? 'grid' : 'flex' }}
+        >
           {filteredOpportunities.length > 0 ? (
             filteredOpportunities.map((opportunity) => (
               <OpportunityCard key={opportunity.id} opportunity={opportunity} />
             ))
           ) : (
-            <div className="text-center text-xl text-gray-600">Nenhuma oportunidade encontrada</div>
+            <div className="not-found-title">Nenhuma oportunidade encontrada</div>
           )}
         </div>
       )}

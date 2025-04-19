@@ -1,3 +1,5 @@
+import { Input } from "@/components/Form/Input";
+
 interface StepTwoProps {
   areaProblema: string;
   setAreaProblema: (value: string) => void;
@@ -20,51 +22,34 @@ export const StepTwo: React.FC<StepTwoProps> = ({
   setExpectativa
 }) => {
     return(
-    <>
-        <div className="mb-4">
-          <label htmlFor="areaproblema" className="block text-base font-medium mb-2">Área do Problema</label>
-          <input
-            type="text"
-            id="areaproblema"
-            value={areaProblema}
-            onChange={(e) => setAreaProblema(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Digite a área do problema a ser resolvido."
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="impactoproblema" className="block text-base font-medium mb-2">Impacto do Problema</label>
-          <input
-            type="text"
-            id="impactoProblema"
-            value={impactoProblema}
-            onChange={(e) => setImpactoProblema(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Digite o impacto do problema"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="expectativas" className="block text-base font-medium mb-2">Expectativas</label>
-          <input
-            type="text"
-            id="expectativas"
-            value={expectativa}
-            onChange={(e) => setExpectativa(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Digite qual sua expectativa com o projeto"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="solucoestestadas" className="block text-base font-medium mb-2">Soluções Testadas</label>
-          <input
-            type="text"
-            id="solucoestestadas"
-            value={solucoesTestadas}
-            onChange={(e) => setSolucoesTestadas(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
-            placeholder="Digite a solução que fooi realizada o teste"
-            />
-      </div>
-    </>
+    <div className="flex flex-col gap-4">
+        <Input 
+          onChange={(e) => setAreaProblema(e.target.value)}
+          value={areaProblema}
+          label="Área do Problema"
+          isRequired
+        />
+
+        <Input 
+          onChange={(e) => setImpactoProblema(e.target.value)}
+          value={impactoProblema}
+          label="Impacto do Problema"
+          isRequired
+        />
+
+        <Input 
+          onChange={(e) => setExpectativa(e.target.value)}
+          value={expectativa}
+          label="Expectativas"
+          isRequired
+        />
+
+        <Input 
+          onChange={(e) => setSolucoesTestadas(e.target.value)}
+          value={solucoesTestadas}
+          label="Soluções Testadas"
+          isRequired
+        />
+    </div>
     ) 
 };
