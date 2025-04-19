@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Input } from "@/components/Form/Input";
 import { OpportunityType } from "../../opportunity.interface";
 import { Select } from "@/components/Form/Select";

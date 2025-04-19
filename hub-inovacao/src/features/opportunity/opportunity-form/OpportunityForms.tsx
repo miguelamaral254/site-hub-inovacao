@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import useSwal from "@/hooks/useSwal";
-
 import { createOpportunity } from "../OpportunityService";
 import { Opportunity, OpportunityType } from "../opportunity.interface";
 import { StatusSolicitation } from "../../core/status.interface";
@@ -23,7 +22,7 @@ const CreateOpportunityForm: React.FC = () => {
   const [solucoesTestadas, setSolucoesTestadas] = useState('');
   const [expectativa, setExpectativa] = useState('');
   const [restricoes, setRestricoes] = useState('');
-  const [typeopportunity, setTypeopportunity] = useState<number | "">(""); // Aqui
+  const [typeopportunity, setTypeopportunity] = useState<number | "">(""); 
   const [disponibilidadeDados, setDisponibilidadeDados] = useState('');
   const [mentoriaSuporte, setMentoriaSuporte] = useState<boolean | null>(null);
   const [visitatecnica, setVisitaTecnica] = useState<boolean | null>(null);
