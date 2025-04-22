@@ -22,6 +22,7 @@ export default function PageContent({
   const { step, setStep } = useContext(multiStepContext);
   const role = userData?.role;
   const userId = userData?.id;
+  
   const regularUser = {
     userId: userId ?? 0,
   };
