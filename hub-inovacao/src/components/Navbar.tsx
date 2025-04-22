@@ -54,6 +54,7 @@ const Navbar = () => {
             { href: "/projetos", label: "Projetos Acadêmicos" },
             { href: "/oportunidades", label: "Banco de Oportunidades" },
             { href: "/editais", label: "Editais" },
+            
           ].map((link) => (
             <Link
               key={link.href}
@@ -83,11 +84,11 @@ const Navbar = () => {
           {user ? (
             <div className="relative">
               <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition flex items-center justify-center"
-              >
-                {/* Profile Icon */}
-              </button>
+    onClick={() => setDropdownOpen(!dropdownOpen)}
+    className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition  items-center justify-center md:block hidden"
+  >
+    ☰ {/* Profile Icon */}
+  </button>
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
                   <ul>
