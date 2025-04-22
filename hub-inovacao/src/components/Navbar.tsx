@@ -3,49 +3,25 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { ButtonGrande } from "./Button";
 import logo from "@/assets/Logo.svg";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
-import { useAuth } from "@/context/useContext"; 
+import { UserButtonAction } from "./UserButtonAction";
 
 const Navbar = () => {
-  const { user, logoutUser } = useAuth();  
-  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname(); 
-
-  const handleLogout = () => {
-    logoutUser(); 
-    setDropdownOpen(false);
-    router.push("/");
-  };
-
-  const handleProfileRedirect = () => {
-    if (user) {
-      if (user.role === "ROLE_ENTERPRISE") {
-        router.push("/area-empresa");
-      } else {
-        router.push("/area-usuario");
-      }
-      setDropdownOpen(false);
-    }
-  }
 
   const handleRedirect = () => {
     router.push("/");
     window.scrollTo(0, 0);
   }
 
-  useEffect(() => {
-    setDropdownOpen(false);
-  }, [user]);
-
   return (
     <nav className="fixed top-0 w-full bg-white shadow-md z-50">
       <div className={`flex ${openMenu ? 'flex-col' : 'flex-row'} md:flex-row items-center py-4 gap-5 justify-between section`}>
         <div className="flex items-center justify-start w-auto min-w-[100px] md:min-w-[136px] cursor-pointer" onClick={handleRedirect}>
-          <Image src={logo} alt="Logo HUBI" className={`w-[60%] ${openMenu ? 'w-[100%]' : 'w-[60%]'} h-auto`} />
+          <Image src={logo} alt="Logo HUBI" className={`w-[60%] ${openMenu ? 'w-full' : 'w-[60%]'} h-auto`} />
         </div>
         <div className={`${openMenu ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-center justify-end gap-12 w-full`}>
           {[
@@ -67,6 +43,9 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
+
+          <UserButtonAction isMenu/>
+          
         </div>
         <div className="flex items-center gap-6">
           <div
@@ -81,47 +60,7 @@ const Navbar = () => {
               onClick={() => setOpenMenu(false)}
             />
           )}
-          {user ? (
-            <div className="relative">
-              <button
-    onClick={() => setDropdownOpen(!dropdownOpen)}
-    className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition  items-center justify-center md:block hidden"
-  >
-    ☰ {/* Profile Icon */}
-  </button>
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
-                  <ul>
-                    <li>
-                      <button
-                        onClick={handleProfileRedirect}
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
-                      >
-                        Perfil
-                      </button>
-                    </li>
-                    <li>
-                      <Link href="/configuracoes" onClick={() => setDropdownOpen(false)} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-                        Configurações
-                      </Link>
-                    </li>
-                    <li>
-                      <button
-                        onClick={handleLogout}
-                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                      >
-                        Sair
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
-          ) : (
-            <Link href="/login" passHref>
-              <ButtonGrande text="Entrar" />
-            </Link>
-          )}
+          <UserButtonAction isMenu={false}/>
         </div>
       </div>
     </nav>
