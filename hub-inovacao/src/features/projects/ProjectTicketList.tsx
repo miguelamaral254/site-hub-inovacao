@@ -63,11 +63,11 @@ const ProjectTicketList: React.FC<ProjectListProps> = ({ filters }) => {
   };
 
   return (
-    <div className="w-full py-6">
+    <div className="w-full py-6 bg-green-100 px-6">
       {loading ? (
         <div className="text-center text-xl text-gray-600">Carregando projetos...</div>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col">
           {projects.length > 0 ? (
             projects.map((project, index) => (
               <div key={index} className="hover:bg-gray-100   rounded-lg shadow-sm border-b">

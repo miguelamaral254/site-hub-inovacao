@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import OpportunityTicketModal from "./OpportunityTicketModal";
 import { Opportunity } from "./opportunity.interface";
+import { formatDate } from "@/utils/formatters";
 
 const typeMap: Record<string, { bgColor: string; label: string }> = {
   BANCO_DE_OPORTUNIDADE: { bgColor: "bg-purple-200", label: "#Banco de Oportunidade" },
@@ -22,31 +23,37 @@ const OpportunityTicketCard: React.FC<CardServicoProps> = ({ opportunity }) => {
 
   const { bgColor, label } = typeMap[opportunityType || "BANCO_DE_OPORTUNIDADE"];
 
-  const formatDate = (dateString: string | undefined) => {
-    if (!dateString) return "Data não disponível"; 
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
-  };
+  function capitalize(word: string) {
+    if (typeof word !== 'string') {
+        return '';
+    }
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  }
 
   return (
     <div 
-      className="p-4 border-b-0 bg-white rounded-lg shadow-md hover:shadow-xl mb-0 cursor-pointer"
-      onClick={() => setIsModalOpen(true)}
+      className="px-4 py-2 border-b bg-white rounded-lg shadow-md hover:shadow-2xl cursor-pointer mb-0 flex items-center gap-6 relative"
+      onClick={() => setIsModalOpen(true)} 
     >
-      <div className="flex justify-between items-center">
-        <p className="text-sm text-gray-700 font-semibold">{tituloDesafio || "Título do Desafio Indefinido"}</p>
-        <p className="text-xs text-gray-500">{formatDate(createdDate)}</p>
+
+      <div className={`${bgColor} text-sm flex flex-col items-center justify-center text-center gap-2 h-24 w-24 rounded-full border-8 border-[#f7f9f9]`}>
+        {label}
       </div>
 
-      <p className={`mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-3xl text-white ${bgColor}`}>
-        {label}
-      </p>
+      <div className="flex-1 flex justify-between items-center ">
+        <div className="flex-1">
+          <p className="text-sm text-gray-700 font-semibold">{tituloDesafio || "Título Indefinido"}</p>
+          <div className="text-sm text-gray-600 mt-2 max-h-16 overflow-hidden">
+            {descricaoProblema || "Sem descrição disponível"}
+          </div>
+        </div>
 
-      <p className="text-sm text-gray-600 mt-2 max-h-16 overflow-hidden">{descricaoProblema || "Sem descrição disponível"}</p>
+        <p className="flex-1">{capitalize(opportunity.status as string)}</p>
 
-      {isModalOpen && (
-        <OpportunityTicketModal opportunity={opportunity} handleClose={() => setIsModalOpen(false)} />
-      )}
+        <p className="text-xs text-gray-500 ">{createdDate ? formatDate(createdDate) : "Data Indefinida"}</p>
+      </div>
+
+      
     </div>
   );
 };
