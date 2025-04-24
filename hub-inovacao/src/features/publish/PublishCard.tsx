@@ -1,5 +1,6 @@
 import React from "react";
 import { Publish } from "./publish.interface";
+import { formatDate } from "@/utils/formatters";
 
 interface PublishCardProps extends Publish {
   onClick: () => void;
@@ -22,7 +23,7 @@ const PublishCard: React.FC<PublishCardProps> = ({
     >
       <div className="w-full flex flex-col">
         <h2 className="text-2xl font-medium text-gray-950 truncate mb-4">{title}</h2>
-        <p className="text-base text-blue-800 mb-4">Publicado em: {createdDate}</p>
+        <p className="text-base text-blue-800 mb-4">Publicado em: {formatDate(createdDate as string)}</p>
 
         <div className="flex-1 max-h-[150px] overflow-y-auto mb-4">
           <p className="text-base text-gray-800 whitespace-normal break-words">

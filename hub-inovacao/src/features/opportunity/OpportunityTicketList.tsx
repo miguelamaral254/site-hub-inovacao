@@ -46,7 +46,7 @@ const OpportunityTicketList: React.FC<OpportunityListProps> = ({ filters }) => {
   };
 
   return (
-    <div className="w-full py-6">
+    <div className="w-full p-6 bg-blue-100">
       {loading ? (
         <div className="text-center text-xl text-gray-600">Carregando oportunidades...</div>
       ) : (
