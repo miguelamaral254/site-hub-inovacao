@@ -1,60 +1,61 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Enterprise } from "@/features/auth/users/users/enterprise.interface";
-import Sidebar from "@/features/auth/users/users/Sidebar";
-import PageContent from "@/features/auth/users/users/PageContent";
-import { getEnterpriseById } from "@/features/auth/users/users/enterprise.service";
+import Sidebar from "@/features/auth/signin/Sidebar";
+import PageContent from "@/features/auth/signin/PageContent";
+import { useAuth } from "@/context/useContext";
+import { Enterprise } from "@/features/auth/users/enterprise.interface";
+import { getEnterpriseById } from "@/features/auth/users/enterprise.service";
 
-
-export default function DashboardCompanyPage() {
-  const [userData, setUserData] = useState<Enterprise | undefined>(undefined);
+export default function EnterpriseDashboardPage() {
+  const [enterpriseData, setEnterpriseData] = useState<Enterprise | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { user } = useAuth(); 
 
   useEffect(() => {
-    const id = localStorage.getItem("id");
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
-    if (id) {
-      const fetchUserData = async () => {
-        try {
-          const response = await getEnterpriseById(parseInt(id));
-          const data = response.data;
-          setUserData(data);
-          localStorage.setItem("userData", JSON.stringify(data));
-        } catch (error) {
-          console.log(error);
-          setErrorMessage("Erro ao buscar os dados.");
+    const fetchEnterpriseData = async () => {
+      try {
+        const response = await getEnterpriseById(user.idUser); 
+        const data = response.data.data;
+
+        setEnterpriseData(data);
+
+        if (data.role !== "ENTERPRISE") {
+          router.push("/");
+          return;
         }
-      };
+      } catch (error) {
+        console.log(error);
+        setErrorMessage("Erro ao buscar os dados da empresa.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      fetchUserData();
-    } else {
-      setErrorMessage("ID não encontrado.");
-    }
-  }, []);
+    fetchEnterpriseData();
+  }, [router, user]);
 
-  useEffect(() => {
-    if (userData && userData.cnpj && userData.role !== "ENTERPRISE") {
-      router.push("/"); 
-    }
-  }, [userData, router]);
+  if (loading) return <div>Loading...</div>;
+  if (errorMessage) return <div>{errorMessage}</div>;
 
-  if (errorMessage) {
-    return <div>{errorMessage}</div>;
-  }
-
-  if (!userData) {
-    return <div>Loading...</div>;
-  }
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <Sidebar setSelectedPage={setSelectedPage} userData={userData} errorMessage={errorMessage} />
-      
+      <Sidebar
+        setSelectedPage={setSelectedPage}
+        userData={enterpriseData}
+        errorMessage={errorMessage}
+      />
+
       <div className="flex-grow p-6">
-        <PageContent selectedPage={selectedPage} userData={userData} />
+        <PageContent selectedPage={selectedPage} userData={enterpriseData} />
       </div>
     </div>
   );

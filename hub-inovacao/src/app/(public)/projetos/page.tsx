@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React, { useState } from "react";
@@ -6,16 +7,19 @@ import { Dropdown } from "@/components/Dropdown";
 import bannerprojetos from "@/assets/BannerProjetos.svg";
 import construcao from "@/assets/ProjetoConstrução.svg";
 import senac from "@/assets/ImagensProjetos/SENAC.png";
-import AllProjectsList from "@/features/projects/ProjectsList";
 import { ButtonOutline } from "@/components/Button";
+import ProjectList from "@/features/projects/ProjectList";
 const projectTypes = ["Projeto de Inovação", "Projeto de Integração", "Projeto de Extensão"];
 
 const Projetos = () => {
   const [visibleProjects, setVisibleProjects] = useState(4);
-  const [selectedType, setSelectedType] = useState<string | null>(null);
-  const [totalProjects, setTotalProjects] = useState(0);
+  //const [selectedType, setSelectedType] = useState<string | null>(null);
+  //const [totalProjects, setTotalProjects] = useState(0);
 
-
+  const projectPublicFilter = {
+    status: "aprovada",
+    enabled: true,
+  };
 
   return (
     <div className="flex flex-col bg-[#F9F9F9] min-h-screen">
@@ -26,7 +30,7 @@ const Projetos = () => {
         className="w-full h-auto object-cover" 
         />
       </div>
-
+      
       <div className="flex flex-col bg-white md:flex-row items-center justify-between w-full px-6 md:px-24 py-10">
         <div className="flex flex-col w-full md:w-1/2 h-auto">
           <h2 className="text-3xl md:text-5xl text-blue-500 font-semibold leading-tight">
@@ -56,16 +60,14 @@ const Projetos = () => {
         </div>
 
         <div className="flex flex-wrap justify-center md:justify-end gap-4 mt-6 mb-6">
+          {/*
           <Dropdown options={projectTypes} onSelect={setSelectedType} defaultText="Filtrar por Tipo" />
+          */}
         </div>
 
-        <AllProjectsList
-          visibleProjects={visibleProjects}
-          filterType={selectedType}
-          setTotalProjects={setTotalProjects} // Passa o total de projetos para controle do botão
-        />
+        <ProjectList filters={projectPublicFilter} />
 
-        {/* Exibe o botão "Carregar Mais" apenas se houver mais projetos a serem exibidos */}
+        {/* Exibe o botão "Carregar Mais" apenas se houver mais projetos a serem exibidos
         {totalProjects > 0 && visibleProjects < totalProjects && (
           <div className="flex justify-center mt-6">
           <ButtonOutline text={visibleProjects >= totalProjects ? "Carregar menos" : "Carregar Mais"}
@@ -80,12 +82,12 @@ const Projetos = () => {
         </div>
         )}
 
-        {/* Se não houver projetos, exibe a imagem de "Projetos em Construção" */}
+        {/* Se não houver projetos, exibe a imagem de "Projetos em Construção" 
         {totalProjects === 0 && (
           <div className="flex justify-center items-center mt-6">
             <Image src={construcao} alt="Projetos em Construção" />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

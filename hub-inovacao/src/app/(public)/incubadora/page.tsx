@@ -5,11 +5,9 @@ import ideias from "@/assets/ImagensIncubadora/LogoIdeias.png";
 import mentorias from "@/assets/ImagensIncubadora/MentoriasPersonalizadas.png";
 import ecosistema from "@/assets/ImagensIncubadora/Ecossistema.png"
 import desafios from "@/assets/ImagensIncubadora/Desafios.png";
-import { Dropdown } from "@/components/Dropdown";
 import { CardStartup, CardServico } from "@/components/Card";
 import { ButtonOutline } from "@/components/Button";
 import ImageProjeto from "@/assets/ImagemBOS.svg"
-
 import { ButtonGrandeSeg } from "@/components/Button";
 import bannerincubadora from "@/assets/BannerIncubadora.svg"
 import PassouEncontrou from "@/assets/Startups/PassouEncontrou.png"
@@ -18,11 +16,6 @@ import Elementum from "@/assets/Startups/Elementum.png"
 import NOOK from "@/assets/Startups/NOOK.png"
 
 export default function Incubadora() {
-  const options = ["Opção 1", "Opção 2", "Opção 3"];
-
-  const handleSelect = (selectedOption: string | null) => {
-    console.log("Opção selecionada:", selectedOption);
-  };
 
   return (
     <div className="bg-[#F9F9F9]">
@@ -33,20 +26,24 @@ export default function Incubadora() {
         className="w-full h-auto object-cover"
         />
       </div>
-      <div className="flex flex-row bg-white items-center min-h-[529px] justify-between w-full px-[166px]" /* Container do Ideias*/>
-        <div className="flex flex-col w-full max-w-[642px] h-auto mt-4 px-4" >
-          <h2 className="text-3xl md:text-5xl text-blue-500 font-semibold">
-            A Incubadora i.d.e.i.a.S
-          </h2>  
-          <p className="mt-6 text-gray-800 text-left">
-            A Incubadora i.de.i.a.S. (Incubadora para o Desenvolvimento de Inovação e Aceleração do SENAC) é um ambiente dedicado à inovação e ao empreendedorismo, oferecendo suporte para alunos e egressos do SENAC PE transformarem seus Projetos Integradores em startups sustentáveis e competitivas nos setores de Comércio, Bens, Serviços e Turismo.
-          </p>  
-        </div>
-        <div className="flex justify-end mr-3">
-          <Image src={ideias} alt="imagemTeste" className="w-full max-w-[400px] md:w-auto md:max-w-[500px] object-cover mr-2 md:mr-5 rounded-lg"/>
+
+      <div className="bg-white w-full">
+        <div className="flex flex-col md:flex-row items-center justify-between w-full section" /* Container do Ideias*/>
+          <div className="flex flex-col w-full max-w-[642px] h-auto mt-4 px-4" >
+            <h2 className="text-3xl md:text-5xl text-blue-500 font-semibold">
+              A Incubadora i.d.e.i.a.S
+            </h2>
+            <p className="mt-6 text-gray-800 text-left">
+              A Incubadora i.de.i.a.S. (Incubadora para o Desenvolvimento de Inovação e Aceleração do SENAC) é um ambiente dedicado à inovação e ao empreendedorismo, oferecendo suporte para alunos e egressos do SENAC PE transformarem seus Projetos Integradores em startups sustentáveis e competitivas nos setores de Comércio, Bens, Serviços e Turismo.
+            </p>
+          </div>
+          <div className="flex justify-end mr-3">
+            <Image src={ideias} alt="imagemTeste" className="w-full h-auto object-cover mr-2 md:mr-5 rounded-lg"/>
+          </div>
         </div>
       </div>
-      <div className="flex flex-col w-full h-auto min-h-[200px] mt-6 px-[166px]" >
+
+      <div className="flex flex-col section" >
         <div className="">
           <h3 className="text-2xl md:text-4xl text-blue-500 font-semibold">
             Conheça as Startups incubadas no i.d.e.i.a.S
@@ -56,10 +53,8 @@ export default function Incubadora() {
             Venha descobrir o futuro da inovação e do empreendedorismo no SENAC PE!   
           </p>      
         </div>
-        <div className="flex justify-end mr-2 md:mr-5">
-          <Dropdown options={options} onSelect={handleSelect} />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch mt-6">
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6  mt-6">
           <CardStartup 
             image={PassouEncontrou} 
             alt="Logo Passou Encontrou" 
@@ -110,49 +105,54 @@ export default function Incubadora() {
         </div>
       </div>
       
-      <div className="flex flex-col bg-white h-auto md:min-h-[600px] mt-6 px-[166px]" /* Serviços incubadora */>
-        <div className="flex flex-col max-w-4xl h-auto mt-4" /* Textos */>
-            <h3 className="text-2xl md:text-3xl text-blue-500 font-semibold">
-              Serviços que a incubadora i.de.i.a.S oferece as Startups
-            </h3>
-            <p className="mt-4 text-left">
-              A Incubadora i.de.i.a.S oferece mentorias especializadas, conexões com investidores e participação em grandes eventos. Com desafios reais, Ideathons e Hackathons, preparamos startups para o mercado. 
-            </p>      
-        </div>
-        <div className="flex flex-col md:flex-row justify-center items-center mt-6 gap-6">
-          <CardServico 
-          image={mentorias} 
-          alt="Mentorias" 
-          titulo="Mentorias Especializadas" 
-          texto="Os incubados têm acesso a mentorias e capacitações para desenvolverem competências em inovação, criatividade e gestão de negócios."/>
-          <CardServico 
-          image={ecosistema} 
-          alt="Ecossistemas" 
-          titulo="Ecossistema de Inovação" 
-          texto="As Startups incubadas têm acesso a conexões estratégicas com empresas e investidores. 
-          Além de oportunidades em eventos nacionais e internacionais."/>
-          <CardServico 
-          image={desafios} 
-          alt="Desafios reais do mercado" 
-          titulo="Desafios reais do mercado" 
-          texto="A incubadora i.de.i.a.S promove eventos como Ideathons, Hackthons e qualificações em empreendedorismo. "/>
+      <div className="bg-white w-full">
+        <div className="flex flex-col section" /* Serviços incubadora */>
+          <div className="flex flex-col max-w-4xl h-auto mt-4" /* Textos */>
+              <h3 className="text-2xl md:text-3xl text-blue-500 font-semibold">
+                Serviços que a incubadora i.de.i.a.S oferece as Startups
+              </h3>
+              <p className="mt-4 text-left">
+                A Incubadora i.de.i.a.S oferece mentorias especializadas, conexões com investidores e participação em grandes eventos. Com desafios reais, Ideathons e Hackathons, preparamos startups para o mercado.
+              </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6 gap-6">
+            <CardServico
+            image={mentorias}
+            alt="Mentorias"
+            titulo="Mentorias Especializadas"
+            texto="Os incubados têm acesso a mentorias e capacitações para desenvolverem competências em inovação, criatividade e gestão de negócios."/>
+            <CardServico
+            image={ecosistema}
+            alt="Ecossistemas"
+            titulo="Ecossistema de Inovação"
+            texto="As Startups incubadas têm acesso a conexões estratégicas com empresas e investidores.
+            Além de oportunidades em eventos nacionais e internacionais."/>
+            <CardServico
+            image={desafios}
+            alt="Desafios reais do mercado"
+            titulo="Desafios reais do mercado"
+            texto="A incubadora i.de.i.a.S promove eventos como Ideathons, Hackthons e qualificações em empreendedorismo. "/>
+          </div>
         </div>
       </div>
-      <div className="flex flex-col bg-white md:flex-row items-center min-h-[529px] justify-between w-full px-[166px] mt-20">
-          <div className="w-full md:w-[744px] h-auto flex">
-              <Image src={ImageProjeto} alt="ImagemProjetos" className="w-full h-full"/>
+
+      <div className="w-full bg-white">
+        <div className="flex flex-col md:flex-row items-center gap-4 justify-between section">
+          <div className="w-full h-auto flex">
+            <Image src={ImageProjeto} alt="ImagemProjetos" className="w-full h-full" />
           </div>
-          <div className="flex flex-col h-full justify-end items-end w-full md:max-w-[775px]">
-              <h4 className="text-2xl md:text-4xl text-blue-500 font-semibold">
-                Submeta seus projetos
-              </h4>
-              <p className="mt-4 text-right">
-                Alunos e professores, inscrevam-se no i.de.i.a.S e desenvolvam projetos inovadores com suporte, mentorias e capacitações. Essa é sua chance de criar soluções impactantes e entrar no ecossistema de startups!
-              </p>
-              <div className="flex justify-end mt-4 py-4">
-                <ButtonGrandeSeg text="Envie seu projeto agora"/>
-              </div>
+          <div className="flex flex-col h-full items-center  w-full ">
+            <h4 className="text-lg md:text-2xl text-blue-500 font-semibold text-center">
+              Submeta seus projetos!
+            </h4>
+            <p className="mt-4 text-center">
+            Alunos e professores, inscrevam-se no i.de.i.a.S e desenvolvam projetos inovadores com suporte, mentorias e capacitações. Essa é sua chance de criar soluções impactantes e entrar no ecossistema de startups!
+            </p>
+            <div className="flex justify-end mt-4 py-4">
+              <ButtonGrandeSeg text="Envie seu projeto agora" />
+            </div>
           </div>
+        </div>
       </div>
     </div>
   );

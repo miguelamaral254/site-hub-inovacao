@@ -11,14 +11,14 @@ import banneroportunidades from "@/assets/BannerOportunidades.svg";
 import { ButtonOutline } from "@/components/Button";
 import OpportunityList from "@/features/opportunity/OpportunityList";
 
-const opportunityTypes = ["Oportunidades", "Problemas", "Ideias"];
-
 export default function Oportunidades() {
   const [visibleOpportunities, setVisibleOpportunities] = useState(6);
-  const [selectedType, setSelectedType] = useState<string | null>(null);
   const [totalOpportunities, setTotalOpportunities] = useState(0);
+  
 
-
+  const filters = {
+   status:"aprovada"  
+  };
 
   return (
     <div className="flex flex-col bg-[#f9f9f9] min-h-screen">
@@ -64,13 +64,8 @@ export default function Oportunidades() {
             Conectamos empresas, estudantes e pesquisadores para transformar desafios reais em inovação. Aqui, você pode desenvolver soluções, criar tecnologias e gerar impacto. Seja parte dessa rede que impulsiona talentos e acelera o futuro. Venha inovar com a gente!
           </p>
         </div>
-
-        <div className="flex flex-wrap justify-center md:justify-end gap-4 mt-6">
-          <Dropdown options={opportunityTypes} onSelect={setSelectedType} defaultText="Filtrar por Tipo" />
-        </div>
-
         <div>
-        <OpportunityList />
+          <OpportunityList filters={filters} />
 
         </div>
 

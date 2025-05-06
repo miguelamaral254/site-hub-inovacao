@@ -3,7 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/useContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer"; 
-import StepContext from "@/features/projects/cadastro_projeto/StepContext";
+import StepContext from "@/features/projects/project-form/StepContext";
 
 
 export const metadata: Metadata = {
