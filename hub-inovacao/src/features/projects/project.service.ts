@@ -3,7 +3,8 @@ import axios from 'axios';
 import { Project } from './project.interface';
 import { Page } from '../core/page.interface';
 
-const API_URL = "http://localhost:8080/projects";
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_URL = `${baseURL}/projects`;
 
 export const searchProjects = async (
   filters?: Record<string, any>,
