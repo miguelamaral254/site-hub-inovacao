@@ -1,6 +1,7 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Page<T> {
-    data: Page<import("/Users/miguelamaral/Documents/dev/site-hub-inovacao/hub-inovacao/src/features/projects/project.interface").Project>;
+    data: Page<T>
     page: any;
     content: T[];
     totalElements: number;

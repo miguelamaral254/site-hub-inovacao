@@ -2,8 +2,8 @@
 import axios from "axios";
 import { Enterprise } from "./enterprise.interface";
 
-
-const API_URL = "http://localhost:8080/enterprises";
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_URL = `${baseURL}/enterprises`;
 
 export const createEnterprise = async (formData: any): Promise<Enterprise> => {
   try {

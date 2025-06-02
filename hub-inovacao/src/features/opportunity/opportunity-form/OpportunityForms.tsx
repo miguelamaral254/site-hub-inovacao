@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import useSwal from "@/hooks/useSwal";
-import { createOpportunity } from "../OpportunityService";
 import { Opportunity, OpportunityType } from "../opportunity.interface";
 import { StatusSolicitation } from "../../core/status.interface";
 import { useAuth } from "@/context/useContext";
@@ -10,6 +9,7 @@ import { StepTwo } from "./steps/opportunityfase2";
 import { StepThree } from "./steps/opportunityfase3";
 import { StepOne } from "./steps/opportunityfase1";
 import { Resume } from "./steps/resume";
+import { createOpportunity } from "../opportunity.service";
 
 const CreateOpportunityForm: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
