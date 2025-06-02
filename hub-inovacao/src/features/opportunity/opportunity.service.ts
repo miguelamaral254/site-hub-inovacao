@@ -3,7 +3,8 @@ import axios from "axios";
 import { Opportunity } from "./opportunity.interface";
 import { Page } from "../core/page.interface";
 
-const API_URL = "http://localhost:8080/opportunities";
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_URL = `${baseURL}/opportunities`;
 
 export const createOpportunity = async (formData: FormData): Promise<Opportunity> => {
   try {
